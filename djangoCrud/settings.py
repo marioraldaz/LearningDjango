@@ -37,9 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tasks',
+    'corsheaders',
     'rest_framework',
-    'corsheaders'
+    'coreapi',
+    'tasks',
 ]
 
 MIDDLEWARE = [
@@ -129,5 +130,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS AUTHORIZATION
 CORS_ALLOWED_ORIGINS = [
-  
+    "http://localhost:5173"
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS' : 'rest_framework.schemas.coreapi.AutoSchema'
+}
