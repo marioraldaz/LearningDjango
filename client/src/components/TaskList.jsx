@@ -1,13 +1,13 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { getAllTasks } from "../api/tasks.api";
+import { fetchDataFromApi } from "../api/tasks.api";
 
 export function TaskList() {
   const [tasks, setTasks] = useState([]);
   useEffect(() => {
     async function loadTasks() {
-      const res = await getAllTasks();
-      setTasks(res.data);
+      const res2 = await fetchDataFromApi();
+      console.log(res2);
     }
     loadTasks();
   }, []);
