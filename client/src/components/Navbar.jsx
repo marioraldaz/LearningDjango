@@ -1,14 +1,17 @@
 import React from "react";
-import "./Navbar.css"; // Import your CSS file for styling
 
 export function Navbar() {
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        <a href="/" className="navbar-logo">
-          Your Logo
+    <nav className=" h-36 w-full">
+      <div className="pb-8 border-b-2 border-green-500 pt-8 w-full flex  justify-between pr-8 items-center h-full">
+        <a href="/">
+          <img
+            className=" h-22 w-16"
+            style={{ width: "180px", height: "180px" }}
+            src="/public/svg-logo.svg"
+          />
         </a>
-        <ul className="nav-menu">
+        <ul className="nav-menu flex space-x-10">
           <li className="nav-item-left">
             <a href="/" className="nav-links">
               Home
@@ -22,6 +25,11 @@ export function Navbar() {
           <li className="nav-item-left">
             <a href="/contact" className="nav-links">
               Recipes
+            </a>
+          </li>
+          <li className="nav-item-left">
+            <a href="/contact" className="nav-links">
+              My Balance
             </a>
           </li>
           {/* Add more navigation items as needed */}
