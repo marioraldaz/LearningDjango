@@ -1,5 +1,4 @@
 import React from "react";
-
 export function Navbar() {
   return (
     <nav className=" h-36 w-full">
@@ -11,6 +10,9 @@ export function Navbar() {
             src="/public/svg-logo.svg"
           />
         </a>
+        <div className="w-66">
+          <span className="">Hello again Mario!</span>
+        </div>
         <ul className="nav-menu flex space-x-10">
           <li className="nav-item-left">
             <a href="/" className="nav-links">
@@ -18,17 +20,17 @@ export function Navbar() {
             </a>
           </li>
           <li className="nav-item-left">
-            <a href="/about" className="nav-links">
+            <a href="/Ingredients" className="nav-links">
               Ingredients
             </a>
           </li>
           <li className="nav-item-left">
-            <a href="/contact" className="nav-links">
+            <a href="/Recipes" className="nav-links">
               Recipes
             </a>
           </li>
           <li className="nav-item-left">
-            <a href="/contact" className="nav-links">
+            <a href="/MyBalance" className="nav-links">
               My Balance
             </a>
           </li>

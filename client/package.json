@@ -12,6 +12,7 @@
   "dependencies": {
     "@heroicons/react": "^2.1.1",
     "@material-tailwind/react": "^2.1.9",
+    "@reduxjs/toolkit": "^2.2.1",
     "axios": "^1.6.7",
     "bower": "^1.8.14",
     "jquery": "^3.7.1",
@@ -20,6 +21,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.1",
     "react-hot-toast": "^2.4.1",
+    "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.1",
     "tailwind": "^4.0.0"
   },
