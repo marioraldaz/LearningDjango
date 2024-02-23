@@ -10,11 +10,12 @@ const options = {
 export async function fetchDataFromApi() {
   try {
     const response = await axios.request(
-      "https://api.spoonacular.com/recipes/complexSearch?apiKey=" +
+      "https://api.spoonacular.com/recipes/findByNutrients?apiKey=" +
         API_KEY +
-        "&query=pasta&maxFat=25&number=2"
+        "&maxCarbs=15"
     );
     console.log(response.data);
+    console.log(response.data.results);
   } catch (error) {
     console.error(error);
   }

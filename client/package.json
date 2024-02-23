@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.1",
+    "@material-tailwind/react": "^2.1.9",
     "axios": "^1.6.7",
     "bower": "^1.8.14",
     "jquery": "^3.7.1",
@@ -18,7 +20,8 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.1",
     "react-hot-toast": "^2.4.1",
-    "react-router-dom": "^6.22.1"
+    "react-router-dom": "^6.22.1",
+    "tailwind": "^4.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",
@@ -28,6 +31,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "tailwindcss": "^3.4.1",
     "vite": "^5.1.4"
   }
 }
