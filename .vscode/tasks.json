@@ -24,11 +24,14 @@
       "args": [
         "tailwindcss",
         "-i",
-        "./src/input.css",
+        "./src/index.css",
         "-o",
         "./src/output.css",
         "--watch"
       ],
+      "options": {
+        "cwd": "${workspaceFolder}/client"
+      },
       "runOptions": {
         "runOn": "folderOpen"
       },
