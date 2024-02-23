@@ -16,6 +16,31 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "Run Tailwind CSS Watch",
+      "type": "shell",
+      "command": "npx",
+      "args": [
+        "tailwindcss",
+        "-i",
+        "./src/input.css",
+        "-o",
+        "./src/output.css",
+        "--watch"
+      ],
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
     }
     /*{
       "label": "Run Django Server",
