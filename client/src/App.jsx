@@ -1,9 +1,17 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  NavLink,
+  redirect,
+} from "react-router-dom";
 import { Navbar } from "./components/Navbar.jsx";
 import { Home } from "./pages/Home.jsx";
 import { Ingredients } from "./pages/Ingredients.jsx";
 import { Recipes } from "./pages/Recipes.jsx";
 import { MyBalance } from "./pages/MyBalance.jsx";
+redirect("/Home");
 
 function App() {
   return (
