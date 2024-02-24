@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export function Navbar() {
   return (
-    <nav className="w-full h-36 border-green-600 border-b-2">
+    <nav className="w-full h-32 border-green-600 border-b-2">
       <div className="w-full flex h-full text-white">
         <NavLink to="/" className="flex">
           <img
@@ -53,7 +53,7 @@ export function Navbar() {
           h-full"
           >
             <img
-              src="/profile.svg" // Correct the path to the logo image
+              src="/profile2.svg" // Correct the path to the logo image
               alt="Logo"
               className="h-16 w-auto ml-12" // Adjusted size for the logo
             />
