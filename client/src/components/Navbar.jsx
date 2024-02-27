@@ -1,58 +1,60 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
+import { NavElem } from "./Search/NavElem";
+import React, { useState } from 'react';
+
 
 export function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+    console.log(isMenuOpen)
+  };
+
+  const links = [
+    { id: 1, route: "/", text: "Home" },
+    { id: 2, route: "/Ingredients", text: "Ingredients" },
+    { id: 3, route: "/Recipes", text: "Recipes" },
+    { id: 4, route: "/MyBalance", text: "MyBalance" }
+  ];  
   return (
-    <nav className="w-full h-32 border-green-600 border-b-2">
-      <div className="w-full flex h-full text-white">
-        <NavLink to="/" className="flex">
+    <nav className="max-w-full h-32 flex flex-nowrap border-green-600 border-b-2 xl:pr-[40px] items-center" >
+        <NavLink to="/" className="flex-grow">
           <img
-            src="/nutribestPNG.png" // Correct the path to the logo image
+            src="/nutribestPNG.png" 
             alt="Logo"
-            className="h-36 w-auto" // Adjusted size for the logo
+            className="h-28 w-[300px] mr-auto" 
           />
         </NavLink>
 
-        <div className="flex ml-auto space-x-12 mr-16 items-center">
-          <NavLink
-            to="/"
-            className="hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-110 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
-          >
-            <span className="text-4xl">Home</span>
-          </NavLink>
-
-          <NavLink
-            to="/Ingredients"
-            activeClassName="active"
-            className="hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-110 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
-          >
-            <span className="text-4xl h-full">Ingredients</span>
-          </NavLink>
-          <NavLink
-            to="/Recipes"
-            className="hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-110 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
-          >
-            <span className="text-4xl">Recipes</span>
-          </NavLink>
-          <NavLink
-            to="/MyBalance"
-            className="hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-110 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
-          >
-            <span className="text-4xl">My Balance</span>
-          </NavLink>
-          <NavLink
-            to="/Profile"
-            className="hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-110 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
-          >
-            <img
-              src="/profile2.svg" // Correct the path to the logo image
-              alt="Logo"
-              className="h-16 w-auto " // Adjusted size for the logo
-            />
-          </NavLink>
+        <div className="hidden xl:flex xl:flex-row flex-nowrap ml-auto space-x-12 items-center">
+              {links.map((link) => (
+                <NavElem key={link.id} route={link.route} text={link.text} />
+              ))}
         </div>
-        <div className="md:hidden">{/* Mobile menu icon */}</div>
-      </div>
+            
+            <NavLink
+              to="/Profile"
+              className="ml-8  h-[100px] items-center hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-105 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
+              >
+            <img
+              src="/profile2.svg" 
+              alt="Logo"
+              className="h-full" 
+            />
+            </NavLink>
+                <img src="/menu.png" alt="menu" onClick={toggleMenu} className="xl:hidden flex h-[150px] w-[150px] cursor-pointer hover:bg-neutral-800 p-[5px] transform hover:scale-105 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 "/>
+            
+             {/* Mobile Menu */}
+
+          {isMenuOpen && (
+            <div className="absolute right-[7px] top-[140px] w-[200px] bg-neutral-800 shadow-lg rounded-lg z-50">
+              <div className="flex flex-col items-center py-4">
+                {links.map((link) => (
+                  <NavElem key={link.id} route={link.route} text={link.text} />
+                ))}
+              </div>
+            </div>
+          )}
     </nav>
   );
 }

@@ -17,7 +17,7 @@ import { Ingredient } from "./pages/Ingredients/Ingredient.jsx";
 function App() {
   return (
     <BrowserRouter>
-      <div className="bg-black min-h-screen w-full text-white flex flex-col">
+      <div className="bg-black min-h-screen w-full text-white flex flex-col overflow-hidden">
         <Navbar />
         <div className="w-full flex-grow">
           <Routes>
