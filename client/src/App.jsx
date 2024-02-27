@@ -8,10 +8,11 @@ import {
 } from "react-router-dom";
 import { Navbar } from "./components/Navbar.jsx";
 import { Home } from "./pages/Home.jsx";
-import { Ingredients } from "./pages/Ingredients.jsx";
-import { Recipes } from "./pages/Recipes.jsx";
-import { MyBalance } from "./pages/MyBalance.jsx";
+import { Ingredients } from "./pages/Ingredients/Ingredients.jsx";
+import { Recipes } from "./pages/Recipes/Recipes.jsx";
+import { MyBalance } from "./pages/MyBalance/MyBalance.jsx";
 import { Footer } from "./components/Footer.jsx";
+import { Ingredient } from "./pages/Ingredients/Ingredient.jsx";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/Ingredients" element={<Ingredients />} />
             <Route path="/Recipes" element={<Recipes />} />
             <Route path="/MyBalance" element={<MyBalance />} />-
+            <Route path="/Ingredient" element={<Ingredient />} />-
           </Routes>
         </div>
         <Footer />

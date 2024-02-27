@@ -15,47 +15,39 @@ export function Navbar() {
 
         <div className="flex ml-auto space-x-12 mr-16 items-center">
           <NavLink
-            to="/home"
-            className={(navData) =>
-              navData.isActive ? "active-style" : "text-white"
-            }
+            to="/"
+            className="hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-110 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
           >
             <span className="text-4xl">Home</span>
           </NavLink>
 
           <NavLink
             to="/Ingredients"
-            className={(navData) =>
-              navData.isActive ? "active-style" : "text-white"
-            }
+            activeClassName="active"
+            className="hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-110 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
           >
-            <span className="text-4xl">Ingredients</span>
+            <span className="text-4xl h-full">Ingredients</span>
           </NavLink>
           <NavLink
             to="/Recipes"
-            className={(navData) =>
-              navData.isActive ? "active-style" : "text-white"
-            }
+            className="hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-110 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
           >
             <span className="text-4xl">Recipes</span>
           </NavLink>
           <NavLink
             to="/MyBalance"
-            className={(navData) =>
-              navData.isActive ? "active-style" : "text-white"
-            }
+            className="hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-110 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
           >
             <span className="text-4xl">My Balance</span>
           </NavLink>
           <NavLink
-            to="/"
-            className="flex flex-column items-center
-          h-full"
+            to="/Profile"
+            className="hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-110 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
           >
             <img
               src="/profile2.svg" // Correct the path to the logo image
               alt="Logo"
-              className="h-16 w-auto ml-12" // Adjusted size for the logo
+              className="h-16 w-auto " // Adjusted size for the logo
             />
           </NavLink>
         </div>
