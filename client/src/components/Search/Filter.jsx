@@ -9,7 +9,7 @@ export function Filter({ filter, onChange }) {
   };
 
   return (
-    <div>
+    <div className=" grid">
       <label htmlFor={filter.name}>{filter.label}</label>
       <input
         type={filter.type}

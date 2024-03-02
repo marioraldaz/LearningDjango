@@ -19,7 +19,7 @@ function App() {
     <BrowserRouter>
       <div className="bg-black min-h-screen w-full text-white flex flex-col overflow-hidden">
         <Navbar />
-        <div className="w-full flex-grow">
+        <div className="w-full min-h-full flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/Ingredients" element={<Ingredients />} />

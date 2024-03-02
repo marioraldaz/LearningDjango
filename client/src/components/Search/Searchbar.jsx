@@ -8,6 +8,7 @@ export function Searchbar({ filters }) {
   const { register, handleSubmit } = useForm();
   const [products, setProducts] = useState([]);
   const [filterValues, setFilterValues] = useState({});
+  const [advancedFilters, setAdvancedFilters] = useState(false);
 
   const onSubmit = async () => {
     const productsFetched = await fetchFilteredIngredients({
@@ -21,6 +22,10 @@ export function Searchbar({ filters }) {
       ...prevValues,
       [name]: value, //Destroys previous value of [name] when pushing the new one
     }));
+  };
+
+  const changeAdvancedVisibility = () => {
+    setAdvancedFilters(!advancedFilters);
   };
 
   return (
@@ -64,7 +69,17 @@ export function Searchbar({ filters }) {
           Search
         </button>
       </div>
-      <Filters filters={filters} onFilterChange={handleFilterChange} />
+
+      <button
+        onClick={changeAdvancedVisibility}
+        className="mt-4 w-44 h-12 bg-green-600 border radius-lg rounded-lg"
+      >
+        {!advancedFilters ? "Show" : "Hide"} Advanced Filters
+      </button>
+
+      {advancedFilters && (
+        <Filters filters={filters} onFilterChange={handleFilterChange} />
+      )}
 
       <SearchResults products={products} />
     </form>

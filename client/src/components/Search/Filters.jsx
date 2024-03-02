@@ -7,7 +7,7 @@ export function Filters({ filters, onFilterChange }) {
   };
 
   return (
-    <div>
+    <div className="bg-neutral-800 p-6 mt-4 border radius-lg rounded-2xl grid grid-cols-2 gap-3">
       {filters.map((filter) => (
         <Filter
           key={filter.name}
