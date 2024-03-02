@@ -1,6 +1,6 @@
 import React from "react";
 import { Searchbar } from "/src/components/Search/Searchbar";
-
+import { filters } from "../../config/filtersConfig.js";
 export function Ingredients() {
   return (
     <div className="mt-5 flex flex-col items-center">
@@ -8,7 +8,7 @@ export function Ingredients() {
         Search Delicious And Nutritive Ingredients
       </h1>
       <div className="w-2/3 flex">
-        <Searchbar />
+        <Searchbar filters={filters} />
       </div>
     </div>
   );

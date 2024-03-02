@@ -45,25 +45,23 @@ export async function getIngredientInfo(id) {
     console.error(error);
   }
 }
-export async function getFilteredIngredients(
-  minProtein,
-  maxProtein,
-  minFat,
-  maxFat,
-  minCarbs,
-  maxCarbs,
-  intolerances,
-  sort,
-  sortDirection,
-  offset,
-  number
-) {
-  try {
-    const response = await axios.request(
-      `https://api.spoonacular.com/food/ingredients/search?apiKey=${API_KEY}`
-    );
-    return response;
-  } catch (error) {
-    console.error(error);
+export const fetchFilteredIngredients = async (filters) => {
+  const params = new URLSearchParams();
+
+  filters.forEach((filter) => {
+    if (filter.value !== "") {
+      params.append(filter.name, filter.value);
+    }
+  });
+  console.log(params);
+  const response = await fetch(
+    `https://api.spoonacular.com/food/ingredients/search?${params.toString()}&apiKey=${API_KEY}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch ingredients");
   }
-}
+
+  const data = await response.json();
+  return data.results;
+};

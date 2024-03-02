@@ -1,18 +1,26 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Filters } from "./Filters";
 import SearchResults from "./SearchResults";
-import {
-  fetchDataFromApi,
-  fetchIngredientsByName,
-} from "../../api/ingredients.api";
+import { fetchFilteredIngredients } from "../../api/ingredients.api";
 
-export function Searchbar() {
+export function Searchbar({ filters }) {
   const { register, handleSubmit } = useForm();
   const [products, setProducts] = useState([]);
+  const [filterValues, setFilterValues] = useState({});
 
-  const onSubmit = async (data) => {
-    const productsFetched = await fetchIngredientsByName(data.search);
-    setProducts(productsFetched, products);
+  const onSubmit = async () => {
+    const productsFetched = await fetchFilteredIngredients({
+      ...filterValues, //Using values stored in a state we gotta always use ...values
+    });
+    setProducts(productsFetched);
+  };
+
+  const handleFilterChange = (name, value) => {
+    setFilterValues((prevValues) => ({
+      ...prevValues,
+      [name]: value, //Destroys previous value of [name] when pushing the new one
+    }));
   };
 
   return (
@@ -56,6 +64,8 @@ export function Searchbar() {
           Search
         </button>
       </div>
+      <Filters filters={filters} onFilterChange={handleFilterChange} />
+
       <SearchResults products={products} />
     </form>
   );
