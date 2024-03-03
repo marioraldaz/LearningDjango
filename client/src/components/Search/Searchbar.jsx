@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Filters } from "./Filters";
 import SearchResults from "./SearchResults";
-import { fetchFilteredIngredients } from "../../api/ingredients.api";
+import { fetchFilteredIngredients, fetchIngredientsByName } from "../../api/ingredients.api";
 
 export function Searchbar({ filters }) {
   const { register, handleSubmit } = useForm();
@@ -10,23 +10,26 @@ export function Searchbar({ filters }) {
   const [filterValues, setFilterValues] = useState({});
   const [advancedFilters, setAdvancedFilters] = useState(false);
 
-  const onSubmit = async () => {
-    const productsFetched = await fetchFilteredIngredients({
-      ...filterValues, //Using values stored in a state we gotta always use ...values
-    });
+  const onSubmit = async (data) => {
+    let productsFetched = [];
+    advancedFilters ?  productsFetched = await fetchFilteredIngredients({
+      ...filterValues,}) :  productsFetched = await fetchIngredientsByName(data.search);
+      console.log(productsFetched, advancedFilters);
     setProducts(productsFetched);
   };
 
   const handleFilterChange = (name, value) => {
     setFilterValues((prevValues) => ({
       ...prevValues,
-      [name]: value, //Destroys previous value of [name] when pushing the new one
+      [name]: value, 
     }));
   };
 
-  const changeAdvancedVisibility = () => {
+  const changeAdvancedVisibility = (event) => {
+    event.preventDefault(); // Prevent the default button click behavior
     setAdvancedFilters(!advancedFilters);
   };
+  
 
   return (
     <form className="w-full mx-auto" onSubmit={handleSubmit(onSubmit)}>
@@ -36,7 +39,7 @@ export function Searchbar({ filters }) {
       >
         Search
       </label>
-      <div className="relative">
+      {!advancedFilters && <div className="relative">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <svg
             className="w-4 h-4 text-gray-500 dark:text-gray-400"
@@ -69,16 +72,16 @@ export function Searchbar({ filters }) {
           Search
         </button>
       </div>
-
+      }
       <button
         onClick={changeAdvancedVisibility}
-        className="mt-4 w-44 h-12 bg-green-600 border radius-lg rounded-lg"
+        className="mt-4 w-44 h-12 bg-green-700 border radius-lg rounded-lg"
       >
         {!advancedFilters ? "Show" : "Hide"} Advanced Filters
       </button>
 
       {advancedFilters && (
-        <Filters filters={filters} onFilterChange={handleFilterChange} />
+        <Filters filters={filters} onFilterChange={handleFilterChange} onSubmit={onSubmit}/>
       )}
 
       <SearchResults products={products} />
