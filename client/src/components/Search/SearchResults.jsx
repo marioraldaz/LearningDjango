@@ -2,13 +2,14 @@ import React from "react";
 
 function SearchResults({ products }) {
   return (
-    <div className="flex flex-wrap w-full">
+    <div className="w-full flex items-center justify-center">
+      <div className="grid grid-cols-auto-fit w-4/5">
       {products.map((product) => (
       <a href={`/Ingredient?id=${product.id}`} key={product.name}>
         <div
-          className="m-2 bg-neutral-900 h-[260px] w-[300px] border rounded-lg border-gray-300 text-black"
+          className="m-2 bg-white h-[260px] w-[250px] border rounded-lg border-gray-300 text-black"
         >
-          <h1 className="text-white text-center mt-5">
+          <h1 className="text-center mt-5">
             {product.name.toUpperCase()}
           </h1>
             <img
@@ -20,6 +21,8 @@ function SearchResults({ products }) {
       </a>
       ))}
     </div>
+
+      </div>
   );
 }
 

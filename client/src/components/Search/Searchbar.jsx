@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Filters } from "./Filters";
 import SearchResults from "./SearchResults";
-import { fetchFilteredIngredients, fetchIngredientsByName } from "../../api/ingredients.api";
 
-export function Searchbar({ filters }) {
+export function Searchbar({ filters, fetchByName, complexFetch }) {
   const { register, handleSubmit } = useForm();
   const [products, setProducts] = useState([]);
   const [filterValues, setFilterValues] = useState({});
@@ -12,34 +11,33 @@ export function Searchbar({ filters }) {
 
   const onSubmit = async (data) => {
     let productsFetched = [];
-    advancedFilters ?  productsFetched = await fetchFilteredIngredients({
-      ...filterValues,}) :  productsFetched = await fetchIngredientsByName(data.search);
-      console.log(productsFetched, advancedFilters);
+    advancedFilters
+      ? (productsFetched = await complexFetch({ ...filterValues }))
+      : (productsFetched = await fetchByName(data.search));
     setProducts(productsFetched);
   };
 
   const handleFilterChange = (name, value) => {
     setFilterValues((prevValues) => ({
       ...prevValues,
-      [name]: value, 
+      [name]: value,
     }));
   };
 
   const changeAdvancedVisibility = (event) => {
-    event.preventDefault(); // Prevent the default button click behavior
+    event.preventDefault();
     setAdvancedFilters(!advancedFilters);
   };
-  
 
   return (
-    <form className="w-full mx-auto" onSubmit={handleSubmit(onSubmit)}>
+    <form className="w-full flex justify-center items-center flex-col mx-auto" onSubmit={handleSubmit(onSubmit)}>
       <label
         htmlFor="default-search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
       >
         Search
       </label>
-      {!advancedFilters && <div className="relative">
+      {!advancedFilters && <div className="relative w-2/3">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <svg
             className="w-4 h-4 text-gray-500 dark:text-gray-400"
@@ -67,7 +65,7 @@ export function Searchbar({ filters }) {
         />
         <button
           type="submit"
-          className="text-white absolute end-2.5 bottom-2.5 bg-green-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="text-white absolute end-2.5 bottom-2.5 bg-green-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Search
         </button>
@@ -75,13 +73,15 @@ export function Searchbar({ filters }) {
       }
       <button
         onClick={changeAdvancedVisibility}
-        className="mt-4 w-44 h-12 bg-green-700 border radius-lg rounded-lg"
+        className="mt-4 w-44 h-12 bg-neutral-800 rounded-lg"
       >
         {!advancedFilters ? "Show" : "Hide"} Advanced Filters
       </button>
 
       {advancedFilters && (
-        <Filters filters={filters} onFilterChange={handleFilterChange} onSubmit={onSubmit}/>
+        <div className="w-2/3 mb-[80px]">
+          <Filters filters={filters} onFilterChange={handleFilterChange} onSubmit={onSubmit}/>
+        </div>
       )}
 
       <SearchResults products={products} />
