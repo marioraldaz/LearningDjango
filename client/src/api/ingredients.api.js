@@ -47,15 +47,14 @@ export async function getIngredientInfo(id) {
 }
 export const fetchFilteredIngredients = async (filters) => {
   const params = new URLSearchParams();
-
-  filters.forEach((filter) => {
-    if (filter.value !== "") {
-      params.append(filter.name, filter.value);
+  Object.entries(filters).forEach((filter) => {
+    if (filter[1] !== "") {
+      params.append(filter[0], filter[1]);
     }
   });
-  console.log(params);
+  console.log(params.toString());
   const response = await fetch(
-    `https://api.spoonacular.com/food/ingredients/search?${params.toString()}&apiKey=${API_KEY}`
+    `https://api.spoonacular.com/food/ingredients/search?apiKey=${API_KEY}&${params.toString()}`
   );
 
   if (!response.ok) {

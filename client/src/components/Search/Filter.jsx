@@ -12,6 +12,7 @@ export function Filter({ filter, onChange }) {
     <div className=" grid">
       <label htmlFor={filter.name}>{filter.label}</label>
       <input
+        className="text-black"
         type={filter.type}
         id={filter.name}
         value={value}

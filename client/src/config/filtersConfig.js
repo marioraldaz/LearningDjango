@@ -1,5 +1,5 @@
 export const filters = [
-  { name: "ingredientName", label: "Ingredient Name", type: "text" },
+  { name: "query", label: "Ingredient Name", type: "text" },
   { name: "addChildren", label: "Add Children", type: "checkbox" },
   {
     name: "minProteinPercent",
