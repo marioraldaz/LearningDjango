@@ -8,12 +8,17 @@ export function getProfileByID(id){
 }
 
 export function register(user){
-  const { username, password, gender, date_of_birth,email } = user;
-  return  UsersApi.post("/",{
-    username: username,
-    password: password,
-    gender: gender,
-    date_of_birth: date_of_birth,
-    email
-  });
+  try{
+    const { username, password, gender, date_of_birth,email } = user;
+    return  UsersApi.post("/",{
+      username: username,
+      password: password,
+      gender: gender,
+      date_of_birth: date_of_birth,
+      email
+    });
+
+  } catch (e) {
+    console.log(e);
+  }
 }

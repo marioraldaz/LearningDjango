@@ -1,19 +1,29 @@
-import React from 'react'
+import { useState } from "react";
 import { register } from "../../api/users.api";
 export function Register() {
 
+  const [error, setError] = useState(null);
 
   const handleSubmit = async(e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const newUser = Object.fromEntries(formData.entries());
-    const a = await register(newUser)
-    console.log(a);
+    try {
+      await register(newUser);
+  } catch (error) {
+    const errors = Object.entries(error.response.data);
+    let errorMessage = "";
+    errors.forEach((error) => {
+      errorMessage += `${error[0]} &nbsp: ${error[1]}\n`;
+    });
+    setError(errors[0]); 
+  }
   };
     return (
     <div className="flex items-center justify-center mt-[40px]">
        <form onSubmit={handleSubmit} className="w-[500px] bg-neutral-800 p-[50px] h-full rounded-2xl text-black" >
         <h1 className="text-4xl text-center text-white"> Register </h1>
+        {error && <h1 className="text-red-600">{error.toString()}</h1>}
           <div className="mt-10 flex justify-center items-center flex-col">
             <label htmlFor="username" className="block  text-green-600 font-semibold">Username:</label>
             <input
