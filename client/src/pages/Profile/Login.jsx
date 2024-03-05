@@ -3,10 +3,7 @@ import { useForm } from "react-hook-form";
 
 
 export function Login() {
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-  });
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,10 +38,15 @@ export function Login() {
               required
             />
           </div>
-          <div className="m-20 flex justify-center items-center flex-col">
+          <div className="m-10 flex justify-center items-center flex-col text-white">
           <button type="submit" 
-          className="text-white block bg-green-700 p-[30px] pt-[10px] pb-[10px] rounded-lg"
+          className="text-white block bg-green-700 p-[30px] pt-[10px] pb-[10px] rounded-lg mb-[20px]"
           >Login</button>
+            You Do Not Have An Account?
+          <a href="/Register"
+            className="mt-[10px] w-[100px] text-center text-white block bg-green-700 pt-[10px] pb-[10px] rounded-lg"
+            >  Register
+          </a>
         </div>
         </form>
     </div>

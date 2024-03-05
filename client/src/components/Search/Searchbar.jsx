@@ -11,7 +11,6 @@ export function Searchbar({ filters, fetchByName, complexFetch }) {
 
   const onSubmit = async (data) => {
     let productsFetched = [];
-    console.log(complexFetch);
     advancedFilters
       ? (productsFetched = await complexFetch({ ...filterValues }))
       : (productsFetched = await fetchByName(data.search));

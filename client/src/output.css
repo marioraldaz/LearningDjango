@@ -711,6 +711,18 @@ video {
   margin-bottom: 10px;
 }
 
+.mt-\[10px\] {
+  margin-top: 10px;
+}
+
+.mt-\[20px\] {
+  margin-top: 20px;
+}
+
+.mb-\[20px\] {
+  margin-bottom: 20px;
+}
+
 .block {
   display: block;
 }
@@ -865,6 +877,22 @@ video {
 
 .w-\[500px\] {
   width: 500px;
+}
+
+.w-\[100px\] {
+  width: 100px;
+}
+
+.w-\[800px\] {
+  width: 800px;
+}
+
+.w-\[1000px\] {
+  width: 1000px;
+}
+
+.w-\[00px\] {
+  width: 00px;
 }
 
 .max-w-full {
