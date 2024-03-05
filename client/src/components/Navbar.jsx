@@ -33,7 +33,7 @@ export function Navbar() {
         </div>
             
             <NavLink
-              to="/Profile"
+              to="/Login"
               className="ml-8  h-[100px] items-center hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-105 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
               >
             <img

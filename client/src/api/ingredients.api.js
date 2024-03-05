@@ -1,24 +1,7 @@
 import axios from "axios";
-
 const API_KEY = "72ed57384eea4e91b4390428f582a705";
 
-const options = {
-  method: "GET",
-  url: " https://api.spoonacular.com/recipes/complexsearch",
-};
 
-export async function fetchDataFromApi() {
-  try {
-    const response = await axios.request(
-      "https://api.spoonacular.com/recipes/complexSearch?apiKey=" + API_KEY
-    );
-    console.log(response.data);
-    console.log(response.data.results);
-    return response.data.results;
-  } catch (error) {
-    console.error(error);
-  }
-}
 
 export async function fetchIngredientsByName(name) {
   try {

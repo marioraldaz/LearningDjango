@@ -11,6 +11,7 @@ export function Searchbar({ filters, fetchByName, complexFetch }) {
 
   const onSubmit = async (data) => {
     let productsFetched = [];
+    console.log(complexFetch);
     advancedFilters
       ? (productsFetched = await complexFetch({ ...filterValues }))
       : (productsFetched = await fetchByName(data.search));
@@ -83,8 +84,11 @@ export function Searchbar({ filters, fetchByName, complexFetch }) {
           <Filters filters={filters} onFilterChange={handleFilterChange} onSubmit={onSubmit}/>
         </div>
       )}
-
+      {console.log(products)}
+      {products.length>0 &&
       <SearchResults products={products} />
+      }
+      {products.length<=0 && <h1>No Results Found :c</h1>}
     </form>
   );
 }
