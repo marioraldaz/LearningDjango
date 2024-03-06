@@ -2,6 +2,8 @@ from django.urls import path, include
 from rest_framework import routers
 from profiles import views
 from rest_framework.documentation import include_docs_urls
+from .views import user_login
+
 #api versioning
 router = routers.DefaultRouter()
 router.register(r'user', views.UserViewSet, 'user')
@@ -12,6 +14,9 @@ router.register(r'savedrecipe', views.SavedRecipeViewSet, 'savedrecipe')
 router.register(r'userrecipe', views.UserRecipeViewSet, 'userrecipe')
 urlpatterns = [
     path("api/v1/", include(router.urls)),
-    path("docs/", include_docs_urls(title="User API"))
+    path("docs/", include_docs_urls(title="User API")),
+    path('login/', user_login, name='login'),
+   
+
 ]
  

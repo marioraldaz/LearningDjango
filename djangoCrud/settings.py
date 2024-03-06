@@ -51,6 +51,9 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
+CSRF_COOKIE_SAMESITE = 'Lax'
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -147,9 +150,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #cors authoization settings
 CORS_ALLOWED_ORIGINS=[
         "http://localhost:5173",
-
 ]
 
+CORS_ORIGIN_WHITELIST = ['http://localhost:5173']
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
+
+
+CORS_ALLOW_CREDENTIALS = True
 
 #AutoDocumentation
 REST_FRAMEWORK = {

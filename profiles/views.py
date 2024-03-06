@@ -1,12 +1,16 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .serializer import UserSerializer
 from .user import User
 from .food import Food
 from .food_intake import UserFoodIntake
 from .allergies import Allergy
 from .savedRecipe import SavedRecipe
 from .user_recipe import UserRecipe
+from django.shortcuts import render, redirect
+from django.contrib.auth.hashers import make_password, check_password
+from .forms import LoginForm
+from django.views.decorators.http import require_http_methods
+from django.http import JsonResponse
 
 
 from .serializer import (
@@ -18,14 +22,11 @@ from .serializer import (
     UserRecipeSerializer
 )
 
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from .serializer import UserSerializer
-from django.contrib.auth.hashers import make_password, check_password
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from .user import User
-from .serializer import UserSerializer
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
+
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -53,6 +54,31 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+@ensure_csrf_cookie
+@require_http_methods(["POST"])
+def user_login(request):
+    data = request.body.decode('utf-8')
+
+    # Get username and password from the request body (assuming it's a JSON object)
+    data = json.loads(data)
+
+    username = data.get('username')
+    password = data.get('password')
+
+    # Retrieve the user from the database based on the provided username
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        user = None
+    
+    # Check if the user exists and the password is correct
+    if user is not None and check_password(password, user.password):
+        # If authentication succeeds, set user session and return success response
+        request.session['user_id'] = user.id
+        return JsonResponse({'success': True, 'message': 'Login successful'})
+    else:
+        # If authentication fails, return error response
+        return JsonResponse({'success': False, 'message': 'Invalid username or password'}, status=400)
 
 
 class FoodViewSet(viewsets.ModelViewSet):
