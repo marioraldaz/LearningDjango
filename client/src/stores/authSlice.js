@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { history, fetchWrapper } from '_helpers';
 
 // create slice
 
@@ -25,4 +24,4 @@ export const { setCredentials, logOut } = authSlice.actions;
 export default authSlice.reducer;
 
 export const selectCurrentUser = (state) => state.auth.user
-export const selectTokenr= (state) => state.auth.token
+export const selectCurrentToken= (state) => state.auth.token

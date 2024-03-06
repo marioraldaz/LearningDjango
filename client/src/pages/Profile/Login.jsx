@@ -1,9 +1,30 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useLoginMutation } from "../../store/authApiSlice";
 import {logIn} from "../../api/users.api";
 import CSRFToken from './CSRFToken';
+import { setCredentials } from "../../;
 
 export function Login() {
+  const userRef = userRef();
+  const navigate = useNavigate();
+  const errRef = useRef();
+  const [user, setUser] = useState('');
+  const [pwd, setPwd] = useState('');
   const [error, setError] = useState(null);
+  const [errMsg, setErrMsg] = useState('');
+
+  const [login, {isLoading}] = useLoginMutation()
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    userRef.current.focus();
+  },[])
+
+  useEffect(()=>{
+    setErrMsg('')
+  },[user, pwd])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,7 +33,13 @@ export function Login() {
       username: e.target.elements.username.value,
       password: e.target.elements.password.value
     };
+
     try {
+      const userData = await login({user, pwd}).unwrap();
+      dispatch(setCredentials({...userData, user})) //user and access token
+      setUser('')
+      setPwd('')
+      navigate('/profile')
       const res = await logIn(formData);
       if(res.status === 201){
         setError(NULL);
@@ -25,7 +52,9 @@ export function Login() {
       errorsEntries.forEach((error) => {
         errorMessage += `${error[0]}: ${error[1]}<br>`;
       });
+      setErrMsg("ERROR");
       setError(errorMessage);
+      errRef.current.focus();
     }
   };
 
@@ -35,12 +64,16 @@ export function Login() {
         <h1 className="text-4xl text-center text-white">Log In </h1>
         {error &&     <div dangerouslySetInnerHTML={{ __html: error }} className="text-red-600 mt-8">
           </div>}
+          <h1>{errMsg}</h1>
           <div className="mt-10 flex justify-center items-center flex-col">
             <label htmlFor="username" className="block  text-green-600 font-semibold">Username:</label>
             <input
               type="text"
               id="username"
               name="username"
+              ref={userRef}
+              value={user}
+              onChange={handleUserInput}
               className="text-center mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
               required
             />
@@ -52,6 +85,9 @@ export function Login() {
               type="password"
               id="password"
               name="password"
+              ref={userRef}
+              value={pwd}
+              onChange={handleUserInput}
               className="mt-1 text-center block w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
               required
             />

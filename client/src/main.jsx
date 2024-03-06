@@ -3,11 +3,14 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 
-
+import {store} from "./store";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 // As of React 18
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+       <App />
+    </Provider>
   </React.StrictMode>
 );
