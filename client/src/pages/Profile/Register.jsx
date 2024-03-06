@@ -9,14 +9,20 @@ export function Register() {
     const formData = new FormData(e.target);
     const newUser = Object.fromEntries(formData.entries());
     try {
-      await register(newUser);
+    const res = await register(newUser);
+    if(res.status === 201){
+      console.log("aa");
+      setError(NULL);
+    } 
+    
   } catch (error) {
-    const errors = Object.entries(error.response.data);
+    let errorsEntries = [];
+    error.response ? errorsEntries = Object.entries(error.response.data) : "";
     let errorMessage = "";
-    errors.forEach((error) => {
+    errorsEntries.forEach((error) => {
       errorMessage += `${error[0]}: ${error[1]}\n`;
     });
-    setError(errorMessage); 
+    setError(errorMessage);
   }
   };
     return (
