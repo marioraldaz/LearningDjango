@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { setCredentials,logOut } from '../store/auth.slice';
+import { setCredentials,logOut } from '../store/authSlice';
 
 //attaching token in every cookie
 const baseQuery = fetchBaseQuery({
@@ -34,3 +34,8 @@ const baseQueryWithReauth = async (args, api, extraoptions) => {
 
     return result;
 };
+
+export const apiSlice = createApi({
+    baseQuery: baseQueryWithReauth,
+    endpoints: builder =>({})
+});
