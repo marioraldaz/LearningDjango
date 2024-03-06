@@ -38,32 +38,23 @@ export function getCookie(name) {
   return cookieValue;
 }
 export async function logIn(formData) {
-  try {
-      // Obtain CSRF token from Django cookie
       const csrftoken = getCookie('csrftoken');
       console.log(csrftoken);
        console.log(JSON.stringify(formData));
-      // Make POST request with CSRF token included in headers
-      const response = await fetch('http://localhost:8000/user/login/', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'X-CSRFToken': csrftoken
-          },
-          body: JSON.stringify(formData),
-          credentials: 'include' // Include cookies in the request
-      });
+       const response = await axios.post('http://localhost:8000/user/login/', formData, {
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        withCredentials: true // Include cookies in the request
+    });
+    
 
       if (response.ok) {
-          // Response status is in the range 200-299
           const data = await response.json();
           console.log('Login successful:', data);
       } else { 
-          // Response status is not in the range 200-299
           throw new Error('Login failed with status code ' + response.status);
       }
-  } catch (error) {
-      console.error('Login failed:', error);
-  }
 }
 

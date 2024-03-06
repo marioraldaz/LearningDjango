@@ -11,7 +11,6 @@ export function Register() {
     try {
     const res = await register(newUser);
     if(res.status === 201){
-      console.log("aa");
       setError(NULL);
     } 
     

@@ -1,8 +1,9 @@
-import React from "react";
+import { useState } from "react";
 import {logIn} from "../../api/users.api";
 import CSRFToken from './CSRFToken';
 
 export function Login() {
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,20 +13,28 @@ export function Login() {
       password: e.target.elements.password.value
     };
     try {
-      const response = await logIn(formData);
-      console.log('Login successful:', response);
-      // Store authentication token or session information (e.g., response.data.token)
-      // Redirect user to protected route or dashboard
+      const res = await logIn(formData);
+      if(res.status === 201){
+        setError(NULL);
+      } 
     } catch (error) {
-      console.error('Login failed:', error);
-      // Handle login failure (e.g., display error message to user)
+      console.log(error);
+      let errorsEntries = [];
+      error.response ? errorsEntries = Object.entries(error.response.data) : "";
+      let errorMessage = "";
+      errorsEntries.forEach((error) => {
+        errorMessage += `${error[0]}: ${error[1]}<br>`;
+      });
+      setError(errorMessage);
     }
   };
 
   return (
-    <div className="flex items-center h-[500px] justify-center mt-[40px]">
+    <div className="flex items-center justify-center mt-[40px]">
        <form onSubmit={handleSubmit} className="w-[500px] bg-neutral-800 p-[50px] h-full rounded-2xl text-black" >
         <h1 className="text-4xl text-center text-white">Log In </h1>
+        {error &&     <div dangerouslySetInnerHTML={{ __html: error }} className="text-red-600 mt-8">
+          </div>}
           <div className="mt-10 flex justify-center items-center flex-col">
             <label htmlFor="username" className="block  text-green-600 font-semibold">Username:</label>
             <input
