@@ -21,7 +21,7 @@ from .serializer import (
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .serializer import UserSerializer
-
+from django.contrib.auth.hashers import make_password, check_password
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .user import User
@@ -37,7 +37,7 @@ class UserViewSet(viewsets.ModelViewSet):
         
         # Extract validated data
         username = serializer.validated_data['username']
-        password = serializer.validated_data['password']
+        password = make_password(serializer.validated_data['password'])
         email = serializer.validated_data['email']
         gender = serializer.validated_data.get('gender')
         weight = serializer.validated_data.get('weight')
