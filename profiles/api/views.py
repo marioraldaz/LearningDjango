@@ -1,19 +1,19 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from .user import User
-from .food import Food
-from .food_intake import UserFoodIntake
-from .allergies import Allergy
-from .savedRecipe import SavedRecipe
-from .user_recipe import UserRecipe
+from..user import User
+from..food import Food
+from..food_intake import UserFoodIntake
+from..allergies import Allergy
+from..savedRecipe import SavedRecipe
+from..user_recipe import UserRecipe
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
-from .forms import LoginForm
+from..forms import LoginForm
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
-
-
-from .serializer import (
+from..serializer import (
     UserSerializer,
     FoodSerializer,
     UserFoodIntakeSerializer,
@@ -21,12 +21,10 @@ from .serializer import (
     SavedRecipeSerializer,
     UserRecipeSerializer
 )
-
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
-
-
+from rest_framework import status
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -35,7 +33,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)  # Validate the incoming data
-        
+
         # Extract validated data
         username = serializer.validated_data['username']
         password = make_password(serializer.validated_data['password'])
@@ -46,13 +44,13 @@ class UserViewSet(viewsets.ModelViewSet):
         date_of_birth = serializer.validated_data.get('date_of_birth')
 
         # Create a new user instance without gender and date_of_birth
-        user = User.objects.create(username=username, password=password, email=email,gender=gender,date_of_birth=date_of_birth)
-    
-        
+        user = User.objects.create(username=username, password=password, email=email, gender=gender, date_of_birth=date_of_birth)
+
         # Save the user instance
         user.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 @ensure_csrf_cookie
 @require_http_methods(["POST"])
@@ -70,7 +68,7 @@ def user_login(request):
         user = User.objects.get(username=username)
     except User.DoesNotExist:
         user = None
-    
+
     # Check if the user exists and the password is correct
     if user is not None and check_password(password, user.password):
         # If authentication succeeds, set user session and return success response
@@ -85,19 +83,52 @@ class FoodViewSet(viewsets.ModelViewSet):
     queryset = Food.objects.all()
     serializer_class = FoodSerializer
 
+
 class UserFoodIntakeViewSet(viewsets.ModelViewSet):
     queryset = UserFoodIntake.objects.all()
     serializer_class = UserFoodIntakeSerializer
+
 
 class AllergyViewSet(viewsets.ModelViewSet):
     queryset = Allergy.objects.all()
     serializer_class = AllergySerializer
 
+
 class SavedRecipeViewSet(viewsets.ModelViewSet):
     queryset = SavedRecipe.objects.all()
     serializer_class = SavedRecipeSerializer
+
 
 class UserRecipeViewSet(viewsets.ModelViewSet):
     queryset = UserRecipe.objects.all()
     serializer_class = UserRecipeSerializer
 
+
+@api_view(['GET'])
+def get_routes(request):
+    routes = [
+        '/api/token',
+        '/api/token/refresh'
+    ]
+    return JsonResponse(routes, safe=False)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_profile(request):
+    user = request.user
+    profile = user.profile
+    serializer = UserSerializer(profile, many=False)
+    return Response(serializer.data)
+
+def get_profile(request):
+    user = request.user
+    profile = user.profile
+    serializer = UserSerializer(profile, many=False)
+    return Response(serializer.data)
+
+from ..serializer import MyTokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

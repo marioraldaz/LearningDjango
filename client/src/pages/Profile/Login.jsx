@@ -1,79 +1,44 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useLoginMutation } from "../../store/authApiSlice";
 import {logIn} from "../../api/users.api";
-import CSRFToken from './CSRFToken';
-import { setCredentials } from "../../;
+import AuthContext from '../../context/AuthContext';
+export const Login = () =>{
+  const { authTokens, logoutUser } = useContext(AuthContext);
+  let [profile, setProfile] = useState([])
 
-export function Login() {
-  const userRef = userRef();
-  const navigate = useNavigate();
-  const errRef = useRef();
-  const [user, setUser] = useState('');
-  const [pwd, setPwd] = useState('');
-  const [error, setError] = useState(null);
-  const [errMsg, setErrMsg] = useState('');
-
-  const [login, {isLoading}] = useLoginMutation()
-  const dispatch = useDispatch();
-
-  useEffect(()=>{
-    userRef.current.focus();
+  useEffect(() => {
+      getProfile()
   },[])
 
-  useEffect(()=>{
-    setErrMsg('')
-  },[user, pwd])
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const formData = {
-      username: e.target.elements.username.value,
-      password: e.target.elements.password.value
-    };
-
-    try {
-      const userData = await login({user, pwd}).unwrap();
-      dispatch(setCredentials({...userData, user})) //user and access token
-      setUser('')
-      setPwd('')
-      navigate('/profile')
-      const res = await logIn(formData);
-      if(res.status === 201){
-        setError(NULL);
-      } 
-    } catch (error) {
-      console.log(error);
-      let errorsEntries = [];
-      error.response ? errorsEntries = Object.entries(error.response.data) : "";
-      let errorMessage = "";
-      errorsEntries.forEach((error) => {
-        errorMessage += `${error[0]}: ${error[1]}<br>`;
-      });
-      setErrMsg("ERROR");
-      setError(errorMessage);
-      errRef.current.focus();
-    }
-  };
+  const getProfile = async() => {
+      let response = await fetch('http://127.0.0.1:8000/api/profile', {
+      method: 'GET',
+      headers:{
+          'Content-Type': 'application/json',
+          'Authorization':'Bearer ' + String(authTokens.access)
+      }
+      })
+      let data = await response.json()
+      console.log(data)
+      if(response.status === 200){
+          setProfile(data)
+      } else if(response.statusText === 'Unauthorized'){
+          logoutUser()
+      }
+  }
 
   return (
     <div className="flex items-center justify-center mt-[40px]">
-       <form onSubmit={handleSubmit} className="w-[500px] bg-neutral-800 p-[50px] h-full rounded-2xl text-black" >
+       <form onSubmit={loginUser} className="w-[500px] bg-neutral-800 p-[50px] h-full rounded-2xl text-black" >
         <h1 className="text-4xl text-center text-white">Log In </h1>
         {error &&     <div dangerouslySetInnerHTML={{ __html: error }} className="text-red-600 mt-8">
           </div>}
-          <h1>{errMsg}</h1>
           <div className="mt-10 flex justify-center items-center flex-col">
             <label htmlFor="username" className="block  text-green-600 font-semibold">Username:</label>
             <input
               type="text"
               id="username"
               name="username"
-              ref={userRef}
-              value={user}
-              onChange={handleUserInput}
               className="text-center mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
               required
             />
@@ -85,9 +50,6 @@ export function Login() {
               type="password"
               id="password"
               name="password"
-              ref={userRef}
-              value={pwd}
-              onChange={handleUserInput}
               className="mt-1 text-center block w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
               required
             />
@@ -104,7 +66,6 @@ export function Login() {
             >  Register
           </a>
         </div>
-      <CSRFToken/>
         </form>
     </div>
   )

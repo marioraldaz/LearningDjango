@@ -17,10 +17,13 @@ import { Profile } from "./pages/Profile/Profile.jsx";
 import { Login } from "./pages/Profile/Login.jsx";
 import { Register } from "./pages/Profile/Register.jsx";
 import { RequireAuth } from "./pages/Profile/RequireAuth.jsx";
+import { PrivateRoute} from "./utils/PrivateRoute.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
 function App() {
   return (
     <BrowserRouter>
-      <div className="bg-black min-h-screen w-full text-white flex flex-col overflow-hidden">
+      <AuthProvider>
+         <div className="bg-black min-h-screen w-full text-white flex flex-col overflow-hidden">
         <Navbar />
         <div className="w-full min-h-full flex-grow">
           <Routes>
@@ -31,12 +34,13 @@ function App() {
             <Route path="/Ingredient" element={<Ingredient />} />
             <Route path="/login" element={<Login />} />
             <Route path="/Register" element={<Register />} />
-            <Route path="/Profile" element={<Profile />} />
+            <Route path="/Profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
             <Route path="/RequireAuth" element={<RequireAuth />} />
           </Routes>
         </div>
         <Footer />
       </div>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

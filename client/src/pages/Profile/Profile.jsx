@@ -1,14 +1,20 @@
 import React from "react";
-import { useSelector } from "react-redux"
-import { selectCurrentUser, selectCurrentToken } from "../../store/authSlice";
 import { Link } from "react-router-dom"
 
 export function Profile() {
-  const user = useSelector(selectCurrentUser)
-  const token = useSelector(selectCurrentToken)
-  const welcome = user ? `Welcome ${user}` : 'Welcome'
-  const tokenAbbr = `${token.slice(0,9)}...`
+
+  let { user, logoutUser } = useContext(AuthContext)
 
  
-  return <div>{welcome} {tokenAbbr}</div>;
+  return (  <div>
+  <Link to="/">Home</Link>
+  <span> | </span>
+  {user ? (
+      <p onClick={logoutUser}>Logout</p>
+  ) : (
+      <Link to="/login" >Login</Link>
+  )}
+  {user && <p>Hello {user.username}!</p>}
+
+</div>);
 }

@@ -1,9 +1,11 @@
 from django.urls import path, include
 from rest_framework import routers
-from profiles import views
+from profiles.api import views
 from rest_framework.documentation import include_docs_urls
 from .views import user_login
-
+from django.urls import path
+from .views import MyTokenObtainPairView
+from rest_framework_simplejwt.views import TokenRefreshView
 #api versioning
 router = routers.DefaultRouter()
 router.register(r'user', views.UserViewSet, 'user')
@@ -16,7 +18,11 @@ urlpatterns = [
     path("api/v1/", include(router.urls)),
     path("docs/", include_docs_urls(title="User API")),
     path('login/', user_login, name='login'),
-   
+    path('', views.get_routes),
+    path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('profile/', views.get_profile),
 
 ]
- 
+
+
