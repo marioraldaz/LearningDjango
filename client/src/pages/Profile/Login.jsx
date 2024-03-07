@@ -11,6 +11,7 @@ export const Login = () =>{
   },[])
 
   const getProfile = async() => {
+    console.log(authTokens.access);
       let response = await fetch('http://127.0.0.1:8000/api/profile', {
       method: 'GET',
       headers:{

@@ -1,14 +1,13 @@
 import { createContext, useState, useEffect } from 'react'
-import {jwtDecode} from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom'
 
-const AuthContext = createContext()
+export const AuthContext = createContext()
 
 export default AuthContext;
 
 export const AuthProvider = ({children}) => {
-
-    let [user, setUser] = useState(() => (localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens')) : null))
+    let [user, setUser] = useState(() => (!localStorage.getItem('authTokens')=='{"detail":"No active account found with the given credentials"}' ? jwtDecode(localStorage.getItem('authTokens')) : null))
     let [authTokens, setAuthTokens] = useState(() => (localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null))
     let [loading, setLoading] = useState(true)
 
