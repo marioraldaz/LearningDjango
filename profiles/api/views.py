@@ -25,6 +25,8 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import status
+from django.contrib.auth.decorators import login_required
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -115,13 +117,9 @@ def get_routes(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@login_required
 def get_profile(request):
-    user = request.user
-    profile = user.profile
-    serializer = UserSerializer(profile, many=False)
-    return Response(serializer.data)
-
-def get_profile(request):
+    print("profile::::::",profile)
     user = request.user
     profile = user.profile
     serializer = UserSerializer(profile, many=False)

@@ -7,11 +7,13 @@ export function Home() {
   let [profile, setProfile] = useState([])
 
   useEffect(() => {
+    if(authTokens!=null) {
       getProfile()
+    }
   },[])
 
   const getProfile = async() => {
-      let response = await fetch('http://127.0.0.1:8000/api/profile', {
+      let response = await fetch('http://localhost:8000/api/profile', {
       method: 'GET',
       headers:{
           'Content-Type': 'application/json',
