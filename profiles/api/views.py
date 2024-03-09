@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from..user_profile import UserProfile
 from..food import Food
@@ -25,8 +25,10 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import status
-from django.contrib.auth.decorators import login_required
-
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
@@ -115,18 +117,6 @@ def get_routes(request):
     return JsonResponse(routes, safe=False)
 
 
-@api_view(['GET'])
-@login_required
-def get_profile(request):
-    print("profile::::::",profile)
-    user = request.user
-    profile = user.profile
-    serializer = UserSerializer(profile, many=False)
-    return Response(serializer.data)
-
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
-
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -167,5 +157,40 @@ def login(request):
                 return JsonResponse({'success': False, 'error': 'Invalid password'})
         except UserProfile.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'User does not exist'})
+    else:
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+
+
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@require_http_methods(["POST"])
+def get_profile(request):
+    if request.method == 'POST':
+        # Decode the request body to extract data (e.g., token)
+        data = json.loads(request.body.decode('utf-8'))
+        token = data.get('token')
+
+        # Verify and decode the JWT token
+        try:
+            decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = decoded_token.get('user_id')
+            print("checking profile...")
+
+            # Retrieve the user profile based on the user ID
+            try:
+                profile = UserProfile.objects.get(id=user_id)
+
+                # Serialize user profile data
+                profile_data = {
+                    field.name: getattr(profile, field.name) for field in UserProfile._meta.fields
+                }
+
+                return JsonResponse({'success': True, 'user': profile_data})
+            except UserProfile.DoesNotExist:
+                return JsonResponse({'success': False, 'error': 'User profile not found'})
+        except jwt.ExpiredSignatureError:
+            return JsonResponse({'success': False, 'error': 'Expired token'}, status=401)
+        except jwt.InvalidTokenError:
+            return JsonResponse({'success': False, 'error': 'Invalid token'}, status=401)
     else:
         return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)

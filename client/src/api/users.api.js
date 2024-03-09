@@ -37,25 +37,20 @@ export function getCookie(name) {
   }
   return cookieValue;
 }
-export async function logIn(formData) {
-      const csrftoken = getCookie('csrftoken');
-      console.log("csrf",csrftoken);
-       console.log(JSON.stringify(formData));
-       const response = await axios.post('http://localhost:8000/user/login/', formData, {
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrftoken
-        },
-        withCredentials: true // Include cookies in the request
-    });
-    
-
-      if (response.ok) {
-          const data = await response.json();
-          console.log('Login successful:', data);
-      } else { 
-          throw new Error('Login failed with status code ' + response.status);
-      }
-}
 
 
+
+const setCookie = (name, value, options = {}) => {
+  const { expires, path } = options;
+  let cookieString = `${name}=${value}`;
+
+  if (expires) {
+    cookieString += `; expires=${expires.toUTCString()}`;
+  }
+
+  if (path) {
+    cookieString += `; path=${path}`;
+  }
+
+  document.cookie = cookieString;
+};
