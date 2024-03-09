@@ -18,7 +18,6 @@ urlpatterns = [
     path("api/v1/", include(router.urls)),
     path("docs/", include_docs_urls(title="User API")),
     path('', views.get_routes),
-    path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('profile/', views.get_profile),
     path("login/", login, name='login'),

@@ -11,8 +11,8 @@ export function Profile() {
     // Update the profile state with the user from the context
     setProfile(context.user);
 
-    // Navigate to "/" if profile is not loaded
-    if (!profile) {
+    console.log(profile)
+    if (profile) {
       navigate("/profile");
     }
   }, [context.user, navigate, profile]);

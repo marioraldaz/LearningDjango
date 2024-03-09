@@ -11,7 +11,7 @@ export default AuthContext;
 
 export const AuthProvider = ({children}) => {
     let [user, setUser] = useState(() => (!localStorage.getItem('authTokens')=='{"detail":"No active account found with the given credentials"}' ? jwtDecode(localStorage.getItem('authTokens')) : null))
-    let [authTokens, setAuthTokens] = useState(() => (localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null))
+    let [authTokens, setAuthTokens] = useState(null);
     let [loading, setLoading] = useState(true)
     let [csrftoken, setCsrfToken] = useState(null)
 
@@ -33,9 +33,11 @@ export const AuthProvider = ({children}) => {
         withCredentials: true // Include cookies in the request
             });
         if(response.data.success){
-            setAuthTokens(response.data.token);
+            const token = response.data.token;
+            setAuthTokens(token);
             setUser(response.data.user);
-            Cookies.set("profileToken", response.data.token);
+            console.log(response.data.token);
+            Cookies.set('profileJWT', token, { secure: true, sameSite: 'strict' });
         } else{
             return response.data.error
         }
@@ -43,6 +45,7 @@ export const AuthProvider = ({children}) => {
         let logoutUser = (e) => {
             e.preventDefault()
             localStorage.removeItem('authTokens')
+            console.log('logged out')
             setAuthTokens(null)
             setUser(null)
             navigate('/login')
@@ -79,7 +82,6 @@ export const AuthProvider = ({children}) => {
         }
         
     }
-    //updateToken();
     let contextData = {
         user:user,
         authTokens:authTokens,
@@ -87,31 +89,34 @@ export const AuthProvider = ({children}) => {
         logoutUser:logoutUser,
     }
 
-    const getProfileByToken = (token, csrfToken) => { // Accept csrfToken as an argument
-        return axios.post('http://localhost:8000/api/get_profile/', { token: token }, {
+    const getProfileByToken = async(token, csrfToken) => { // Accept csrfToken as an argument
+        const response = await axios.post('http://localhost:8000/api/get_profile/', { token: token }, {
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrfToken // Use csrfToken in the headers
             },
             withCredentials: true // Include cookies in the request
         });
+
+        console.log(response)
+        if(response.data.success){
+            console.log(response.data.token);
+            setAuthTokens(response.data.token);
+            setUser(response.data.user);
+            //Cookies.set("profileToken", response.data.token);
+        } else{
+            return response.data.error
+        }
     }
     
     useEffect(() => {
         const csrfGot = Cookies.get("csrftoken");
         setCsrfToken(csrfGot);
     
-        const profileToken = Cookies.get('profileToken');
-        
-        if (profileToken && csrfGot) {
-            // Call getProfileByToken and pass csrfGot as an argument
-            getProfileByToken(profileToken, csrfGot) 
-                .then(response => {
-                    setUser(response.data);
-                })
-                .catch(error => {
-                    console.error('Error fetching user profile:', error);
-                });
+        const profileToken = Cookies.get('profileJWT');
+        console.log(profileToken=='undefined');
+        if (profileToken!='undefined' && csrfGot) {
+            getProfileByToken(profileToken, csrfGot)            
         }
     
         

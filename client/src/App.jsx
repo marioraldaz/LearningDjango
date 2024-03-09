@@ -21,7 +21,6 @@ import  store  from "./redux/store.js";
 import Cookies from 'js-cookie';
 
 function App() {
-  
   return (
       <Provider store={store}>
           <BrowserRouter>

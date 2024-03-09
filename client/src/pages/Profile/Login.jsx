@@ -8,6 +8,7 @@ export const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(user)
     user ? navigate("/profile") : "";      
   }, [user])
 

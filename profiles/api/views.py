@@ -56,32 +56,6 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-@ensure_csrf_cookie
-@require_http_methods(["POST"])
-def login(request):
-    data = request.body.decode('utf-8')
-
-    # Get username and password from the request body (assuming it's a JSON object)
-    data = json.loads(data)
-
-    username = data.get('username')
-    password = data.get('password')
-
-    # Retrieve the user from the database based on the provided username
-    try:
-        user = UserProfile.objects.get(username=username)
-    except UserProfile.DoesNotExist:
-        user = None
-
-    # Check if the user exists and the password is correct
-    if user is not None and check_password(password, user.password):
-        # If authentication succeeds, set user session and return success response
-        request.session['user_id'] = user.id
-        return JsonResponse({'success': True, 'message': 'Login successful'})
-    else:
-        # If authentication fails, return error response
-        return JsonResponse({'success': False, 'message': 'Invalid username or password'}, status=400)
-
 
 class FoodViewSet(viewsets.ModelViewSet):
     queryset = Food.objects.all()
@@ -160,7 +134,6 @@ def login(request):
     else:
         return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
 
-
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @require_http_methods(["POST"])
@@ -194,3 +167,4 @@ def get_profile(request):
             return JsonResponse({'success': False, 'error': 'Invalid token'}, status=401)
     else:
         return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+    

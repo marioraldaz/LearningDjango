@@ -9,7 +9,7 @@ export function Navbar() {
     setIsMenuOpen(!isMenuOpen);
     console.log(isMenuOpen)
   };
-
+  
   const links = [
     { id: 1, route: "/", text: "Home" },
     { id: 2, route: "/Ingredients", text: "Ingredients" },
