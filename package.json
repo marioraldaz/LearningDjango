@@ -4,6 +4,8 @@
     "jwt-decode": "^4.0.0",
     "nutrition-label-jquery-plugin": "^11.0.13",
     "pip": "^0.0.1",
+    "python": "^0.0.4",
+    "python3": "^0.0.1",
     "vite": "^5.1.4"
   }
 }
