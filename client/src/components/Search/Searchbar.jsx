@@ -8,13 +8,14 @@ export function Searchbar({ filters, fetchByName, complexFetch }) {
   const [products, setProducts] = useState([]);
   const [filterValues, setFilterValues] = useState({});
   const [advancedFilters, setAdvancedFilters] = useState(false);
-
+  const [searched, setSearched] = useState(false);
   const onSubmit = async (data) => {
     let productsFetched = [];
     advancedFilters
       ? (productsFetched = await complexFetch({ ...filterValues }))
       : (productsFetched = await fetchByName(data.search));
     setProducts(productsFetched);
+    setSearched(true);
   };
 
   const handleFilterChange = (name, value) => {
@@ -87,7 +88,7 @@ export function Searchbar({ filters, fetchByName, complexFetch }) {
       {products.length>0 &&
       <SearchResults products={products} />
       }
-      {products.length<=0 && <h1>No Results Found :c</h1>}
+      {products.length<=0 && searched && <h1>No Results Found :c</h1>}
     </form>
   );
 }

@@ -30,7 +30,7 @@ export const AuthProvider = ({children}) => {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrftoken
         },
-        withCredentials: true // Include cookies in the request
+        withCredentials: true
             });
         if(response.data.success){
             const token = response.data.token;
@@ -77,7 +77,6 @@ export const AuthProvider = ({children}) => {
                 setLoading(false);
             }
         } catch (error) {
-            // Handle errors
             console.error('Error:', error);
         }
         
@@ -89,21 +88,19 @@ export const AuthProvider = ({children}) => {
         logoutUser:logoutUser,
     }
 
-    const getProfileByToken = async(token, csrfToken) => { // Accept csrfToken as an argument
+    const getProfileByToken = async(token, csrfToken) => { 
         const response = await axios.post('http://localhost:8000/api/get_profile/', { token: token }, {
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken // Use csrfToken in the headers
+                'X-CSRFToken': csrfToken //
             },
-            withCredentials: true // Include cookies in the request
+            withCredentials: true 
         });
 
-        console.log(response)
+        
         if(response.data.success){
-            console.log(response.data.token);
             setAuthTokens(response.data.token);
             setUser(response.data.user);
-            //Cookies.set("profileToken", response.data.token);
         } else{
             return response.data.error
         }
@@ -114,13 +111,12 @@ export const AuthProvider = ({children}) => {
         setCsrfToken(csrfGot);
     
         const profileToken = Cookies.get('profileJWT');
-        console.log(profileToken=='undefined');
         if (profileToken!='undefined' && csrfGot) {
             getProfileByToken(profileToken, csrfGot)            
         }
     
         
-        const REFRESH_INTERVAL = 1000 * 60 * 4; // 4 minutes
+        const REFRESH_INTERVAL = 1000 * 60 * 4; 
         let interval = setInterval(() => {
             if (authTokens) {
                 updateToken();

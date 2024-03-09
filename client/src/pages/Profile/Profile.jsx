@@ -8,10 +8,7 @@ export function Profile() {
   const context = useContext(AuthContext);
 
   useEffect(() => {
-    // Update the profile state with the user from the context
     setProfile(context.user);
-
-    console.log(profile)
     if (profile) {
       navigate("/profile");
     }
