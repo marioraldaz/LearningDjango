@@ -30,7 +30,10 @@ export const AuthProvider = ({children}) => {
         },
         withCredentials: true // Include cookies in the request
             });
-            console.log(response);
+        console.log(response.data.token);
+        setAuthTokens(response.data.token);
+        setUser(response.data.user);
+        console.log(user);
     }
         let logoutUser = (e) => {
             e.preventDefault()
@@ -40,29 +43,39 @@ export const AuthProvider = ({children}) => {
             navigate('/login')
         }
 
+    
     const updateToken = async () => {
-        const response = await fetch('http://localhost:8000/api/token/refresh/', {
-            method: 'POST',
-            headers: {
-                'Content-Type':'application/json'
-            },
-            body:JSON.stringify({refresh:authTokens?.refresh})
-        })
 
-        const data = await response.json()
-        if (response.status === 200) {
-            setAuthTokens(data)
-            setUser(jwtDecode(data.access))
-            localStorage.setItem('authTokens',JSON.stringify(data))
-        } else {
-            logoutUser()
-        }
+        try {
+            console.log(authTokens.refresh);
+            const response = await axios.post('http://localhost:8000/api/token/refresh/', {
+                refresh: authTokens.refresh
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        
+            const data = response.data;
 
-        if(loading){
-            setLoading(false)
+            if (response.status === 200) {
+                setAuthTokens(data);
+                setUser(jwtDecode(data.access));
+                localStorage.setItem('authTokens', JSON.stringify(data));
+            } else {
+                logoutUser();
+            }
+        
+            if (loading) {
+                setLoading(false);
+            }
+        } catch (error) {
+            // Handle errors
+            console.error('Error:', error);
         }
+        
     }
-
+    //updateToken();
     let contextData = {
         user:user,
         authTokens:authTokens,

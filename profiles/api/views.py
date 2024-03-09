@@ -132,18 +132,12 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
-        print("lololo")
         token = super().get_token(user)
-
-        # Add custom claims
         token['username'] = user.username
-        # ...
-
         return token
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
-    print("lalalal")
     serializer_class = MyTokenObtainPairSerializer
     
 from django.conf import settings
@@ -159,7 +153,6 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         data = json.loads(request.body.decode('utf-8'))
-        print(data)
         username = data.get('username')
         password = data.get('password')
         try:
@@ -167,7 +160,9 @@ def login(request):
             if check_password(password, profile.password):
                 # Generate JWT token
                 token = jwt.encode({'user_id': profile.id}, settings.SECRET_KEY, algorithm='HS256')
-                return JsonResponse({'success': True, 'token': token})
+                profile_data = {field.name: getattr(profile, field.name) for field in UserProfile._meta.fields}
+
+                return JsonResponse({'success': True, 'token': token, 'user': profile_data})
             else:
                 return JsonResponse({'success': False, 'error': 'Invalid password'})
         except UserProfile.DoesNotExist:
