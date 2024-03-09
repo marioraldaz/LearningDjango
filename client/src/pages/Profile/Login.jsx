@@ -12,16 +12,7 @@ export const Login = () =>{
   useEffect(() => {
    
   },[])
-  const handleLogin = async (e) => {
-    console.log(e)
-    const username = e.target.username.value;
-    const password = e.target.password.value;
-    e.preventDefault();
-    await loginUser(username, password); // Your login API function
-      //navigate('/'); // Redirect to home page on successful login
-      setError('Invalid username or password. Please try again.'); // Set error message on login failure
-    
-  };
+
   const getProfile = async () => {
     try {
         const response = await fetch('http://localhost:8000/api/profile', {
@@ -45,7 +36,7 @@ export const Login = () =>{
 
   return (
     <div className="flex items-center justify-center mt-[40px]">
-       <form onSubmit={handleLogin} className="w-[500px] bg-neutral-800 p-[50px] h-full rounded-2xl text-black" >
+       <form onSubmit={loginUser} className="w-[500px] bg-neutral-800 p-[50px] h-full rounded-2xl text-black" >
         <h1 className="text-4xl text-center text-white">Log In </h1>
         {error &&     <div dangerouslySetInnerHTML={{ __html: error }} className="text-red-600 mt-8">
           </div>}

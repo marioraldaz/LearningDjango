@@ -39,7 +39,7 @@ export function getCookie(name) {
 }
 export async function logIn(formData) {
       const csrftoken = getCookie('csrftoken');
-      console.log(csrftoken);
+      console.log("csrf",csrftoken);
        console.log(JSON.stringify(formData));
        const response = await axios.post('http://localhost:8000/user/login/', formData, {
         headers: {

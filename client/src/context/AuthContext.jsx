@@ -1,8 +1,9 @@
 import { createContext, useState, useEffect } from 'react'
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom'
-
+import {getCookie} from '../api/users.api'
 export const AuthContext = createContext()
+import axios from 'axios'
 
 export default AuthContext;
 
@@ -14,18 +15,22 @@ export const AuthProvider = ({children}) => {
     const navigate = useNavigate()
 
     let loginUser = async (e) => {
-        e.preventDefault()
-        const response = await fetch('http://localhost:8000/api/token/', {
-            method: 'POST',
+
+    e.preventDefault();
+    const csrftoken = getCookie('csrftoken');
+        const response = await axios.post('http://localhost:8000/api/login/', {
+            username: e.target.username.value,
+            password: e.target.password.value
+        }, {
             headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({username: e.target.username.value, password: e.target.password.value })
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            }
         });
 
-        let data = await response.json();
-
-        if(data){
+        console.log(response.data); // Log the response data to see if the token is received successfully
+        // Handle token response as needed
+        if(data.access){
             localStorage.setItem('authTokens', JSON.stringify(data));
             setAuthTokens(data)
             setUser(jwtDecode(data.access))
@@ -44,7 +49,7 @@ export const AuthProvider = ({children}) => {
     }
 
     const updateToken = async () => {
-        const response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
+        const response = await fetch('http://localhost:8000/api/token/refresh/', {
             method: 'POST',
             headers: {
                 'Content-Type':'application/json'

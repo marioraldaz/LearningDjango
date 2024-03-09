@@ -13,7 +13,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from..forms import LoginForm
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
-from..serializer import (
+from.serializer import (
     UserSerializer,
     FoodSerializer,
     UserFoodIntakeSerializer,
@@ -116,7 +116,6 @@ def get_routes(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 @login_required
 def get_profile(request):
     print("profile::::::",profile)
@@ -125,8 +124,47 @@ def get_profile(request):
     serializer = UserSerializer(profile, many=False)
     return Response(serializer.data)
 
-from ..serializer import MyTokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        print("lololo")
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        # ...
+
+        return token
+
+
 class MyTokenObtainPairView(TokenObtainPairView):
+    print("lalalal")
     serializer_class = MyTokenObtainPairSerializer
+    
+from django.http import JsonResponse
+from django.contrib.auth.hashers import check_password
+from ..user_profile import UserProfile
+from django.conf import settings
+import jwt
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        try:
+            profile = UserProfile.objects.get(username=username)
+            if check_password(password, profile.password):
+                # Generate JWT token
+                token = jwt.encode({'user_id': profile.id}, settings.SECRET_KEY, algorithm='HS256')
+                return JsonResponse({'success': True, 'token': token})
+            else:
+                return JsonResponse({'success': False, 'error': 'Invalid password'})
+        except UserProfile.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'User does not exist'})
+    else:
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)

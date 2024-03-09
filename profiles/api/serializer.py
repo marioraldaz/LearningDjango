@@ -1,13 +1,13 @@
 from rest_framework import serializers
-from .user import User
+from ..user import User
 
 from rest_framework import serializers
-from .user import User
-from .food import Food
-from .food_intake import UserFoodIntake
-from .allergies import Allergy
-from .savedRecipe import SavedRecipe
-from .user_recipe import UserRecipe
+from ..user import User
+from ..food import Food
+from ..food_intake import UserFoodIntake
+from ..allergies import Allergy
+from ..savedRecipe import SavedRecipe
+from ..user_recipe import UserRecipe
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -45,9 +45,11 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
+        print("ldfnaslas")
         token = super().get_token(user)
         token['username'] = user.username
         return token
     
 class MyTokenObtainPairView(TokenObtainPairView):
+    print("kdjabsnkjasd")
     serializer_class = MyTokenObtainPairSerializer
