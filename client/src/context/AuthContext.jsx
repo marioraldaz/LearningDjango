@@ -87,35 +87,43 @@ export const AuthProvider = ({children}) => {
         logoutUser:logoutUser,
     }
 
-    const getProfileByToken= (token)=>{
-        const response = axios.post('http://localhost:8000/api/get_profile/', { token: token }, {
+    const getProfileByToken = (token, csrfToken) => { // Accept csrfToken as an argument
+        return axios.post('http://localhost:8000/api/get_profile/', { token: token }, {
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken
+                'X-CSRFToken': csrfToken // Use csrfToken in the headers
             },
             withCredentials: true // Include cookies in the request
         });
-        
     }
     
-    useEffect( ()=>{
-        const csrfGot = Cookies.get("csrftoken")
+    useEffect(() => {
+        const csrfGot = Cookies.get("csrftoken");
         setCsrfToken(csrfGot);
+    
         const profileToken = Cookies.get('profileToken');
-        if(profileToken && csrfGot){
-            profileToken ? setUser(getProfileByToken(profileToken)) : "";
+        
+        if (profileToken && csrfGot) {
+            // Call getProfileByToken and pass csrfGot as an argument
+            getProfileByToken(profileToken, csrfGot) 
+                .then(response => {
+                    setUser(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching user profile:', error);
+                });
         }
-        console.log(user);
-        const REFRESH_INTERVAL = 1000 * 60 * 4 // 4 minutes
-        let interval = setInterval(()=>{
-            if(authTokens){
-                updateToken()
+    
+        
+        const REFRESH_INTERVAL = 1000 * 60 * 4; // 4 minutes
+        let interval = setInterval(() => {
+            if (authTokens) {
+                updateToken();
             }
-        }, REFRESH_INTERVAL)
-        return () => clearInterval(interval)
-
-    },[authTokens, csrftoken]) //
-
+        }, REFRESH_INTERVAL);
+    
+        return () => clearInterval(interval);
+    }, [authTokens, csrftoken, setUser]);
     
 
     return(

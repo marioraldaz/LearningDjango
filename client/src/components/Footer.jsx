@@ -1,6 +1,8 @@
-import React from "react";
-
+import React, {useState, useEffect} from "react";
+import axios from "axios";
+import Cookies from 'js-cookie'
 export function Footer() {
+
   return (
     <footer className="footer text-center text-white dark:bg-neutral-600 dark:text-neutral-200 lg:text-left mt-[200px]">
       <div className="flex items-center justify-center border-b-2 border-neutral-200 p-6 dark:border-neutral-500 lg:justify-between">

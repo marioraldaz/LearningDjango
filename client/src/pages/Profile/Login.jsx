@@ -3,14 +3,13 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 
 export const Login = () => {
-  const { authTokens, logoutUser, loginUser } = useContext(AuthContext);
-  const [profile, setProfile] = useState([]);
+  const { user, authTokens, logoutUser, loginUser } = useContext(AuthContext);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Code for effect
-  }, []);
+    user ? navigate("/profile") : "";      
+  }, [user])
 
   const handleSubmit = async (e) => {
     setError(await loginUser(e));
