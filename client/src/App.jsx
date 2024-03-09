@@ -34,7 +34,7 @@ function App() {
             <Route path="/Ingredient" element={<Ingredient />} />
             <Route path="/login" element={<Login />} />
             <Route path="/Register" element={<Register />} />
-            <Route path="/Profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+            <Route path="/Profile" element={<Profile />} />
             <Route path="/RequireAuth" element={<RequireAuth />} />
           </Routes>
         </div>

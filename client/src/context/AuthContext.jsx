@@ -32,7 +32,7 @@ export const AuthProvider = ({children}) => {
         if(response.data.success){
             setAuthTokens(response.data.token);
             setUser(response.data.user);
-            navigate('/login')
+            navigate('/profile')
         } else{
             return response.data.error
         }

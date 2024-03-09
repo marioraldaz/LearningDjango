@@ -1,20 +1,25 @@
-import React from "react";
-import { Link } from "react-router-dom"
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 export function Profile() {
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState("Not Loaded");
+  const context = useContext(AuthContext);
 
-  let { user, logoutUser } = useContext(AuthContext)
+  useEffect(() => {
+    // Update the profile state with the user from the context
+    setProfile(context.user);
 
- 
-  return (  <div>
-  <Link to="/">Home</Link>
-  <span> | </span>
-  {user ? (
-      <p onClick={logoutUser}>Logout</p>
-  ) : (
-      <Link to="/login" >Login</Link>
-  )}
-  {user && <p>Hello {user.username}!</p>}
+    // Navigate to "/" if profile is not loaded
+    if (!profile) {
+      navigate("/profile");
+    }
+  }, [context.user, navigate, profile]);
 
-</div>);
+  return (
+    <div>
+      {/* Your profile content here */}
+    </div>
+  );
 }

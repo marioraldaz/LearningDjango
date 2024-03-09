@@ -47,7 +47,7 @@ export function Navbar() {
              {/* Mobile Menu */}
 
           {isMenuOpen && (
-            <div className="absolute right-[7px] top-[140px] w-[200px] bg-neutral-800 shadow-lg rounded-lg z-50">
+            <div className="absolute right-[7px] top-[140px] w-[200px] bg-neutral-800 shadow-lg rounded-lg z-50 xl:hidden">
               <div className="flex flex-col items-center py-4">
                 {links.map((link) => (
                   <NavElem key={link.id} route={link.route} text={link.text} />

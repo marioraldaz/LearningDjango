@@ -15,7 +15,6 @@ export const Login = () => {
 
   const handleSubmit = async (e) => {
     setError(await loginUser(e));
-    console.log(error)
   }
   return (
     <div className="flex items-center justify-center mt-[40px]">
