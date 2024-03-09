@@ -18,7 +18,6 @@ export const AuthProvider = ({children}) => {
 
         e.preventDefault();
         const csrftoken = getCookie('csrftoken');
-        console.log("csrf",csrftoken);
         const formData = {
             username: e.target.username.value,
             password: e.target.password.value,
@@ -30,10 +29,13 @@ export const AuthProvider = ({children}) => {
         },
         withCredentials: true // Include cookies in the request
             });
-        console.log(response.data.token);
-        setAuthTokens(response.data.token);
-        setUser(response.data.user);
-        console.log(user);
+        if(response.data.success){
+            setAuthTokens(response.data.token);
+            setUser(response.data.user);
+            navigate('/login')
+        } else{
+            return response.data.error
+        }
     }
         let logoutUser = (e) => {
             e.preventDefault()

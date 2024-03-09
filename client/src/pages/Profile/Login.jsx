@@ -13,10 +13,14 @@ export const Login = () => {
     // Code for effect
   }, []);
 
+  const handleSubmit = async (e) => {
+    setError(await loginUser(e));
+    console.log(error)
+  }
   return (
     <div className="flex items-center justify-center mt-[40px]">
       <form
-        onSubmit={loginUser}
+        onSubmit={handleSubmit}
         className="w-[500px] bg-neutral-800 p-[50px] h-full rounded-2xl text-black"
       >
         <h1 className="text-4xl text-center text-white">Log In</h1>
