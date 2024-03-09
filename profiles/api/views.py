@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from..user import User
+from..user_profile import UserProfile
 from..food import Food
 from..food_intake import UserFoodIntake
 from..allergies import Allergy
@@ -29,7 +29,7 @@ from django.contrib.auth.decorators import login_required
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = UserProfile.objects.all()
     serializer_class = UserSerializer
 
     def create(self, request, *args, **kwargs):
@@ -46,7 +46,7 @@ class UserViewSet(viewsets.ModelViewSet):
         date_of_birth = serializer.validated_data.get('date_of_birth')
 
         # Create a new user instance without gender and date_of_birth
-        user = User.objects.create(username=username, password=password, email=email, gender=gender, date_of_birth=date_of_birth)
+        user = UserProfile.objects.create(username=username, password=password, email=email, gender=gender, date_of_birth=date_of_birth)
 
         # Save the user instance
         user.save()
@@ -56,7 +56,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 @ensure_csrf_cookie
 @require_http_methods(["POST"])
-def user_login(request):
+def login(request):
     data = request.body.decode('utf-8')
 
     # Get username and password from the request body (assuming it's a JSON object)
@@ -67,8 +67,8 @@ def user_login(request):
 
     # Retrieve the user from the database based on the provided username
     try:
-        user = User.objects.get(username=username)
-    except User.DoesNotExist:
+        user = UserProfile.objects.get(username=username)
+    except UserProfile.DoesNotExist:
         user = None
 
     # Check if the user exists and the password is correct
@@ -146,16 +146,22 @@ class MyTokenObtainPairView(TokenObtainPairView):
     print("lalalal")
     serializer_class = MyTokenObtainPairSerializer
     
-from django.http import JsonResponse
-from django.contrib.auth.hashers import check_password
-from ..user_profile import UserProfile
 from django.conf import settings
 import jwt
 
+
+from django.views.decorators.csrf import csrf_protect
+
+@ensure_csrf_cookie
+@require_http_methods(["POST"])
 def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        data = json.loads(request.body.decode('utf-8'))
+        print(data)
+        username = data.get('username')
+        password = data.get('password')
         try:
             profile = UserProfile.objects.get(username=username)
             if check_password(password, profile.password):

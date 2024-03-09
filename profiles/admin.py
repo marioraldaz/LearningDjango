@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .user import User
+from .user_profile import UserProfile
 from .food import Food
 from .food_intake import UserFoodIntake
 from .allergies import Allergy
@@ -8,7 +8,7 @@ from .user_recipe import UserRecipe
 
 # Register your models here.
 
-admin.site.register(User)
+admin.site.register(UserProfile)
 admin.site.register(Food)
 admin.site.register(UserFoodIntake)
 admin.site.register(Allergy)

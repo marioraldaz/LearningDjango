@@ -1,8 +1,5 @@
 from rest_framework import serializers
-from ..user import User
-
-from rest_framework import serializers
-from ..user import User
+from ..user_profile import UserProfile
 from ..food import Food
 from ..food_intake import UserFoodIntake
 from ..allergies import Allergy
@@ -11,7 +8,7 @@ from ..user_recipe import UserRecipe
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = UserProfile
         fields = '__all__'
 
 class FoodSerializer(serializers.ModelSerializer):

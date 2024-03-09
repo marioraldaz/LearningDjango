@@ -16,37 +16,29 @@ export const AuthProvider = ({children}) => {
 
     let loginUser = async (e) => {
 
-    e.preventDefault();
-    const csrftoken = getCookie('csrftoken');
-        const response = await axios.post('http://localhost:8000/api/login/', {
+        e.preventDefault();
+        const csrftoken = getCookie('csrftoken');
+        console.log("csrf",csrftoken);
+        const formData = {
             username: e.target.username.value,
-            password: e.target.password.value
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken
-            }
-        });
-
-        console.log(response.data); // Log the response data to see if the token is received successfully
-        // Handle token response as needed
-        if(data.access){
-            localStorage.setItem('authTokens', JSON.stringify(data));
-            setAuthTokens(data)
-            setUser(jwtDecode(data.access))
-            navigate('/')
-        } else {
-            alert('Something went wrong while logging in the user!')
+            password: e.target.password.value,
+        };
+        const response = await axios.post('http://localhost:8000/user/login/', formData, {
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        withCredentials: true // Include cookies in the request
+            });
+            console.log(response);
+    }
+        let logoutUser = (e) => {
+            e.preventDefault()
+            localStorage.removeItem('authTokens')
+            setAuthTokens(null)
+            setUser(null)
+            navigate('/login')
         }
-    }
-
-    let logoutUser = (e) => {
-        e.preventDefault()
-        localStorage.removeItem('authTokens')
-        setAuthTokens(null)
-        setUser(null)
-        navigate('/login')
-    }
 
     const updateToken = async () => {
         const response = await fetch('http://localhost:8000/api/token/refresh/', {
