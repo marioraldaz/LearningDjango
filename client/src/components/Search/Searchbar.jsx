@@ -84,7 +84,6 @@ export function Searchbar({ filters, fetchByName, complexFetch }) {
           <Filters filters={filters} onFilterChange={handleFilterChange} onSubmit={onSubmit}/>
         </div>
       )}
-      {console.log(products)}
       {products.length>0 &&
       <SearchResults products={products} />
       }
