@@ -7,12 +7,12 @@ export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-    console.log(isMenuOpen)
   };
 
   const ref = useClickOutside(() => {
-    toggleMenu();
-    console.log("triggered")
+    if(isMenuOpen) {
+     toggleMenu();
+    }
   });
 
   const links = [

@@ -29,6 +29,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
@@ -125,6 +126,7 @@ def login(request):
                 # Generate JWT token
                 token = jwt.encode({'user_id': profile.id}, settings.SECRET_KEY, algorithm='HS256')
                 profile_data = {field.name: getattr(profile, field.name) for field in UserProfile._meta.fields}
+                refresh_token = jwt.encode({'user_id': profile.id}, settings.REFRESH_SECRET_KEY, algorithm='HS256')
 
                 return JsonResponse({'success': True, 'token': token, 'user': profile_data})
             else:
@@ -139,21 +141,13 @@ def login(request):
 @require_http_methods(["POST"])
 def get_profile(request):
     if request.method == 'POST':
-        # Decode the request body to extract data (e.g., token)
         data = json.loads(request.body.decode('utf-8'))
         token = data.get('token')
-
-        # Verify and decode the JWT token
         try:
             decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
             user_id = decoded_token.get('user_id')
-            print("checking profile...")
-
-            # Retrieve the user profile based on the user ID
             try:
                 profile = UserProfile.objects.get(id=user_id)
-
-                # Serialize user profile data
                 profile_data = {
                     field.name: getattr(profile, field.name) for field in UserProfile._meta.fields
                 }
@@ -168,3 +162,18 @@ def get_profile(request):
     else:
         return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
     
+
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@require_http_methods(["POST"])
+def refresh_token(request):
+    try:
+        refresh_token = request.data.get('refresh')
+        if not refresh_token:
+            return Response({'error': 'Refresh token is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        refresh = RefreshToken(refresh_token)
+        access_token = str(refresh.access_token)
+        return Response({'access': access_token}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
