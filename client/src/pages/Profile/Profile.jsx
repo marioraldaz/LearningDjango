@@ -6,7 +6,7 @@ export function Profile() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
   const context = useContext(AuthContext);
- //const logout = context.logoutUser();
+  const logout = context.logoutUser;
 
 
   useEffect(() => {
@@ -14,15 +14,16 @@ export function Profile() {
   }, [context.user]);
   
 
-  const handleSubmit = () => {
-   // logoutUser();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+     logoutUser();
+
   };
 
   return (
     <div>
-      <form method="post" onSubmit={handleSubmit}>
+      <form onSubmit={logout}>
         <button type="submit">Log Out</button>
-
       </form>
     </div>
   );

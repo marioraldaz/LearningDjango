@@ -33,25 +33,27 @@ export const AuthProvider = ({children}) => {
         withCredentials: true
             });
         if(response.data.success){
-            console.log(response.data);
             const token = response.data.token;
             const refreshToken = response.data.refresh_token
+            console.log(response.data)
             setAuthTokens(token);
             setUser(response.data.user);
-            console.log(response.data.token);
             Cookies.set('profileJWT', token, { secure: true, sameSite: 'strict' });
+            Cookies.set('refreshToken', refreshToken, { secure: true, sameSite:'strict' });
+
         } else{
             return response.data.error
         }
     }
-        let logoutUser = () => {
-            console.log('logged out')
-            Cookies.set('profileJWT',null)
-            Cookies.set('profileRefreshToken',null)
-            setAuthTokens(null)
-            setUser(null)
-            navigate('/login')
-        }
+
+    let logoutUser = () => {
+        console.log('logged out')
+        Cookies.set('profileJWT',null)
+        Cookies.set('profileRefreshToken',null)
+        setAuthTokens(null)
+        setUser(null)
+        navigate('/login')
+    }
 
     
     const updateToken = async () => {
@@ -81,8 +83,8 @@ export const AuthProvider = ({children}) => {
         } catch (error) {
             console.error('Error:', error);
         }
-        
     }
+
     let contextData = {
         user:user,
         authTokens:authTokens,
@@ -91,24 +93,20 @@ export const AuthProvider = ({children}) => {
     }
 
     const getProfileByToken = async(token, csrfToken) => { 
-        
-        console.log(token, csrftoken);
 
-        const response = await axios.post('http://localhost:8000/api/get_profile/', { token: token }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken 
-            },
-            withCredentials: true 
-        });
-
-        
-        if(response.data.success){
-            setAuthTokens(token);
-            setUser(response.data.user);            
-        } else{
-            return response.data.error
-        }
+            const response = await axios.post('http://localhost:8000/api/get_profile/', { token: token }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken 
+                },
+                withCredentials: true 
+            });    
+            if(response.data.success){
+                setAuthTokens(token);
+                setUser(response.data.user);            
+            } else{
+                return response.data.error
+            }
     }
     
     useEffect(() => {
@@ -116,7 +114,9 @@ export const AuthProvider = ({children}) => {
         setCsrfToken(csrfGot);
     
         const profileToken = Cookies.get('profileJWT');
-        if (profileToken!='undefined' && csrfGot) {
+        
+        console.log(profileToken, csrftoken);
+        if (profileToken && !profileToken=="null" && csrftoken ) {
             getProfileByToken(profileToken, csrfGot)            
         }
     
