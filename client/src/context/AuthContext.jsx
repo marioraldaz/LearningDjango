@@ -99,8 +99,8 @@ export const AuthProvider = ({children}) => {
 
         
         if(response.data.success){
-            setAuthTokens(response.data.token);
-            setUser(response.data.user);
+            setAuthTokens(token);
+            setUser(response.data.user);            
         } else{
             return response.data.error
         }
@@ -126,7 +126,7 @@ export const AuthProvider = ({children}) => {
         return () => clearInterval(interval);
     }, [authTokens, csrftoken, setUser]);
     
-
+    
     return(
         <AuthContext.Provider value={contextData}>
             {children}

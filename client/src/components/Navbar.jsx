@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { NavElem } from "./Search/NavElem";
-import React, { useState } from 'react';
-
+import React, { useState, useRef, useEffect } from 'react';
+import {useClickOutside}  from "../utils/useClickOutside";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -9,7 +9,12 @@ export function Navbar() {
     setIsMenuOpen(!isMenuOpen);
     console.log(isMenuOpen)
   };
-  
+
+  const ref = useClickOutside(() => {
+    toggleMenu();
+    console.log("triggered")
+  });
+
   const links = [
     { id: 1, route: "/", text: "Home" },
     { id: 2, route: "/Ingredients", text: "Ingredients" },
@@ -42,7 +47,7 @@ export function Navbar() {
               className="h-full" 
             />
             </NavLink>
-                <img src="/menu.png" alt="menu" onClick={toggleMenu} className="xl:hidden flex h-[150px] w-[150px] cursor-pointer hover:bg-neutral-800 p-[5px] transform hover:scale-105 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 "/>
+                <img src="/menu.png" alt="menu" ref={ref} onClick={toggleMenu} className="xl:hidden flex h-[150px] w-[150px] cursor-pointer hover:bg-neutral-800 p-[5px] transform hover:scale-105 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 "/>
             
              {/* Mobile Menu */}
 

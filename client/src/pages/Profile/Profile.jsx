@@ -4,15 +4,12 @@ import { AuthContext } from "../../context/AuthContext";
 
 export function Profile() {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState("Not Loaded");
+  const [profile, setProfile] = useState(null);
   const context = useContext(AuthContext);
-
+  
   useEffect(() => {
     setProfile(context.user);
-    if (profile) {
-      navigate("/profile");
-    }
-  }, [context.user, navigate, profile]);
+  }, [context.user]);
 
   return (
     <div>
