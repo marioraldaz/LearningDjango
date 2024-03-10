@@ -128,7 +128,7 @@ def login(request):
                 profile_data = {field.name: getattr(profile, field.name) for field in UserProfile._meta.fields}
                 refresh_token = jwt.encode({'user_id': profile.id}, settings.REFRESH_SECRET_KEY, algorithm='HS256')
 
-                return JsonResponse({'success': True, 'token': token, 'user': profile_data})
+                return JsonResponse({'success': True, 'token': token, 'refresh_token':refresh_token, 'user': profile_data})
             else:
                 return JsonResponse({'success': False, 'error': 'Invalid password'})
         except UserProfile.DoesNotExist:

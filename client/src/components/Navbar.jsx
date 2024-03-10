@@ -1,9 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { NavElem } from "./Search/NavElem";
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {useClickOutside}  from "../utils/useClickOutside";
+import AuthContext from "../context/AuthContext";
 
 export function Navbar() {
+  const { user } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -38,7 +40,7 @@ export function Navbar() {
         </div>
             
             <NavLink
-              to="/Login"
+              to={!user ? "/Login" : "/profile" }
               className="ml-8  h-[100px] items-center hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-105 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
               >
             <img
@@ -48,7 +50,7 @@ export function Navbar() {
             />
             </NavLink>
                 <img src="/menu.png" alt="menu" ref={ref} onClick={toggleMenu} className="xl:hidden flex h-[150px] w-[150px] cursor-pointer hover:bg-neutral-800 p-[5px] transform hover:scale-105 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 "/>
-            
+                
              {/* Mobile Menu */}
 
           {isMenuOpen && (

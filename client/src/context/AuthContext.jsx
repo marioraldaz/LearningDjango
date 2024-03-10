@@ -33,7 +33,9 @@ export const AuthProvider = ({children}) => {
         withCredentials: true
             });
         if(response.data.success){
+            console.log(response.data);
             const token = response.data.token;
+            const refreshToken = response.data.refresh_token
             setAuthTokens(token);
             setUser(response.data.user);
             console.log(response.data.token);
@@ -42,10 +44,10 @@ export const AuthProvider = ({children}) => {
             return response.data.error
         }
     }
-        let logoutUser = (e) => {
-            e.preventDefault()
-            localStorage.removeItem('authTokens')
+        let logoutUser = () => {
             console.log('logged out')
+            Cookies.set('profileJWT',null)
+            Cookies.set('profileRefreshToken',null)
             setAuthTokens(null)
             setUser(null)
             navigate('/login')
@@ -70,7 +72,7 @@ export const AuthProvider = ({children}) => {
                 setUser(jwtDecode(data.access));
                 localStorage.setItem('authTokens', JSON.stringify(data));
             } else {
-                logoutUser();
+               // logoutUser();
             }
         
             if (loading) {
@@ -89,10 +91,13 @@ export const AuthProvider = ({children}) => {
     }
 
     const getProfileByToken = async(token, csrfToken) => { 
+        
+        console.log(token, csrftoken);
+
         const response = await axios.post('http://localhost:8000/api/get_profile/', { token: token }, {
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken //
+                'X-CSRFToken': csrfToken 
             },
             withCredentials: true 
         });
@@ -119,7 +124,7 @@ export const AuthProvider = ({children}) => {
         const REFRESH_INTERVAL = 1000 * 60 * 4; 
         let interval = setInterval(() => {
             if (authTokens) {
-                updateToken();
+                //updateToken();
             }
         }, REFRESH_INTERVAL);
     
