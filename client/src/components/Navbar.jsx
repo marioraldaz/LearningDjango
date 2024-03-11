@@ -24,7 +24,7 @@ export function Navbar() {
     { id: 4, route: "/MyBalance", text: "MyBalance" }
   ];  
   return (
-    <nav className="max-w-full h-32 flex flex-nowrap border-green-600 border-b-2 xl:pr-[40px] items-center" >
+    <nav className="max-w-full h-24 flex flex-nowrap border-green-600 border-b-2 xl:pr-[40px] items-center" >
         <NavLink to="/" className="flex-grow">
           <img
             src="/nutribestPNG.png" 
@@ -41,7 +41,7 @@ export function Navbar() {
             
             <NavLink
               to={!user ? "/Login" : "/profile" }
-              className="ml-8  h-[100px] items-center hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-105 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
+              className="ml-8  h-[80px] items-center hover:text-green-400 hover:bg-neutral-800 p-[15px] transform hover:scale-105 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 text-center"
               >
             <img
               src="/profile2.svg" 
@@ -49,10 +49,10 @@ export function Navbar() {
               className="h-full" 
             />
             </NavLink>
-                <img src="/menu.png" alt="menu" ref={ref} onClick={toggleMenu} className="xl:hidden flex h-[150px] w-[150px] cursor-pointer hover:bg-neutral-800 p-[5px] transform hover:scale-105 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 "/>
+                <img src="/menu.png" alt="menu" ref={ref} onClick={toggleMenu} className="xl:hidden flex h-[120px] w-[150px] cursor-pointer hover:bg-neutral-800 p-[5px] transform hover:scale-105 transition duration-300 ease-in-out hover:border-lg rounded-lg 2 "/>
                 
-             {/* Mobile Menu */}
 
+          {/* Mobile Menu */}
           {isMenuOpen && (
             <div className="absolute right-[7px] top-[140px] w-[200px] bg-neutral-800 shadow-lg rounded-lg z-50 xl:hidden">
               <div className="flex flex-col items-center py-4">
