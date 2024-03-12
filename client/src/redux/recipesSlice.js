@@ -9,6 +9,7 @@ const recipesSlice = createSlice({
   initialState,
   reducers: {
     addRecipe(state, action) {
+        console.log(action)
       state.recipes.push(action.payload);
     },
     removeRecipe(state, action) {

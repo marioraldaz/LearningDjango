@@ -17,33 +17,35 @@ import { RequireAuth } from "./pages/Profile/RequireAuth.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { Provider } from "react-redux";
 import {RecipePage}  from "./pages/Recipes/RecipePage.jsx";
-import  store  from "./redux/store.js";
+import { PersistGate } from 'redux-persist/integration/react'; 
+import { store, persistor } from './redux/store';
 function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <AuthProvider>
-            <div className="bg-black min-h-screen w-full text-white flex flex-col overflow-hidden">
-            <Header />
-            <div className="w-full min-h-full flex-grow">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/Ingredients" element={<Ingredients />} />
-                <Route path="/Recipes" element={<Recipes />} />
-                <Route path="/MyBalance" element={<MyBalance />} />
-                <Route path="/Ingredient" element={<Ingredient />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/Register" element={<Register />} />
-                <Route path="/Profile" element={<Profile />} />
-                <Route path="/RequireAuth" element={<RequireAuth />} />
-                <Route path="/Recipe/:id" element={<RecipePage/>} />
-
-              </Routes>
-            </div> 
-            <Footer />
-          </div>
-        </AuthProvider>
-      </BrowserRouter>
+       <PersistGate loading={null} persistor={persistor}>
+        <BrowserRouter>
+          <AuthProvider>
+              <div className="bg-black min-h-screen w-full text-white flex flex-col overflow-hidden">
+              <Header />
+              <div className="w-full min-h-full flex-grow">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/Ingredients" element={<Ingredients />} />
+                  <Route path="/Recipes" element={<Recipes />} />
+                  <Route path="/MyBalance" element={<MyBalance />} />
+                  <Route path="/Ingredient" element={<Ingredient />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/Register" element={<Register />} />
+                  <Route path="/Profile" element={<Profile />} />
+                  <Route path="/RequireAuth" element={<RequireAuth />} />
+                  <Route path="/Recipe/:id" element={<RecipePage/>} />
+                </Routes>
+              </div> 
+              <Footer />
+            </div>
+          </AuthProvider>
+        </BrowserRouter>
+      </PersistGate>
     </Provider>
     
     

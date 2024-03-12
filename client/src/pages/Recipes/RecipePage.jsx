@@ -15,13 +15,17 @@ export function RecipePage() {
 
     useEffect(() => {
         const fetchRecipe = async () => {
-            const recipeFound = recipes.find((recipeToFind) => recipeToFind.id === id);
-            console.log(recipes);
-      
+            const recipeFound = recipes.find((recipeToFind) => {
+                if(String(recipeToFind.id) == String(id)){
+                    return recipeToFind;
+                }
+                return false;
+            })
+            console.log(recipeFound);
             if (recipeFound === undefined && id) {
-              const res = await getRecipeById(id);
-              setRecipe(res);
-              dispatch(addRecipe(res));
+                const res = await getRecipeById(id);
+                setRecipe(res);
+                dispatch(addRecipe(res));
             } else {
               setRecipe(recipeFound);
             }

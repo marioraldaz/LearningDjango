@@ -52,6 +52,7 @@ export const fetchFilteredRecipes = async (filters) => {
 
   export async function getRecipeById(recipeId) {
     try {
+      console.log("recipeById");
       const response = await axios.get(
         `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}&includeNutrition=true`
       );
