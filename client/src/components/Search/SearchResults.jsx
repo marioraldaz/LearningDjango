@@ -1,11 +1,11 @@
 import React from "react";
 
-function SearchResults({ products }) {
+export function SearchResults({ products }) {
   console.log(products);
   return (
     <div className="flex flex-wrap justify-center items-center mt-[100px] p-[10px]">
       {products.map((product) => (
-      <a href={`/Ingredient?id=${product.id}`} key={product.name}>
+      <a href={product.name ? `/Ingredient?id=${product.id}` : `/Recipe?id=${product.id}`} key={product.name}>
         <div
           className="m-2 bg-white h-[360px] w-[350px] border rounded-lg border-gray-300 text-black"
         >
@@ -25,5 +25,3 @@ function SearchResults({ products }) {
       </div>
   );
 }
-
-export default SearchResults;

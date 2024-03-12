@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Filters } from "./Filters";
-import SearchResults from "./SearchResults";
+import {SearchResults} from "./SearchResults";
 
 export function Searchbar({ filters, fetchByName, complexFetch }) {
   const { register, handleSubmit } = useForm();

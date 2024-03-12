@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { NavElem } from "./Search/NavElem";
+import { NavElem } from "./NavElem";
 import React, { useState, useContext, useEffect } from 'react';
 import {useClickOutside}  from "../utils/useClickOutside";
 import AuthContext from "../context/AuthContext";

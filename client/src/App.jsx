@@ -17,7 +17,6 @@ import { RequireAuth } from "./pages/Profile/RequireAuth.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { Provider } from "react-redux";
 import  store  from "./redux/store.js";
-import { ProfileDetails } from "./pages/Profile/ProfileDetails";
 function App() {
   return (
     <Provider store={store}>
@@ -36,7 +35,6 @@ function App() {
                 <Route path="/Register" element={<Register />} />
                 <Route path="/Profile" element={<Profile />} />
                 <Route path="/RequireAuth" element={<RequireAuth />} />
-                <Route path="/Profile/Details" element={<ProfileDetails />} />
               </Routes>
             </div> 
             <Footer />
