@@ -45,15 +45,29 @@ export function RecipePage() {
     }
   return (
     
-    <div className="flex flex-wrap"> 
-        <h2>Likes: {recipe.aggregateLikes}</h2>
-        <h2>Instructions:</h2>
-        <div className="">Cooking Minutes: {recipe.cookingMinutes}</div>
-        <div dangerouslySetInnerHTML={{ __html: recipe.instructions }} />
-        <div >Gluten Free {recipe.glutenFree ? "yes" : "No" }</div>
+    <div className="grid grid-cols-2 p-8 rounded-xl gap-4"> 
+        <div dangerouslySetInnerHTML={{ __html: recipe.summary }} />
+
         <img src={recipe.image}/>
-        <GrayButton onClick={toggleNutrition}>{showNutrition ? "Show Nutrition" : "Hide Nutrition" }</GrayButton>
-        {showNutrition && <RecipeNutrition nutrition={recipe.nutrition}/>}
+        <h2>Likes: {recipe.aggregateLikes}</h2>
+
+        {recipe.instructions.length>0 &&
+        <div className="">
+            <div dangerouslySetInnerHTML={{ __html: recipe.instructions }} />
+            <h2>Instructions:</h2>
+        </div>
+        }
+
+        <div className="">Cooking Minutes: {recipe.cookingMinutes==-1 ? "Not Specified" : recipe.cookingMinutes}</div>
+        <div >Gluten Free: {recipe.glutenFree ? "Yes" : "No" }</div>
+        <div className="w-[150px] h-[60px]">
+            <GrayButton onClick={toggleNutrition}>{!showNutrition ? "Show Nutrition" : "Hide Nutrition" }</GrayButton>
+        </div>
+        {showNutrition && 
+        <div className="col-span-2">
+            <RecipeNutrition nutrition={recipe.nutrition}/>
+        </div>
+        }
     </div>
   )
 }
