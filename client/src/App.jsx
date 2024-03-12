@@ -3,7 +3,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-import { Navbar } from "./components/Navbar.jsx";
+import { Header } from "./components/Header.jsx";
 import { Home } from "./pages/Home.jsx";
 import { Ingredients } from "./pages/Ingredients/Ingredients.jsx";
 import { Recipes } from "./pages/Recipes/Recipes.jsx";
@@ -14,19 +14,17 @@ import { Profile } from "./pages/Profile/Profile.jsx";
 import { Login } from "./pages/Profile/Login.jsx";
 import { Register } from "./pages/Profile/Register.jsx";
 import { RequireAuth } from "./pages/Profile/RequireAuth.jsx";
-import { PrivateRoute} from "./utils/PrivateRoute.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { Provider } from "react-redux";
 import  store  from "./redux/store.js";
-import Cookies from 'js-cookie';
-
+import { ProfileDetails } from "./pages/Profile/ProfileDetails";
 function App() {
   return (
-      <Provider store={store}>
-          <BrowserRouter>
-            <AuthProvider>
+    <Provider store={store}>
+      <BrowserRouter>
+        <AuthProvider>
             <div className="bg-black min-h-screen w-full text-white flex flex-col overflow-hidden">
-            <Navbar />
+            <Header />
             <div className="w-full min-h-full flex-grow">
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -38,13 +36,14 @@ function App() {
                 <Route path="/Register" element={<Register />} />
                 <Route path="/Profile" element={<Profile />} />
                 <Route path="/RequireAuth" element={<RequireAuth />} />
+                <Route path="/Profile/Details" element={<ProfileDetails />} />
               </Routes>
             </div> 
             <Footer />
           </div>
-          </AuthProvider>
-        </BrowserRouter>
-      </Provider>
+        </AuthProvider>
+      </BrowserRouter>
+    </Provider>
     
     
   );

@@ -4,7 +4,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import {useClickOutside}  from "../utils/useClickOutside";
 import AuthContext from "../context/AuthContext";
 
-export function Navbar() {
+export function Header() {
   const { user } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {

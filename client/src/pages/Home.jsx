@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import NavigationButton from '../components/buttons/NavigationButton'; // Import the NavigationButton component
+import {NavigationButton} from '../components/buttons/NavigationButton'; // Import the NavigationButton component
 
 export function Home() {
   const menuItems = [

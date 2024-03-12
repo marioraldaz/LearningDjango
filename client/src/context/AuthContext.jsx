@@ -101,6 +101,7 @@ export const AuthProvider = ({children}) => {
                 },
                 withCredentials: true 
             });    
+            console.log(response.data);
             if(response.data.success){
                 setAuthTokens(token);
                 setUser(response.data.user);            
@@ -112,13 +113,12 @@ export const AuthProvider = ({children}) => {
     useEffect(() => {
         const csrfGot = Cookies.get("csrftoken");
         setCsrfToken(csrfGot);
-    
-        const profileToken = Cookies.get('profileJWT');
         
-        console.log(profileToken, csrftoken);
-        if (profileToken && !profileToken=="null" && csrftoken ) {
+        const profileToken = Cookies.get('profileJWT');
+        console.log("csrftoken", csrfGot, "jwt token", profileToken);
+        
             getProfileByToken(profileToken, csrfGot)            
-        }
+        
     
         
         const REFRESH_INTERVAL = 1000 * 60 * 4; 
@@ -129,7 +129,7 @@ export const AuthProvider = ({children}) => {
         }, REFRESH_INTERVAL);
     
         return () => clearInterval(interval);
-    }, [authTokens, csrftoken, setUser]);
+    }, []);
     
     
     return(
