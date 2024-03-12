@@ -16,6 +16,7 @@ import { Register } from "./pages/Profile/Register.jsx";
 import { RequireAuth } from "./pages/Profile/RequireAuth.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { Provider } from "react-redux";
+import {RecipePage}  from "./pages/Recipes/RecipePage.jsx";
 import  store  from "./redux/store.js";
 function App() {
   return (
@@ -35,6 +36,8 @@ function App() {
                 <Route path="/Register" element={<Register />} />
                 <Route path="/Profile" element={<Profile />} />
                 <Route path="/RequireAuth" element={<RequireAuth />} />
+                <Route path="/Recipe/:id" element={<RecipePage/>} />
+
               </Routes>
             </div> 
             <Footer />

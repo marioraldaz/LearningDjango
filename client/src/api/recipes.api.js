@@ -41,9 +41,21 @@ export const fetchFilteredRecipes = async (filters) => {
         "https://api.spoonacular.com/recipes/complexSearch?apiKey=" +
           API_KEY +
           "&query=" +
-          name
+          name+"&sort=popularity"
       );
       return response.data.results;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  export async function getRecipeById(recipeId) {
+    try {
+      const response = await axios.get(
+        `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}&includeNutrition=true`
+      );
+      return response.data;
     } catch (error) {
       console.error(error);
     }
