@@ -11,7 +11,7 @@ export function RecipeNutrition({ nutrition }) {
   console.log(nutrition)
   return (
 
-    <div className="w-full h-full bg-yellow-800 p-4 rounded-xl grid grid-cols-2 gap-8 capitalize">
+    <div className="w-full h-full text-white bg-neutral-900 p-4 rounded-xl grid grid-cols-2 gap-8 capitalize">
       <ul className="w-[350px]">
         <li>Carbs Percentage: {nutrition.caloricBreakdown.percentCarbs} </li>
         <li>Fat Percentage: {nutrition.caloricBreakdown.percentFat}</li>
@@ -20,7 +20,7 @@ export function RecipeNutrition({ nutrition }) {
         <h3>Weight Per Serving: {nutrition.weightPerServing.amount} {nutrition.weightPerServing.unit}</h3>
         
       <div className="col-span-2">
-        <div className="w-[250px] h-[60px] col-span-2">
+        <div className="w-[250px] h-[60px] col-span-2 border rounded-lg">
           <GrayButton onClick={() => setFlavonoids(!flavonoids)}>{flavonoids ? "Hide Flavonoids" : "Show Flavonoids"}</GrayButton>
         </div>
         {flavonoids && (
@@ -37,13 +37,13 @@ export function RecipeNutrition({ nutrition }) {
             </div>
         )}
       </div>
-      <div className="flex flex-col gap-4 border p-4 rounded-xl">
+      <div className="flex flex-col gap-4 border p-4 rounded-xl  h-[300px] overflow-y-scroll">
       <h3 className="text-2xl">Ingredients</h3>
         {nutrition.ingredients.map((ingredient) => (
           <ul key={ingredient.name} className="w-full flex rounded-lg gap-2">
             <li>Name: {ingredient.name}</li>
             <li>Amount: {ingredient.amount} {ingredient.unit}</li>
-            <div className="ml-auto w-[300px]">
+            <div className="ml-auto w-[300px] border rounded-lg">
               <GrayButton onClick={() => handleIngredientClick(ingredient)}>Show <span className="capitalize">{ingredient.name}</span> Nutrients</GrayButton>
             </div>
           </ul>
