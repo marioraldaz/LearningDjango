@@ -1,9 +1,9 @@
 import axios from "axios";
 const API_KEY = "72ed57384eea4e91b4390428f582a705";
 
-const IngredientsApi=axios.create({
-  baseURL: "http://localhost:800/food/ingredients"
-})
+const IngredientsApi = axios.create({
+  baseURL: "http://localhost:800/food/ingredients",
+});
 
 export async function fetchIngredientsByName(name) {
   try {
@@ -19,7 +19,7 @@ export async function fetchIngredientsByName(name) {
   }
 }
 
-export async function getIngredientInfo(id) {
+export async function getIngredientById(id) {
   try {
     const response = await axios.request(
       `https://api.spoonacular.com/food/ingredients/${id}/information?apiKey=` +

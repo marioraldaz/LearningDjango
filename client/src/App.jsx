@@ -5,7 +5,7 @@ import { Ingredients } from "./pages/Ingredients/Ingredients.jsx";
 import { Recipes } from "./pages/Recipes/Recipes.jsx";
 import { MyBalance } from "./pages/MyBalance/MyBalance.jsx";
 import { Footer } from "./components/Footer.jsx";
-import { Ingredient } from "./pages/Ingredients/Ingredient.jsx";
+import { IngredientPage } from "./pages/Ingredients/IngredientPage.jsx";
 import { Profile } from "./pages/Profile/Profile.jsx";
 import { Login } from "./pages/Profile/Login.jsx";
 import { Register } from "./pages/Profile/Register.jsx";
@@ -29,7 +29,7 @@ function App() {
                   <Route path="/Ingredients" element={<Ingredients />} />
                   <Route path="/Recipes" element={<Recipes />} />
                   <Route path="/MyBalance" element={<MyBalance />} />
-                  <Route path="/Ingredient" element={<Ingredient />} />
+                  <Route path="/Ingredient/:id" element={<IngredientPage />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/Register" element={<Register />} />
                   <Route path="/Profile" element={<Profile />} />
