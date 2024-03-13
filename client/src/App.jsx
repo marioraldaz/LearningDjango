@@ -1,8 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "./components/Header.jsx";
 import { Home } from "./pages/Home.jsx";
 import { Ingredients } from "./pages/Ingredients/Ingredients.jsx";
@@ -16,18 +12,18 @@ import { Register } from "./pages/Profile/Register.jsx";
 import { RequireAuth } from "./pages/Profile/RequireAuth.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { Provider } from "react-redux";
-import {RecipePage}  from "./pages/Recipes/RecipePage.jsx";
-import { PersistGate } from 'redux-persist/integration/react'; 
-import { store, persistor } from './redux/store';
+import { RecipePage } from "./pages/Recipes/RecipePage.jsx";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./redux/store";
 function App() {
   return (
     <Provider store={store}>
-       <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
           <AuthProvider>
-              <div className="bg-black min-h-screen w-full text-white flex flex-col overflow-hidden">
+            <div className="bg-black min-h-screen w-full text-white flex flex-col overflow-hidden">
               <Header />
-              <div className="w-full min-h-full flex-grow">
+              <div className="flex-1 overflow-y-auto">
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/Ingredients" element={<Ingredients />} />
@@ -38,17 +34,15 @@ function App() {
                   <Route path="/Register" element={<Register />} />
                   <Route path="/Profile" element={<Profile />} />
                   <Route path="/RequireAuth" element={<RequireAuth />} />
-                  <Route path="/Recipe/:id" element={<RecipePage/>} />
+                  <Route path="/Recipe/:id" element={<RecipePage />} />
                 </Routes>
-              </div> 
+              </div>
               <Footer />
             </div>
           </AuthProvider>
         </BrowserRouter>
       </PersistGate>
     </Provider>
-    
-    
   );
 }
 
