@@ -21,7 +21,6 @@ export function IngredientPage() {
         }
         return false;
       });
-      console.log(ingredientFound);
       if (ingredientFound === undefined && id) {
         const res = await getIngredientById(id, 1);
         const data = res.data;
@@ -41,12 +40,6 @@ export function IngredientPage() {
     setAmount(parseInt(e.target.value, 10));
   };
 
-  const fetchAmount = async () => {
-    const res = await getIngredientById(id, 1);
-    const data = res.data;
-    setIngredient(data);
-  };
-
   if (!ingredient) {
     return <div>Loading...</div>;
   }
@@ -56,11 +49,11 @@ export function IngredientPage() {
         {ingredient.name}
       </h3>
       <img
-        className="rounded-lg border m-4"
+        className="rounded-lg border mr-8 mb-8"
         src={`https://spoonacular.com/cdn/ingredients_500x500/${ingredient.image}`}
       />
       <div className="flex flex-col flex-grow justify-center items-center text-center self-center">
-        <div className="text-2xl mb-4">
+        <div className="flex text-2xl mb-4 justify-center items-center text-center">
           <span className="mr-2 ">Amount Of {ingredient.name} To Compute:</span>
           <input
             type="number"
@@ -71,34 +64,35 @@ export function IngredientPage() {
             onChange={handleAmountChange}
           />
         </div>
-        <button
-          name="amount"
-          onClick={fetchAmount}
-          className="bg-neutral-800 p-2 rounded-lg hover:scale-105 hover:bg-green-800"
-        >
-          {`Compute For ${amount} ${ingredient.name}`}
-        </button>
 
         <h3 className="text-2xl capitalize mt-[80px]">
           Price (For {ingredient.amount} {ingredient.name}):{"  "}
-          {ingredient.estimatedCost.value} {ingredient.estimatedCost.unit}
+          {ingredient.estimatedCost.value * amount}{" "}
+          {ingredient.estimatedCost.unit}
         </h3>
         <h3 className="text-2xl capitalize mt-[80px]">
-          Nutrients (For {ingredient.amount} {ingredient.name}):
+          Nutrients (For {amount} {ingredient.name}):
         </h3>
         <ul className="overflow-y-scroll h-[300px] mt-[40px] w-full flex flex-col">
           {ingredient.nutrition.nutrients.map((nutrient) => (
-            <li
+            <ul
               key={nutrient.name}
               className="flex flex-row gap-4 w-full border p-4 odd:bg-rgb-rgb(0, 0, 0) even:bg-yellow-500 even:text-black"
             >
               <li className="w-1/2">
-                {nutrient.name}: Amount: {nutrient.amount} {nutrient.unit}
+                <div>
+                  {`${(nutrient.name * amount).toFixed(2)}: Amount: ${(
+                    nutrient.amount * amount
+                  ).toFixed(2)}`}
+                </div>
+                {nutrient.unit}
               </li>
+
               <li>
-                Percentage Of Daily Needs: {nutrient.percentOfDailyNeeds} {"%"}
+                Percentage Of Daily Needs:{" "}
+                {(nutrient.percentOfDailyNeeds * amount).toFixed(2)} {"%"}
               </li>
-            </li>
+            </ul>
           ))}
         </ul>
       </div>
