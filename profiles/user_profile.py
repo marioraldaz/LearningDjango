@@ -11,11 +11,8 @@ class UserProfile(models.Model):
     height = models.IntegerField(default=170)
     date_of_birth = models.DateField()
     
-    activityLevel = models.CharField(
-        choices=(("Sedentary", "Sedentary"), ("slightly_active", "Slightly Active"),
-                 ("moderately_active", "Moderately Active"), ("very_active", "Very Active"),
-                 ("super_active", "Super Active")),
-        default="Sedentary", max_length=20  # Adjust max_length as needed
-    )
+    activityLevel = models.PositiveIntegerField(default=1)  # Adjust the field type and default value as needed
+
+    
     def __str__(self):
         return self.username
