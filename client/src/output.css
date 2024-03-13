@@ -735,6 +735,26 @@ video {
   margin-top: 0.5rem;
 }
 
+.ml-\[200px\] {
+  margin-left: 200px;
+}
+
+.mt-\[80px\] {
+  margin-top: 80px;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.mb-24 {
+  margin-bottom: 6rem;
+}
+
+.mb-20 {
+  margin-bottom: 5rem;
+}
+
 .block {
   display: block;
 }
@@ -921,6 +941,18 @@ video {
   width: 400px;
 }
 
+.w-\[800px\] {
+  width: 800px;
+}
+
+.w-\[50px\] {
+  width: 50px;
+}
+
+.w-\[650px\] {
+  width: 650px;
+}
+
 .max-w-full {
   max-width: 100%;
 }
@@ -1001,6 +1033,10 @@ video {
 
 .self-end {
   align-self: flex-end;
+}
+
+.self-center {
+  align-self: center;
 }
 
 .overflow-hidden {
@@ -1132,6 +1168,16 @@ video {
 .bg-green-900 {
   --tw-bg-opacity: 1;
   background-color: rgb(20 83 45 / var(--tw-bg-opacity));
+}
+
+.bg-green-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(134 239 172 / var(--tw-bg-opacity));
+}
+
+.bg-green-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(74 222 128 / var(--tw-bg-opacity));
 }
 
 .p-2 {
@@ -1534,6 +1580,14 @@ body{
     flex-direction: row;
   }
 
+  .md\:items-start {
+    align-items: flex-start;
+  }
+
+  .md\:justify-start {
+    justify-content: flex-start;
+  }
+
   .md\:gap-4 {
     gap: 1rem;
   }
@@ -1560,6 +1614,22 @@ body{
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .lg\:items-start {
+    align-items: flex-start;
+  }
+
+  .lg\:items-center {
+    align-items: center;
+  }
+
+  .lg\:justify-start {
+    justify-content: flex-start;
+  }
+
+  .lg\:justify-center {
+    justify-content: center;
+  }
+
   .lg\:justify-between {
     justify-content: space-between;
   }
@@ -1570,6 +1640,26 @@ body{
 }
 
 @media (min-width: 1280px) {
+  .xl\:ml-\[50px\] {
+    margin-left: 50px;
+  }
+
+  .xl\:ml-\[150px\] {
+    margin-left: 150px;
+  }
+
+  .xl\:ml-\[auto\] {
+    margin-left: auto;
+  }
+
+  .xl\:mr-\[50px\] {
+    margin-right: 50px;
+  }
+
+  .xl\:mr-\[100px\] {
+    margin-right: 100px;
+  }
+
   .xl\:flex {
     display: flex;
   }
@@ -1580,6 +1670,14 @@ body{
 
   .xl\:flex-row {
     flex-direction: row;
+  }
+
+  .xl\:items-start {
+    align-items: flex-start;
+  }
+
+  .xl\:justify-start {
+    justify-content: flex-start;
   }
 
   .xl\:pr-\[40px\] {

@@ -19,10 +19,10 @@ export async function fetchIngredientsByName(name) {
   }
 }
 
-export async function getIngredientById(id) {
+export async function getIngredientById(id, amount) {
   try {
     const response = await axios.request(
-      `https://api.spoonacular.com/food/ingredients/${id}/information?apiKey=` +
+      `https://api.spoonacular.com/food/ingredients/${id}/information?${amount}=1&apiKey=` +
         API_KEY
     );
     return response;
