@@ -126,6 +126,9 @@ def login(request):
                 # Generate JWT token
                 token = jwt.encode({'user_id': profile.id}, settings.SECRET_KEY, algorithm='HS256')
                 profile_data = {field.name: getattr(profile, field.name) for field in UserProfile._meta.fields}
+                profile_picture_url = profile.profile_picture.url if profile.profile_picture else None
+                profile_data['profile_picture'] = profile_picture_url
+                print(profile_data)
                 refresh_token = jwt.encode({'user_id': profile.id}, settings.REFRESH_SECRET_KEY, algorithm='HS256')
 
                 return JsonResponse({'success': True, 'token': token, 'refresh_token':refresh_token, 'user': profile_data})

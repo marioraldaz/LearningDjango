@@ -83,6 +83,12 @@ class Migration(migrations.Migration):
             name='activityLevel',
             field=models.PositiveIntegerField(default=1),
             preserve_default=False,
+        ),
+        migrations.AddField(
+            model_name='userprofile',
+            name='profile_picture',
+            field=models.CharField(default="none"),
+            preserve_default=False,
         )
 
     ]

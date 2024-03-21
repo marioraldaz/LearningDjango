@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { NavigationButton } from "../../components/buttons/NavigationButton";
 import { ProfileOptions } from "../../components/Profile/ProfileOptions";
+import { ProfileData } from "../../components/Profile/ProfileData";
 import fitnessCalculatorFunctions from "fitness-calculator";
 export function Profile() {
   const navigate = useNavigate();
@@ -20,17 +21,24 @@ export function Profile() {
       73,
       "active"
     );
-    console.log(myCalorieNeeds);
-  }, [context.user]);
+  }, [context.user, profile]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     logoutUser();
   };
+  if (!profile) {
+    return <h1>Loading....</h1>;
+  }
 
   return (
-    <div className="p-4">
-      <ProfileOptions profile={profile} />
+    <div className="p-4 grid grid-cols-2 w-full">
+      <div className="bg-red-200">
+        <ProfileOptions profile={profile} />
+      </div>
+      <div className="col-span-1">
+        <ProfileData profile={profile} />
+      </div>
       <div className="w-[200px] p-4">
         <NavigationButton text={"Profile Details"} link={"/profile/details"} />
         <form onSubmit={logout} className="mt-4">

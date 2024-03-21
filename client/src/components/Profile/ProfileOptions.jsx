@@ -15,12 +15,12 @@ export function ProfileOptions({ profile }) {
   }
 
   return (
-    <div className="flex p-4 gap-4 mt-4 justify-center items-center ">
+    <div className="flex flex-wrap gap-4">
       <div className="w-1/2 flex flex-col gap-2 border p-2 rounded-lg">
         <span className="text-center  gradient-text bg-white">
           Complete Your Profile For A More Detailed Control
         </span>
-        <div className="w-[300px]">
+        <div className="w-[300px] self-center mt-8">
           <GrayButton onClick={toggleOpenPhysicalForm}>
             Complete Or Change My Profile
           </GrayButton>
