@@ -149,7 +149,6 @@ export const AuthProvider = ({ children }) => {
           withCredentials: true,
         }
       );
-      console.log(response.data);
     } catch (error) {
       console.error("Error uploading profile picture:", error);
     }

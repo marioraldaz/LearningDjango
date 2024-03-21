@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { uploadProfilePicture } from "../../api/users.api";
-import axios from "axios";
+import { GrayButton } from "../buttons/GrayButton";
 export function ProfileData({ profile, uploadProfilePicture }) {
   const [file, setFile] = useState(null);
+  const [showChangeProfileForm, setShowChangeProfileForm] = useState(false);
 
   if (!profile) {
     return <h1>Loading....</h1>;
@@ -27,10 +27,32 @@ export function ProfileData({ profile, uploadProfilePicture }) {
       <div className="w-full">
         <h3 className="text-2xl">{profile.username}</h3>
       </div>
-      <form onSubmit={handleSubmit}>
-        <input type="file" onChange={handleFileChange} />
-        <button type="submit">Upload</button>
-      </form>
+      <div className="">
+        <img
+          className=""
+          src={
+            profile.profile_picture
+              ? `http://localhost:8000${profile.profile_picture}`
+              : "../../../public/default_profile.jpg"
+          }
+        />
+      </div>
+      <div className="col-span-1"></div>
+      <div className="col-span-1">
+        <GrayButton
+          onClick={() => setShowChangeProfileForm(!showChangeProfileForm)}
+        >
+          Change Profile Picture:{" "}
+        </GrayButton>
+        {showChangeProfileForm && (
+          <form onSubmit={handleSubmit} className="m-2 gap-2 p-4">
+            <>
+              <input type="file" onChange={handleFileChange} />
+              <button type="submit">Upload</button>
+            </>
+          </form>
+        )}
+      </div>
     </div>
   );
 }
