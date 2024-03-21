@@ -78,4 +78,11 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
+        migrations.AddField(
+            model_name='userprofile',
+            name='activityLevel',
+            field=models.PositiveIntegerField(default=1),
+            preserve_default=False,
+        )
+
     ]

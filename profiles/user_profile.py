@@ -11,7 +11,7 @@ class UserProfile(models.Model):
     height = models.IntegerField(default=170)
     date_of_birth = models.DateField()
     
-    activityLevel = models.PositiveIntegerField(default=1)  # Adjust the field type and default value as needed
+    activityLevel = models.PositiveIntegerField(default=1) 
 
     
     def __str__(self):
