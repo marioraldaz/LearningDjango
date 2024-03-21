@@ -5,6 +5,7 @@ import { NavigationButton } from "../../components/buttons/NavigationButton";
 import { ProfileOptions } from "../../components/Profile/ProfileOptions";
 import { ProfileData } from "../../components/Profile/ProfileData";
 import fitnessCalculatorFunctions from "fitness-calculator";
+
 export function Profile() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
@@ -23,21 +24,20 @@ export function Profile() {
     );
   }, [context.user, profile]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    logoutUser();
-  };
   if (!profile) {
     return <h1>Loading....</h1>;
   }
 
   return (
-    <div className="p-4 grid grid-cols-2 w-full">
-      <div className="bg-red-200">
+    <div className="p-4 grid grid-cols-2 gap-4 w-full">
+      <div className="">
         <ProfileOptions profile={profile} />
       </div>
       <div className="col-span-1">
-        <ProfileData profile={profile} />
+        <ProfileData
+          profile={profile}
+          uploadProfilePicture={context.uploadProfilePicture}
+        />
       </div>
       <div className="w-[200px] p-4">
         <NavigationButton text={"Profile Details"} link={"/profile/details"} />

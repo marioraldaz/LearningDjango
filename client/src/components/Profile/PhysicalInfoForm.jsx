@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { GrayButton } from "../buttons/GrayButton";
-import { uploadProfilePicture } from "../../api/users.api";
 export const PhysicalInfoForm = ({ profile }) => {
   const [age, setAge] = useState(profile.age);
   const [height, setHeight] = useState(profile.height);
@@ -17,7 +16,7 @@ export const PhysicalInfoForm = ({ profile }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-wrap bg-neutral-900 p-4 rounded-lg space-y-4"
+      className="flex flex-wrap bg-neutral-900 w-full rounded-lg space-y-4 "
     >
       <div className="w-full flex gap-2">
         <label>Age:</label>

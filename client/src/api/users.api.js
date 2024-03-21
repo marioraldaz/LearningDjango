@@ -53,12 +53,13 @@ export const setCookie = (name, value, options = {}) => {
 };
 
 export const uploadProfilePicture = async (file) => {
+  e.preventDefault();
   const formData = new FormData();
   formData.append("profile_picture", file);
-
+  console.log(formData);
   try {
     const response = await axios.post(
-      "http://your-api-url/userprofiles/",
+      "http://localhost:8000/upload-profile-picture/",
       formData,
       {
         headers: {

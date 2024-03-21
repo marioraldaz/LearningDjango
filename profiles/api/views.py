@@ -182,3 +182,29 @@ def refresh_token(request):
         return Response({'access': access_token}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+from ..forms import ProfilePictureForm
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
+
+@api_view(['POST'])
+def upload_profile_picture(request):
+    if request.method == 'POST':
+        form = ProfilePictureForm(request.data, request.FILES)
+        if form.is_valid():
+            profile_id = request.data.get('profile_id')
+            try:
+                profile = UserProfile.objects.get(id=profile_id)
+            except UserProfile.DoesNotExist:
+                return Response({'success': False, 'message': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
+
+            profile.profile_picture = request.FILES['profile_picture']
+            profile.save()
+            return Response({'success': True, 'message': 'Profile picture uploaded successfully'})
+        else:
+            return Response({'success': False, 'message': 'Invalid form data'}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({'success': False, 'message': 'Invalid request method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
