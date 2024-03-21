@@ -18,6 +18,9 @@ export function ProfileData({ profile, uploadProfilePicture }) {
     setFile(e.target.files[0]);
   };
 
+  const closePwdForm = () => {
+    setChangePassword(false);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -58,7 +61,7 @@ export function ProfileData({ profile, uploadProfilePicture }) {
             Change Password
           </GrayButton>
         </div>
-        {changePassword && <ChangePassword />}
+        {changePassword && <ChangePassword closePwdForm={closePwdForm} />}
       </div>
       <div className="col-span-1">
         <div className="h-16 m-2">
