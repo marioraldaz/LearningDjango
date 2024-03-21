@@ -189,7 +189,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-
 @api_view(['POST'])
 def upload_profile_picture(request):
     if request.method == 'POST':
@@ -201,6 +200,12 @@ def upload_profile_picture(request):
             except UserProfile.DoesNotExist:
                 return Response({'success': False, 'message': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
 
+            # Check if profile already has a profile picture
+            if profile.profile_picture:
+                # Delete the previous profile picture from storage and database
+                profile.profile_picture.delete()
+
+            # Save the new profile picture
             profile.profile_picture = request.FILES['profile_picture']
             profile.save()
             return Response({'success': True, 'message': 'Profile picture uploaded successfully'})
@@ -208,3 +213,4 @@ def upload_profile_picture(request):
             return Response({'success': False, 'message': 'Invalid form data'}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({'success': False, 'message': 'Invalid request method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
