@@ -154,6 +154,8 @@ def get_profile(request):
                 profile_data = {
                     field.name: getattr(profile, field.name) for field in UserProfile._meta.fields
                 }
+                profile_picture_url = profile.profile_picture.url if profile.profile_picture else None
+                profile_data['profile_picture'] = profile_picture_url
 
                 return JsonResponse({'success': True, 'user': profile_data})
             except UserProfile.DoesNotExist:

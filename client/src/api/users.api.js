@@ -37,7 +37,7 @@ export function getCookie(name) {
   return cookieValue;
 }
 
-const setCookie = (name, value, options = {}) => {
+export const setCookie = (name, value, options = {}) => {
   const { expires, path } = options;
   let cookieString = `${name}=${value}`;
 
@@ -52,7 +52,7 @@ const setCookie = (name, value, options = {}) => {
   document.cookie = cookieString;
 };
 
-const uploadProfilePicture = async (file) => {
+export const uploadProfilePicture = async (file) => {
   const formData = new FormData();
   formData.append("profile_picture", file);
 
