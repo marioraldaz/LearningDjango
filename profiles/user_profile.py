@@ -11,7 +11,6 @@ class UserProfile(models.Model):
     height = models.IntegerField(default=170)
     date_of_birth = models.DateField()
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
-
     activityLevel = models.PositiveIntegerField(default=1) 
 
     
