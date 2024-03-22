@@ -224,7 +224,7 @@ def save_recipe(request):
             data = json.loads(request.body)
             recipe_id = data.get('recipe_id')
             profile_id = data.get('profile_id')
-            
+
             # Check if the recipe_id and profile_id are provided
             if recipe_id is None or profile_id is None:
                 return JsonResponse({'error': 'Missing data'}, status=400)
@@ -238,6 +238,30 @@ def save_recipe(request):
 
             # Return a success response
             return JsonResponse({'message': 'Recipe saved successfully'})
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+    else:
+        # Return an error for unsupported HTTP methods
+        return JsonResponse({'error': 'Method Not Allowed'}, status=405)
+
+def get_saved_recipes(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            profile_id = data.get('profile_id')
+
+            # Check if profile_id is provided
+            if profile_id is None:
+                return JsonResponse({'error': 'Missing profile_id'}, status=400)
+
+            # Query SavedRecipe model to get saved recipes for the profile_id
+            saved_recipes = SavedRecipe.objects.filter(profile_id=profile_id)
+
+            # Convert queryset to list of dictionaries for JSON response
+            recipes_data = [recipe.recipe_id for recipe in saved_recipes]
+
+            # Return the list of saved recipes as JSON response
+            return JsonResponse({'saved_recipes': recipes_data})
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON data'}, status=400)
     else:

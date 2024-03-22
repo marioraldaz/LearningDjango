@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   let [authTokens, setAuthTokens] = useState(null);
   let [loading, setLoading] = useState(true);
   let [csrftoken, setCsrfToken] = useState(null);
-
+  let [savedRecipes, setSavedRecipes] = useState(null);
   const navigate = useNavigate();
 
   let loginUser = async (e) => {
@@ -41,7 +41,6 @@ export const AuthProvider = ({ children }) => {
     if (response.data.success) {
       const token = response.data.token;
       const refreshToken = response.data.refresh_token;
-      console.log(response.data);
       setAuthTokens(token);
       setUser(response.data.user);
       Cookies.set("profileJWT", token, { secure: true, sameSite: "strict" });
@@ -107,7 +106,6 @@ export const AuthProvider = ({ children }) => {
         withCredentials: true,
       }
     );
-    console.log(response.data);
     if (response.data.success) {
       setAuthTokens(token);
       setUser(response.data.user);
@@ -116,28 +114,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    const csrfGot = Cookies.get("csrftoken");
-    setCsrfToken(csrfGot);
-
-    const profileToken = Cookies.get("profileJWT");
-    console.log("csrftoken", csrfGot, "jwt token", profileToken);
-
-    getProfileByToken(profileToken, csrfGot);
-
-    const REFRESH_INTERVAL = 1000 * 60 * 4;
-    let interval = setInterval(() => {
-      if (authTokens) {
-        //updateToken();
-      }
-    }, REFRESH_INTERVAL);
-
-    return () => clearInterval(interval);
-  }, []);
-
   const uploadProfilePicture = async (formData) => {
     try {
-      console.log(formData);
       const response = await axios.post(
         "http://localhost:8000/api/upload-profile-picture/",
         formData,
@@ -154,23 +132,69 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const saveRecipe = (recipe_id) => {
+  const saveRecipe = async (recipe_id) => {
     const formData = new FormData();
     formData.append("profile_id", user.id);
     formData.append("recipe_id", recipe_id);
-    console.log(user.id, recipe_id);
-    axios.post("http://localhost:8000/api/save-recipe", formData, {
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrftoken,
-      },
-      withCredentials: true,
-    });
+    const res = await axios.post(
+      "http://localhost:8000/api/save-recipe",
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrftoken,
+        },
+        withCredentials: true,
+      }
+    );
   };
+
+  const getSavedRecipes = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/get-saved-recipes",
+        { profile_id: user.id }, // Send the profile_id in the request body
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken, // Assuming csrftoken is defined in your context
+          },
+          withCredentials: true, // Include credentials for CSRF protection
+        }
+      );
+
+      if (response.data.saved_recipes) {
+        setSavedRecipes(response.data.saved_recipes); // Update state with fetched recipes
+      }
+      console.log(savedRecipes);
+    } catch (error) {
+      console.error("Error fetching saved recipes:", error);
+    }
+  };
+
+  useEffect(() => {
+    const csrfGot = Cookies.get("csrftoken");
+    setCsrfToken(csrfGot);
+    const profileToken = Cookies.get("profileJWT");
+    getProfileByToken(profileToken, csrfGot);
+    if (user) {
+      console.log("asdsad");
+      getSavedRecipes();
+    }
+    const REFRESH_INTERVAL = 1000 * 60 * 4;
+    let interval = setInterval(() => {
+      if (authTokens) {
+        //updateToken();
+      }
+    }, REFRESH_INTERVAL);
+
+    return () => clearInterval(interval);
+  }, [user.id]);
 
   let contextData = {
     user: user,
     authTokens: authTokens,
+    savedRecipes: savedRecipes,
     loginUser: loginUser,
     logoutUser: logoutUser,
     uploadProfilePicture: uploadProfilePicture,

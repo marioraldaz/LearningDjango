@@ -12,7 +12,7 @@ export function RecipePage() {
   const [recipe, setRecipe] = useState(null);
   const [showNutrition, setShowNutrition] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
-  const { saveRecipe } = useContext(AuthContext);
+  const { saveRecipe, savedRecipes } = useContext(AuthContext);
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
