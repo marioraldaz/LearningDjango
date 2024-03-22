@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   let [authTokens, setAuthTokens] = useState(null);
   let [loading, setLoading] = useState(true);
   let [csrftoken, setCsrfToken] = useState(null);
-  let [savedRecipes, setSavedRecipes] = useState(null);
+  let [savedRecipes, setSavedRecipes] = useState([]);
   const navigate = useNavigate();
 
   let loginUser = async (e) => {
@@ -153,22 +153,50 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/get-saved-recipes",
-        { profile_id: user.id }, // Send the profile_id in the request body
+        { profile_id: user.id },
         {
           headers: {
             "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.data.saved_recipes) {
+        setSavedRecipes(response.data.saved_recipes);
+      }
+    } catch (error) {
+      console.error("Error fetching saved recipes:", error);
+    }
+  };
+
+  const unSaveRecipe = async (recipe_id) => {
+    try {
+      const formData = new FormData();
+      formData.append("profile_id", user.id); // Assuming user.id is the profile ID
+      formData.append("recipe_id", recipe_id);
+
+      const response = await axios.post(
+        "http://localhost:8000/api/unsave-recipe",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Set content type for FormData
             "X-CSRFToken": csrftoken, // Assuming csrftoken is defined in your context
           },
           withCredentials: true, // Include credentials for CSRF protection
         }
       );
 
-      if (response.data.saved_recipes) {
-        setSavedRecipes(response.data.saved_recipes); // Update state with fetched recipes
+      if (response.data.success) {
+        // Optionally, handle success message or update state
+        console.log("Recipe unsaved successfully");
+      } else {
+        // Optionally, handle error message or update state
+        console.error("Error unsaving recipe:", response.data.error);
       }
-      console.log(savedRecipes);
     } catch (error) {
-      console.error("Error fetching saved recipes:", error);
+      console.error("Error unsaving recipe:", error);
     }
   };
 
@@ -178,7 +206,6 @@ export const AuthProvider = ({ children }) => {
     const profileToken = Cookies.get("profileJWT");
     getProfileByToken(profileToken, csrfGot);
     if (user) {
-      console.log("asdsad");
       getSavedRecipes();
     }
     const REFRESH_INTERVAL = 1000 * 60 * 4;
@@ -189,7 +216,7 @@ export const AuthProvider = ({ children }) => {
     }, REFRESH_INTERVAL);
 
     return () => clearInterval(interval);
-  }, [user.id]);
+  }, [user?.id]);
 
   let contextData = {
     user: user,
@@ -199,6 +226,7 @@ export const AuthProvider = ({ children }) => {
     logoutUser: logoutUser,
     uploadProfilePicture: uploadProfilePicture,
     saveRecipe: saveRecipe,
+    unSaveRecipe: unSaveRecipe,
   };
 
   return (

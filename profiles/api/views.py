@@ -267,3 +267,25 @@ def get_saved_recipes(request):
     else:
         # Return an error for unsupported HTTP methods
         return JsonResponse({'error': 'Method Not Allowed'}, status=405)
+    
+def unsave_recipe(request):
+    if request.method == 'POST':
+        try:
+            profile_id = request.POST.get('profile_id')
+            recipe_id = request.POST.get('recipe_id')
+
+            # Check if profile_id and recipe_id are provided
+            if profile_id is None or recipe_id is None:
+                return JsonResponse({'error': 'Missing data'}, status=400)
+
+            # Find the saved recipe entry and delete it
+            saved_recipe = SavedRecipe.objects.filter(profile_id=profile_id, recipe_id=recipe_id).first()
+            if saved_recipe:
+                saved_recipe.delete()
+                return JsonResponse({'success': True, 'message': 'Recipe unsaved successfully'})
+            else:
+                return JsonResponse({'error': 'Saved recipe not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Method Not Allowed'}, status=405)

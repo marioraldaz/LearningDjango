@@ -12,7 +12,8 @@ export function RecipePage() {
   const [recipe, setRecipe] = useState(null);
   const [showNutrition, setShowNutrition] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
-  const { saveRecipe, savedRecipes } = useContext(AuthContext);
+  const [saved, setSaved] = useState(false);
+  const { saveRecipe, savedRecipes, unSaveRecipe } = useContext(AuthContext);
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
@@ -25,7 +26,6 @@ export function RecipePage() {
         }
         return false;
       });
-      console.log(recipeFound);
       if (recipeFound === undefined && id) {
         const res = await getRecipeById(id);
         setRecipe(res);
@@ -33,10 +33,17 @@ export function RecipePage() {
       } else {
         setRecipe(recipeFound);
       }
+      setSaved(false);
+      savedRecipes.map((recipe) => {
+        console.log(String(recipe), id);
+        if (String(recipe) == id) {
+          setSaved(true);
+        }
+      });
     };
 
     fetchRecipe();
-  }, [id]); // Fetch recipe whenever ID or recipes array changes
+  }, [id, savedRecipes]); // Fetch recipe whenever ID or recipes array changes
 
   const toggleNutrition = () => {
     setShowNutrition(!showNutrition);
@@ -81,10 +88,28 @@ export function RecipePage() {
       </div>
       <div className="w-full flex flex-wrap gap-8">
         {/*second row*/}
+
         <div className="h-[60px] flex gap-4">
-          <GrayButton onClick={() => saveRecipe(recipe.id)}>
-            Save Recipe
-          </GrayButton>
+          {!saved && (
+            <GrayButton
+              onClick={() => {
+                saveRecipe(recipe.id);
+                setSaved(true);
+              }}
+            >
+              Save Recipe
+            </GrayButton>
+          )}
+          {saved && (
+            <GrayButton
+              onClick={() => {
+                unSaveRecipe(recipe.id);
+                setSaved(false);
+              }}
+            >
+              Unsave Recipe
+            </GrayButton>
+          )}
           <GrayButton onClick={addToBalance}>Log Recipe For Today</GrayButton>
           <GrayButton onClick={toggleNutrition}>
             {!showNutrition ? "Show Nutrition" : "Hide Nutrition"}
