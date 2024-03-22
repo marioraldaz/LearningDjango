@@ -11,6 +11,12 @@ export function Home() {
 
   return (
     <div className="mb-[650px] flex flex-wrap w-full text-green-600 text-4xl h-32 p-6">
+      <div className="video-container pointer-events-none">
+        <video autoPlay loop>
+          <source src="/brocoli.png" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
       <div className="w-full flex flex-wrap items-center justify-center">
         <h1 className="gradient-text text-center mb-6">
           Living Fast Needs Keeping Track

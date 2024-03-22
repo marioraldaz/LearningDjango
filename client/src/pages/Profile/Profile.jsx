@@ -29,7 +29,7 @@ export function Profile() {
   }
 
   return (
-    <div className="p-4 grid grid-cols-2 gap-4 w-full">
+    <div className="p-4 mt-4 overflow-hidden grid grid-cols-2 gap-4 w-full">
       <div className="">
         <ProfileOptions profile={profile} />
       </div>

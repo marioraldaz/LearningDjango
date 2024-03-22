@@ -33,7 +33,7 @@ export function ProfileData({ profile, uploadProfilePicture }) {
   };
 
   return (
-    <div className="grid grid-cols-2 w-full p-4 rounded-xl bg-neutral-800">
+    <div className="grid grid-cols-2 w-full p-4 rounded-xl border bg-neutral-900">
       <div className="col-span-1 flex flex-col gap-4">
         <h3 className="text-2xl">{profile.username}</h3>
         <h3 className="text-xl">
