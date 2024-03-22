@@ -1,8 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 class UserRecipe(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipe_id = models.IntegerField(unique=True)
+    profile_id = models.IntegerField()
     title = models.CharField(max_length=100)
     ingredients = models.TextField()
     instructions = models.TextField()

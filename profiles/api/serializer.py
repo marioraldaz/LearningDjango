@@ -3,7 +3,7 @@ from ..user_profile import UserProfile
 from ..food import Food
 from ..food_intake import UserFoodIntake
 from ..allergies import Allergy
-from ..savedRecipe import SavedRecipe
+from ..saved_recipes import SavedRecipe
 from ..user_recipe import UserRecipe
 
 class UserSerializer(serializers.ModelSerializer):
