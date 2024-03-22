@@ -22,9 +22,10 @@ export async function fetchIngredientsByName(name) {
 export async function getIngredientById(id, amount) {
   try {
     const response = await axios.request(
-      `https://api.spoonacular.com/food/ingredients/${id}/information?${amount}=1&apiKey=` +
+      `https://api.spoonacular.com/food/ingredients/${id}/information?amount=${amount}&apiKey=` +
         API_KEY
     );
+    console.log(response);
     return response;
   } catch (error) {
     console.error(error);

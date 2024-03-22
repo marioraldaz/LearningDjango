@@ -14,10 +14,10 @@ export function IngredientPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchRecipe = async () => {
-      const ingredientFound = ingredients.find((recipeToFind) => {
-        if (String(recipeToFind.id) == String(id)) {
-          return recipeToFind;
+    const fetchIngredient = async () => {
+      const ingredientFound = ingredients.find((ingredientToFind) => {
+        if (String(ingredientToFind.id) == String(id)) {
+          return ingredientToFind;
         }
         return false;
       });
@@ -33,7 +33,7 @@ export function IngredientPage() {
       }
     };
 
-    fetchRecipe();
+    fetchIngredient();
   }, [id]);
 
   const handleAmountChange = (e) => {
@@ -45,6 +45,7 @@ export function IngredientPage() {
   }
   return (
     <div className="flex flex-wrap p-8 items-center justify-center xl:items-start xl:justify-start">
+      {console.log(ingredient)}
       <h3 className="w-full gradient-text text-center text-3xl capitalize  mb-20">
         {ingredient.name}
       </h3>
@@ -67,14 +68,14 @@ export function IngredientPage() {
 
         <h3 className="text-2xl capitalize mt-[80px]">
           Price (For {ingredient.amount} {ingredient.name}):{"  "}
-          {ingredient.estimatedCost.value * amount}{" "}
-          {ingredient.estimatedCost.unit}
+          {ingredient.estimatedCost?.value * amount}{" "}
+          {ingredient.estimatedCost?.unit}
         </h3>
         <h3 className="text-2xl capitalize mt-[80px]">
           Nutrients (For {amount} {ingredient.name}):
         </h3>
         <ul className="overflow-y-scroll h-[300px] mt-[40px] w-full flex flex-col">
-          {ingredient.nutrition.nutrients.map((nutrient) => (
+          {ingredient.nutrition?.nutrients.map((nutrient) => (
             <ul
               key={nutrient.name}
               className="flex flex-row gap-4 w-full border p-4 odd:bg-rgb-rgb(0, 0, 0) even:bg-yellow-500 even:text-black"
