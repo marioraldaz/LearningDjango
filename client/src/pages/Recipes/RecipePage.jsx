@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { getRecipeById } from "../../api/recipes.api";
 import { useParams } from "react-router-dom";
 import { GrayButton } from "../../components/buttons/GrayButton";
 import { RecipeNutrition } from "../../components/recipes/RecipeNutrition";
 import { useSelector, useDispatch } from "react-redux";
 import { addRecipe } from "../../redux/recipesSlice";
+import AuthContext from "../../context/AuthContext";
 
 export function RecipePage() {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
   const [showNutrition, setShowNutrition] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
+  const { saveRecipe } = useContext(AuthContext);
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
@@ -43,7 +45,6 @@ export function RecipePage() {
   const toggleInstructions = () => {
     setShowInstructions(!showInstructions);
   };
-  const saveRecipe = () => {};
 
   const addToBalance = () => {};
 
@@ -81,7 +82,9 @@ export function RecipePage() {
       <div className="w-full flex flex-wrap gap-8">
         {/*second row*/}
         <div className="h-[60px] flex gap-4">
-          <GrayButton onClick={saveRecipe}>Save Recipe</GrayButton>
+          <GrayButton onClick={() => saveRecipe(recipe.id)}>
+            Save Recipe
+          </GrayButton>
           <GrayButton onClick={addToBalance}>Log Recipe For Today</GrayButton>
           <GrayButton onClick={toggleNutrition}>
             {!showNutrition ? "Show Nutrition" : "Hide Nutrition"}

@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 from profiles.api import views
 from rest_framework.documentation import include_docs_urls
-from .views import login, get_profile, refresh_token, upload_profile_picture
+from .views import login, get_profile, refresh_token, upload_profile_picture, save_recipe
 from django.urls import path
 from .views import MyTokenObtainPairView
 from rest_framework_simplejwt.views import TokenRefreshView
@@ -23,7 +23,7 @@ urlpatterns = [
     path("login/", login, name='login'),
     path("get_profile/", get_profile, name='login'),
     path('upload-profile-picture/', upload_profile_picture, name='upload_profile_picture'),
-
+    path('save-recipe', save_recipe, name="save_recipe")
 ]
 
 

@@ -154,12 +154,27 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const saveRecipe = (recipe_id) => {
+    const formData = new FormData();
+    formData.append("profile_id", user.id);
+    formData.append("recipe_id", recipe_id);
+    console.log(user.id, recipe_id);
+    axios.post("http://localhost:8000/api/save-recipe", formData, {
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken,
+      },
+      withCredentials: true,
+    });
+  };
+
   let contextData = {
     user: user,
     authTokens: authTokens,
     loginUser: loginUser,
     logoutUser: logoutUser,
     uploadProfilePicture: uploadProfilePicture,
+    saveRecipe: saveRecipe,
   };
 
   return (

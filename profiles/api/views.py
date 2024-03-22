@@ -214,3 +214,32 @@ def upload_profile_picture(request):
     else:
         return Response({'success': False, 'message': 'Invalid request method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+
+from ..saved_recipes import SavedRecipe
+@api_view(['POST'])
+
+def save_recipe(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            recipe_id = data.get('recipe_id')
+            profile_id = data.get('profile_id')
+            
+            # Check if the recipe_id and profile_id are provided
+            if recipe_id is None or profile_id is None:
+                return JsonResponse({'error': 'Missing data'}, status=400)
+
+            # Check if the recipe_id already exists
+            if SavedRecipe.objects.filter(recipe_id=recipe_id).exists():
+                return JsonResponse({'error': 'Recipe already saved'}, status=400)
+
+            # Save the recipe data into the SavedRecipe model
+            SavedRecipe.objects.create(recipe_id=recipe_id, profile_id=profile_id)
+
+            # Return a success response
+            return JsonResponse({'message': 'Recipe saved successfully'})
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+    else:
+        # Return an error for unsupported HTTP methods
+        return JsonResponse({'error': 'Method Not Allowed'}, status=405)
