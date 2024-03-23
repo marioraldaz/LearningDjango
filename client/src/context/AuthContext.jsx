@@ -2,6 +2,9 @@ import { createContext, useState, useEffect } from "react";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { getRecipeById } from "../api/recipes.api";
+import { getIngredientById } from "../api/ingredients.api";
+import { addIngredient } from "../redux/ingredientsSlice";
+
 import { getCookie } from "../api/users.api";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -211,6 +214,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const getIngredient = async (id, ingredients, dispatch) => {
+    const ingredientFound = ingredients.find((ingredientToFind) => {
+      if (String(ingredientToFind.id) == String(id)) {
+        return ingredientToFind;
+      }
+      return false;
+    });
+    if (ingredientFound === undefined && id) {
+      const res = await getIngredientById(id, 1);
+      const data = res.data;
+      console.log(data);
+      dispatch(addIngredient(data));
+      return data;
+    } else {
+      return ingredientFound;
+    }
+  };
+
   useEffect(() => {
     const csrfGot = Cookies.get("csrftoken");
     setCsrfToken(csrfGot);
@@ -238,6 +259,8 @@ export const AuthProvider = ({ children }) => {
     uploadProfilePicture: uploadProfilePicture,
     saveRecipe: saveRecipe,
     unSaveRecipe: unSaveRecipe,
+    getSavedRecipes: getSavedRecipes,
+    getIngredient: getIngredient,
   };
 
   return (

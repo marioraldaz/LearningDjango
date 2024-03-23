@@ -27,8 +27,7 @@ export async function getIngredientById(id, amount) {
       `https://api.spoonacular.com/food/ingredients/${id}/information?amount=${amount}&apiKey=` +
         API_KEY
     );
-    console.log(response);
-    return response;
+    return response.data;
   } catch (error) {
     console.error(error);
   }

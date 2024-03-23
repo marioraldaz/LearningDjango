@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getIngredient } from "../../redux/utils";
-
+import { AuthContext } from "../../context/AuthContext";
+import { useSelector, useDispatch } from "react-redux";
 export function IngredientPage() {
   const { id } = useParams();
   const [ingredient, setIngredient] = useState(null);
   const [amount, setAmount] = useState(1);
+  const { getIngredient } = useContext(AuthContext);
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setIngredient(getIngredient(id));
+    const searched = getIngredient(id, ingredients, dispatch);
+    setIngredient(searched);
   }, [id]);
 
   const handleAmountChange = (e) => {
