@@ -68,7 +68,7 @@ export function ProfileData({ profile, uploadProfilePicture }) {
           <GrayButton
             onClick={() => setShowChangeProfileForm(!showChangeProfileForm)}
           >
-            Change Profile Picture:{" "}
+            Change Profile Picture
           </GrayButton>
         </div>
         {showChangeProfileForm && (

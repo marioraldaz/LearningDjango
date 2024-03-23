@@ -238,7 +238,7 @@ export const AuthProvider = ({ children }) => {
     const profileToken = Cookies.get("profileJWT");
     getProfileByToken(profileToken, csrfGot);
     if (user) {
-      getSavedRecipes();
+      //getSavedRecipes();
     }
     const REFRESH_INTERVAL = 1000 * 60 * 4;
     let interval = setInterval(() => {
