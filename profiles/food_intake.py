@@ -1,16 +1,19 @@
-# models/user_food_intake.py
 from django.db import models
-from django.contrib.auth.models import User
-from .food import Food  # Import the Food model
+from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
-class UserFoodIntake(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    food = models.ForeignKey(Food, on_delete=models.CASCADE)
-    date = models.DateField()
-    serving_size = models.FloatField()
-    number_of_servings = models.FloatField()
-    # Add more fields as needed
-    
+class FoodIntake(models.Model):
+    MEAL_CHOICES = [
+        ('Breakfast', _('Breakfast')),
+        ('Lunch', _('Lunch')),
+        ('Dinner', _('Dinner')),
+        ('Snack', _('Snack')),
+    ]
+   
+    profile = models.ForeignKey('UserProfile', default=1, on_delete=models.CASCADE)
+    meal_type = models.CharField(
+        _('Meal Type'), max_length=20, choices=MEAL_CHOICES, default='Breakfast'
+    )
+    intake_date = models.DateField(_('Intake Date'), default=timezone.now)
     def __str__(self):
-        return f"{self.user.username} - {self.food.name} - {self.date}"
-    
+        return f"{self.profile.username}'s {self.get_meal_type_display()} on {self.intake_date}"

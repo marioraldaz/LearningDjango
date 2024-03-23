@@ -1,8 +1,8 @@
 from django.db import models
 
 class UserRecipe(models.Model):
-    recipe_id = models.IntegerField(unique=True)
-    profile_id = models.IntegerField()
+    recipe_id = models.IntegerField(unique=True, default=1)
+    profile_id = models.IntegerField(default=1)
     title = models.CharField(max_length=100)
     ingredients = models.TextField()
     instructions = models.TextField()

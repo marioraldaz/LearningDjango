@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from ..user_profile import UserProfile
 from ..food import Food
-from ..food_intake import UserFoodIntake
+from ..food_intake import FoodIntake
 from ..allergies import Allergy
 from ..saved_recipes import SavedRecipe
 from ..user_recipe import UserRecipe
@@ -16,9 +16,9 @@ class FoodSerializer(serializers.ModelSerializer):
         model = Food
         fields = '__all__'
 
-class UserFoodIntakeSerializer(serializers.ModelSerializer):
+class FoodIntakeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserFoodIntake
+        model = FoodIntake
         fields = '__all__'
 
 class AllergySerializer(serializers.ModelSerializer):
@@ -48,3 +48,25 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+    
+    
+    
+from ..food_intake import FoodIntake
+from ..food_intake_detail import FoodIntakeDetail
+
+class FoodIntakeDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FoodIntakeDetail
+        fields = '__all__'  # You can specify specific fields if needed
+
+class FoodIntakeSerializer(serializers.ModelSerializer):
+    intake_details = FoodIntakeDetailSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = FoodIntake
+        fields = ['id', 'profile', 'meal_type', 'intake_date', 'intake_details']
+
+class FoodIntakeDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FoodIntakeDetail
+        fields = '__all__'

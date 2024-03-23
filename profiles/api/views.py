@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from..user_profile import UserProfile
 from..food import Food
-from..food_intake import UserFoodIntake
+from..food_intake import FoodIntake
 from..allergies import Allergy
 from..saved_recipes import SavedRecipe
 from..user_recipe import UserRecipe
@@ -16,7 +16,7 @@ from django.http import JsonResponse
 from.serializer import (
     UserSerializer,
     FoodSerializer,
-    UserFoodIntakeSerializer,
+    FoodIntakeSerializer,
     AllergySerializer,
     SavedRecipeSerializer,
     UserRecipeSerializer
@@ -30,6 +30,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
+from .views_food_intake import *
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
@@ -63,9 +64,9 @@ class FoodViewSet(viewsets.ModelViewSet):
     serializer_class = FoodSerializer
 
 
-class UserFoodIntakeViewSet(viewsets.ModelViewSet):
-    queryset = UserFoodIntake.objects.all()
-    serializer_class = UserFoodIntakeSerializer
+class FoodIntakeViewSet(viewsets.ModelViewSet):
+    queryset = FoodIntake.objects.all()
+    serializer_class = FoodIntakeSerializer
 
 
 class AllergyViewSet(viewsets.ModelViewSet):
@@ -289,3 +290,4 @@ def unsave_recipe(request):
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Method Not Allowed'}, status=405)
+    
