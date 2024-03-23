@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getIngredientById } from "../../api/ingredients.api";
 import { useParams } from "react-router-dom";
-import { GrayButton } from "../../components/buttons/GrayButton";
 import { useSelector, useDispatch } from "react-redux";
 import { addIngredient } from "../../redux/ingredientsSlice";
 

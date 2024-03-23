@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { getRecipeById } from "../api/recipes.api";
 import { getCookie } from "../api/users.api";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -162,8 +163,17 @@ export const AuthProvider = ({ children }) => {
           withCredentials: true,
         }
       );
+
       if (response.data.saved_recipes) {
-        setSavedRecipes(response.data.saved_recipes);
+        const recipesIds = response.data.saved_recipes;
+        const recipes = await Promise.all(
+          recipesIds.map(async (recipe_id) => {
+            const recipe = await getRecipeById(recipe_id);
+            return recipe;
+          })
+        );
+        setSavedRecipes(recipes);
+        console.log(recipes);
       }
     } catch (error) {
       console.error("Error fetching saved recipes:", error);

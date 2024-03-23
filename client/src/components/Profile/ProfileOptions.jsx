@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { PhysicalInfoForm } from "./PhysicalInfoForm";
-import { GrayButton } from "../buttons/GrayButton";
-import { NavigationButton } from "../buttons/NavigationButton";
+import { GrayButton } from "../Buttons/GrayButton";
+import { NavigationButton } from "../Buttons/NavigationButton";
 
 export function ProfileOptions({ profile }) {
   const [openPhysicalForm, setOpenPhysicalForm] = useState(false);

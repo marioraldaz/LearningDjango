@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { GrayButton } from "../buttons/GrayButton";
+import { GrayButton } from "../Buttons/GrayButton";
 export const PhysicalInfoForm = ({ profile }) => {
   const [age, setAge] = useState(profile.age);
   const [height, setHeight] = useState(profile.height);
