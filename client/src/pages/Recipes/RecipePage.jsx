@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { getRecipeById } from "../../api/recipes.api";
 import { useParams } from "react-router-dom";
-import { GrayButton } from "../../components/buttons/GrayButton";
-import { RecipeNutrition } from "../../components/recipes/RecipeNutrition";
+import { GrayButton } from "../../components/Buttons/GrayButton";
+import { RecipeNutrition } from "../../components/Recipes/RecipeNutrition";
 import { useSelector, useDispatch } from "react-redux";
 import { addRecipe } from "../../redux/recipesSlice";
 import AuthContext from "../../context/AuthContext";

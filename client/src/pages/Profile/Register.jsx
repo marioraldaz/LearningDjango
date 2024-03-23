@@ -4,6 +4,7 @@ export function Register() {
   const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     const formData = new FormData(e.target);
     const newUser = Object.fromEntries(formData.entries());
     try {

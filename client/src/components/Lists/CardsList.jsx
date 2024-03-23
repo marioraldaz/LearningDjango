@@ -1,7 +1,6 @@
 import React from "react";
 
-export function SearchResults({ products }) {
-  console.log(products);
+export function CardsList({ products }) {
   return (
     <div className="flex flex-wrap justify-center items-center mt-[100px] p-[10px]">
       {products.map((product) => (

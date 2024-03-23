@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState, require } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import { NavigationButton } from "../../components/buttons/NavigationButton";
+import { NavigationButton } from "../../components/Buttons/NavigationButton";
 import { ProfileOptions } from "../../components/Profile/ProfileOptions";
 import { ProfileData } from "../../components/Profile/ProfileData";
 import fitnessCalculatorFunctions from "fitness-calculator";
@@ -47,6 +47,7 @@ export function Profile() {
           </button>
         </form>
       </div>
+      <div className="w-[200px] p-4"></div>
     </div>
   );
 }

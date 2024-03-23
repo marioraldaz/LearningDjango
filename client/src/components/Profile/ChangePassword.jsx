@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { GrayButton } from "../buttons/GrayButton";
+import { GrayButton } from "../Buttons/GrayButton";
 
 export function ChangePassword({ closePwdForm }) {
   const [oldPassword, setOldPassword] = useState("");
