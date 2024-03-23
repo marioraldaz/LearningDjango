@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GrayButton } from "../Buttons/GrayButton";
-
-export function ChangePassword({ closePwdForm }) {
+import axios from "axios";
+export function ChangePassword({ closePwdForm, id, changePassword }) {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -13,27 +13,21 @@ export function ChangePassword({ closePwdForm }) {
     if (newPassword !== confirmPassword) {
       newError += " Passwords do not match. ";
     }
+    setError(newError);
   }, [newPassword, confirmPassword]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const newUser = Object.fromEntries(formData.entries());
+
+    const formData = new FormData();
+    formData.append("old_password", oldPassword);
+    formData.append("new_password", newPassword);
+    formData.append("id", id);
     try {
-      const res = await changePassword(oldPassword, newPassword);
-      if (res.status === 201) {
-        setError(NULL);
-      }
+      const response = await changePassword(formData);
+      setError(response.data.message);
     } catch (error) {
-      let errorsEntries = [];
-      error.response
-        ? (errorsEntries = Object.entries(error.response.data))
-        : "";
-      let errorMessage = "";
-      errorsEntries.forEach((error) => {
-        errorMessage += `${error[0]}: ${error[1]}\n`;
-      });
-      setError(errorMessage);
+      setError(error.response.data.message);
     }
   };
   return (
@@ -42,7 +36,7 @@ export function ChangePassword({ closePwdForm }) {
         <h2 className="text-3xl w-full text-center mt-8">Change Password</h2>
         <button
           onClick={() => closePwdForm()}
-          class="absolute top-0 right-0 p-4 bg-red-800 rounded-lg m-1 cursor-pointer"
+          className="absolute top-0 right-0 p-4 bg-red-800 rounded-lg m-1 cursor-pointer"
         >
           <img className="" src="../../../public/whiteX.svg" />
         </button>
@@ -50,7 +44,7 @@ export function ChangePassword({ closePwdForm }) {
           <h3 className="text-2xl">Current Password:</h3>
           <input
             type="password"
-            className="text-black text-center"
+            className="text-black text-center ml-auto"
             placeholder="  Type Current Password Here"
             value={oldPassword}
             onChange={(e) => setOldPassword(e.target.value)}
@@ -60,24 +54,24 @@ export function ChangePassword({ closePwdForm }) {
           <h3 className="text-2xl">New Password:</h3>
           <input
             type="password"
-            className="text-black text-center"
+            className="text-black text-center ml-auto"
             placeholder="   Type New Password Here"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />
         </div>
         <div className=" flex gap-4 mt-12">
-          <h3 className="text-2xl">Repeat New Password:</h3>
+          <h3 className="text-2xl">Repeat Password:</h3>
 
           <input
             type="password"
-            className="text-black text-center"
+            className="text-black text-center ml-auto"
             placeholder="   Repeat New Password Here"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
-        <div className="">{error}</div>
+        <div className="text-center w-full text-red-800 m-8">{error}</div>
         <div className="w-full flex flex-col mt-auto items-center justify-center p-8 ">
           <div className="h-16 w-[200px] rounded-lg border">
             <GrayButton onClick={handleSubmit}>Change Password</GrayButton>

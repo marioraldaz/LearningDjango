@@ -123,6 +123,7 @@ def login(request):
         password = data.get('password')
         try:
             profile = UserProfile.objects.get(username=username)
+            print(password, profile.password)
             if check_password(password, profile.password):
                 # Generate JWT token
                 token = jwt.encode({'user_id': profile.id}, settings.SECRET_KEY, algorithm='HS256')
@@ -290,4 +291,31 @@ def unsave_recipe(request):
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Method Not Allowed'}, status=405)
-    
+
+
+def change_password(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('id') 
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+
+        try:
+            user_profile = UserProfile.objects.get(pk=user_id)
+            print(old_password)
+        except UserProfile.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'User profile not found.'}, status=400)
+
+        # Check if old password matches the current user's password
+        if check_password(old_password, user_profile.password):
+            # Hash the new password
+            hashed_password = make_password(new_password)
+
+            # Update user's password
+            user_profile.password = hashed_password
+            user_profile.save()
+
+            return JsonResponse({'success': True, 'message': 'Password changed successfully.'})
+        else:
+            return JsonResponse({'success': False, 'message': 'Incorrect old password.'}, status=400)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=400)

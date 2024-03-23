@@ -28,6 +28,7 @@ urlpatterns = [
     path('unsave-recipe', unsave_recipe, name="unsave_recipe"),
     path('food-intake/', food_intake_list, name='food_intake_list'),
     path('food-intake/<int:pk>/', food_intake_detail, name='food_intake_detail'),
+    path('change-password/', change_password, name='change_password'),
 ]
 
 

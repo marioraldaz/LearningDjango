@@ -187,7 +187,7 @@ export const AuthProvider = ({ children }) => {
   const unSaveRecipe = async (recipe_id) => {
     try {
       const formData = new FormData();
-      formData.append("profile_id", user.id); // Assuming user.id is the profile ID
+      formData.append("profile_id", user.id);
       formData.append("recipe_id", recipe_id);
 
       const response = await axios.post(
@@ -195,18 +195,16 @@ export const AuthProvider = ({ children }) => {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data", // Set content type for FormData
-            "X-CSRFToken": csrftoken, // Assuming csrftoken is defined in your context
+            "Content-Type": "multipart/form-data",
+            "X-CSRFToken": csrftoken,
           },
-          withCredentials: true, // Include credentials for CSRF protection
+          withCredentials: true,
         }
       );
 
       if (response.data.success) {
-        // Optionally, handle success message or update state
         console.log("Recipe unsaved successfully");
       } else {
-        // Optionally, handle error message or update state
         console.error("Error unsaving recipe:", response.data.error);
       }
     } catch (error) {
@@ -250,6 +248,20 @@ export const AuthProvider = ({ children }) => {
     return () => clearInterval(interval);
   }, [user?.id]);
 
+  const changePassword = async (formData) => {
+    const response = await axios.post(
+      "http://localhost:8000/api/change-password/",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "X-CSRFToken": csrftoken,
+        },
+        withCredentials: true,
+      }
+    );
+  };
+
   let contextData = {
     user: user,
     authTokens: authTokens,
@@ -261,6 +273,7 @@ export const AuthProvider = ({ children }) => {
     unSaveRecipe: unSaveRecipe,
     getSavedRecipes: getSavedRecipes,
     getIngredient: getIngredient,
+    changePassword: changePassword,
   };
 
   return (

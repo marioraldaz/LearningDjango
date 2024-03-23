@@ -6,10 +6,10 @@ import {
   calculateAge,
 } from "../../api/fitCalcu.api";
 import { ChangePassword } from "./ChangePassword";
-export function ProfileData({ profile, uploadProfilePicture }) {
+export function ProfileData({ profile, uploadProfilePicture, changePassword }) {
   const [file, setFile] = useState(null);
   const [showChangeProfileForm, setShowChangeProfileForm] = useState(false);
-  const [changePassword, setChangePassword] = useState(false);
+  const [changePasswordForm, setChangePasswordForm] = useState(false);
 
   if (!profile) {
     return <h1>Loading....</h1>;
@@ -19,7 +19,7 @@ export function ProfileData({ profile, uploadProfilePicture }) {
   };
 
   const closePwdForm = () => {
-    setChangePassword(false);
+    setChangePasswordForm(false);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,11 +57,17 @@ export function ProfileData({ profile, uploadProfilePicture }) {
       </div>
       <div className="col-span-1">
         <div className="h-16 m-2">
-          <GrayButton onClick={() => setChangePassword(true)}>
+          <GrayButton onClick={() => setChangePasswordForm(true)}>
             Change Password
           </GrayButton>
         </div>
-        {changePassword && <ChangePassword closePwdForm={closePwdForm} />}
+        {changePasswordForm && (
+          <ChangePassword
+            closePwdForm={closePwdForm}
+            id={profile.id}
+            changePassword={changePassword}
+          />
+        )}
       </div>
       <div className="col-span-1">
         <div className="h-16 m-2">

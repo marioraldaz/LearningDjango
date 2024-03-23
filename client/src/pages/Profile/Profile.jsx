@@ -37,6 +37,7 @@ export function Profile() {
         <ProfileData
           profile={profile}
           uploadProfilePicture={context.uploadProfilePicture}
+          changePassword={context.changePassword}
         />
       </div>
       <div className="col-span-1 p-4 border rounded-lg">
