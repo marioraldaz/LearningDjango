@@ -1,14 +1,18 @@
 import React from "react";
 
 export function CardsList({ products }) {
+  if (!products) {
+    return <h1>Loading....</h1>;
+  }
   return (
-    <div className="flex flex-wrap justify-center items-center mt-[100px] p-[10px]">
+    <div className="flex flex-wrap h-full justify-center items-center p-[10px]">
+      {console.log(products)}
       {products.map((product) => (
         <a
           href={
             product.name ? `/Ingredient/${product.id}` : `/Recipe/${product.id}`
           }
-          key={product.name}
+          key={product.id}
         >
           <div className="m-2 bg-white h-[360px] w-[350px] border rounded-lg border-gray-300 text-black">
             <h1 className="text-center mt-5 mb-[30px]">

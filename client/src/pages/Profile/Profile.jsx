@@ -4,6 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { NavigationButton } from "../../components/Buttons/NavigationButton";
 import { ProfileOptions } from "../../components/Profile/ProfileOptions";
 import { ProfileData } from "../../components/Profile/ProfileData";
+import { CardsList } from "../../components/Lists/CardsList";
 import fitnessCalculatorFunctions from "fitness-calculator";
 
 export function Profile() {
@@ -11,20 +12,19 @@ export function Profile() {
   const [profile, setProfile] = useState(null);
   const context = useContext(AuthContext);
   const logout = context.logoutUser;
-
   useEffect(() => {
     setProfile(context.user);
-    console.log(context.user);
     const myCalorieNeeds = fitnessCalculatorFunctions.calorieNeeds(
       "male",
       22,
       176,
       73,
+
       "active"
     );
   }, [context.user, profile]);
 
-  if (!profile) {
+  if (!profile || !context.savedRecipes) {
     return <h1>Loading....</h1>;
   }
 
@@ -39,6 +39,13 @@ export function Profile() {
           uploadProfilePicture={context.uploadProfilePicture}
         />
       </div>
+      <div className="col-span-1 p-4 border rounded-lg">
+        <h2 className="text-2xl">My Saved Recipes</h2>
+        <div className="flex flex-row overflow-x-scroll">
+          <CardsList products={context.savedRecipes} />
+        </div>
+      </div>
+
       <div className="w-[200px] p-4">
         <NavigationButton text={"Profile Details"} link={"/profile/details"} />
         <form onSubmit={logout} className="mt-4">
@@ -47,7 +54,6 @@ export function Profile() {
           </button>
         </form>
       </div>
-      <div className="w-[200px] p-4"></div>
     </div>
   );
 }

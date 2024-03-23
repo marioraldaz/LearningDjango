@@ -92,7 +92,11 @@ export function Searchbar({ filters, fetchByName, complexFetch }) {
           />
         </div>
       )}
-      {products.length > 0 && <CardsList products={products} />}
+      {products.length > 0 && (
+        <div className="flex flex-wrap">
+          <CardsList products={products} />
+        </div>
+      )}
       {products.length <= 0 && searched && <h1>No Results Found :c</h1>}
     </form>
   );

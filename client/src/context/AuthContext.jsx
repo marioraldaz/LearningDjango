@@ -169,11 +169,12 @@ export const AuthProvider = ({ children }) => {
         const recipes = await Promise.all(
           recipesIds.map(async (recipe_id) => {
             const recipe = await getRecipeById(recipe_id);
+            console.log(recipe);
             return recipe;
           })
         );
-        setSavedRecipes(recipes);
         console.log(recipes);
+        setSavedRecipes(recipes);
       }
     } catch (error) {
       console.error("Error fetching saved recipes:", error);

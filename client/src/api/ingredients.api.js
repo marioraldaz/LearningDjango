@@ -1,5 +1,6 @@
 import axios from "axios";
-const API_KEY = "72ed57384eea4e91b4390428f582a705";
+const API_KEY2 = "72ed57384eea4e91b4390428f582a705";
+const API_KEY = "8347c0a7ffc148269108ea0a29f1509e";
 
 const IngredientsApi = axios.create({
   baseURL: "http://localhost:800/food/ingredients",
@@ -13,6 +14,7 @@ export async function fetchIngredientsByName(name) {
         "&query=" +
         name
     );
+    console.log(response.data);
     return response.data.results;
   } catch (error) {
     console.error(error);

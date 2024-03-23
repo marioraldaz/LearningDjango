@@ -1,38 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { getIngredientById } from "../../api/ingredients.api";
 import { useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { addIngredient } from "../../redux/ingredientsSlice";
+import { getIngredient } from "../../redux/utils";
 
 export function IngredientPage() {
   const { id } = useParams();
   const [ingredient, setIngredient] = useState(null);
   const [amount, setAmount] = useState(1);
 
-  const ingredients = useSelector((state) => state.ingredients.ingredients);
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    const fetchIngredient = async () => {
-      const ingredientFound = ingredients.find((ingredientToFind) => {
-        if (String(ingredientToFind.id) == String(id)) {
-          return ingredientToFind;
-        }
-        return false;
-      });
-      if (ingredientFound === undefined && id) {
-        const res = await getIngredientById(id, 1);
-        const data = res.data;
-        console.log(res);
-
-        setIngredient(data);
-        dispatch(addIngredient(data));
-      } else {
-        setIngredient(ingredientFound);
-      }
-    };
-
-    fetchIngredient();
+    setIngredient(getIngredient(id));
   }, [id]);
 
   const handleAmountChange = (e) => {
