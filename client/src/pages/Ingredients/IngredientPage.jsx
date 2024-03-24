@@ -14,6 +14,7 @@ export function IngredientPage() {
   useEffect(() => {
     const fetchIngredient = async () => {
       const searched = await getIngredient(id, ingredients, dispatch);
+      console.log(searched);
       setIngredient(searched);
     };
     fetchIngredient();
@@ -64,7 +65,7 @@ export function IngredientPage() {
             >
               <li className="w-1/2">
                 <div>
-                  {`${(nutrient.name * amount).toFixed(2)}: Amount: ${(
+                  {`${nutrient.name}  Amount: ${(
                     nutrient.amount * amount
                   ).toFixed(2)}`}
                 </div>
