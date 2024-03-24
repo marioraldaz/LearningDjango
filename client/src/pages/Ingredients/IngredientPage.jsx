@@ -6,14 +6,18 @@ export function IngredientPage() {
   const { id } = useParams();
   const [ingredient, setIngredient] = useState(null);
   const [amount, setAmount] = useState(1);
+  const [fetched, setFetched] = useState(false);
   const { getIngredient } = useContext(AuthContext);
   const ingredients = useSelector((state) => state.ingredients.ingredients);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const searched = getIngredient(id, ingredients, dispatch);
-    setIngredient(searched);
-  }, [id]);
+    const fetchIngredient = async () => {
+      const searched = await getIngredient(id, ingredients, dispatch);
+      setIngredient(searched);
+    };
+    fetchIngredient();
+  }, []);
 
   const handleAmountChange = (e) => {
     setAmount(parseInt(e.target.value, 10));
@@ -24,7 +28,6 @@ export function IngredientPage() {
   }
   return (
     <div className="flex flex-wrap p-8 items-center justify-center xl:items-start xl:justify-start">
-      {console.log(ingredient)}
       <h3 className="w-full gradient-text text-center text-3xl capitalize  mb-20">
         {ingredient.name}
       </h3>

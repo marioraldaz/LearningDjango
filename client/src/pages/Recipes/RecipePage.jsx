@@ -13,7 +13,8 @@ export function RecipePage() {
   const [showNutrition, setShowNutrition] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [saved, setSaved] = useState(false);
-  const { saveRecipe, savedRecipes, unSaveRecipe } = useContext(AuthContext);
+  const { saveRecipe, savedRecipes, unSaveRecipe, setSavedRecipes } =
+    useContext(AuthContext);
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
@@ -95,6 +96,7 @@ export function RecipePage() {
               onClick={() => {
                 saveRecipe(recipe.id);
                 setSaved(true);
+                setSavedRecipes([...savedRecipes, recipe]);
               }}
             >
               Save Recipe
@@ -105,6 +107,11 @@ export function RecipePage() {
               onClick={() => {
                 unSaveRecipe(recipe.id);
                 setSaved(false);
+                setSavedRecipes(
+                  savedRecipes.filter(
+                    (savedRecipe) => savedRecipe.id !== recipe.id
+                  )
+                );
               }}
             >
               Unsave Recipe

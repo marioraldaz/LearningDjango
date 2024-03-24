@@ -214,14 +214,14 @@ export const AuthProvider = ({ children }) => {
 
   const getIngredient = async (id, ingredients, dispatch) => {
     const ingredientFound = ingredients.find((ingredientToFind) => {
-      if (String(ingredientToFind.id) == String(id)) {
+      if (String(ingredientToFind?.id) == String(id)) {
         return ingredientToFind;
       }
       return false;
     });
     if (ingredientFound === undefined && id) {
       const res = await getIngredientById(id, 1);
-      const data = res.data;
+      const data = res;
       dispatch(addIngredient(data));
       return data;
     } else {
@@ -237,7 +237,7 @@ export const AuthProvider = ({ children }) => {
       const profile = await getProfileByToken(profileToken, csrfGot);
       setUser(profile);
       if (profile) {
-        return await getSavedRecipes(profile.id, csrfGot);
+        //return await getSavedRecipes(profile.id, csrfGot);
       }
     };
     fetchData();
@@ -285,6 +285,7 @@ export const AuthProvider = ({ children }) => {
     getSavedRecipes: getSavedRecipes,
     getIngredient: getIngredient,
     changePassword: changePassword,
+    setSavedRecipes: setSavedRecipes,
   };
 
   return (
