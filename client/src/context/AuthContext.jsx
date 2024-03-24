@@ -113,6 +113,7 @@ export const AuthProvider = ({ children }) => {
     if (response.data.success) {
       setAuthTokens(token);
       setUser(response.data.user);
+      return response.data.user;
     } else {
       return response.data.error;
     }
@@ -153,11 +154,11 @@ export const AuthProvider = ({ children }) => {
     );
   };
 
-  const getSavedRecipes = async () => {
+  const getSavedRecipes = async (id, csrftoken) => {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/get-saved-recipes",
-        { profile_id: user.id },
+        { profile_id: id },
         {
           headers: {
             "Content-Type": "application/json",
@@ -172,11 +173,10 @@ export const AuthProvider = ({ children }) => {
         const recipes = await Promise.all(
           recipesIds.map(async (recipe_id) => {
             const recipe = await getRecipeById(recipe_id);
-            console.log(recipe);
             return recipe;
           })
         );
-        console.log(recipes);
+
         setSavedRecipes(recipes);
       }
     } catch (error) {
@@ -222,7 +222,6 @@ export const AuthProvider = ({ children }) => {
     if (ingredientFound === undefined && id) {
       const res = await getIngredientById(id, 1);
       const data = res.data;
-      console.log(data);
       dispatch(addIngredient(data));
       return data;
     } else {
@@ -231,13 +230,25 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      const csrfGot = Cookies.get("csrftoken");
+      setCsrfToken(csrfGot);
+      const profileToken = Cookies.get("profileJWT");
+      const profile = await getProfileByToken(profileToken, csrfGot);
+      setUser(profile);
+      if (profile) {
+        return await getSavedRecipes(profile.id, csrfGot);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     const csrfGot = Cookies.get("csrftoken");
     setCsrfToken(csrfGot);
     const profileToken = Cookies.get("profileJWT");
     getProfileByToken(profileToken, csrfGot);
-    if (user) {
-      //getSavedRecipes();
-    }
+
     const REFRESH_INTERVAL = 1000 * 60 * 4;
     let interval = setInterval(() => {
       if (authTokens) {
