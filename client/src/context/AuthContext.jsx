@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
   let [savedRecipes, setSavedRecipes] = useState([]);
   const navigate = useNavigate();
 
+  //PROFILES
   let loginUser = async (e) => {
     e.preventDefault();
     const formData = {
@@ -154,6 +155,10 @@ export const AuthProvider = ({ children }) => {
     );
   };
 
+  const getRecipe = async (id) => {
+    ç;
+  };
+
   const getSavedRecipes = async (id, csrftoken) => {
     try {
       const response = await axios.post(
@@ -229,6 +234,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const addFoodIntake = async (formData) => {
+    const response = await axios.post(
+      "http://localhost:8000/api/unsave-recipe",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "X-CSRFToken": csrftoken,
+        },
+        withCredentials: true,
+      }
+    );
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const csrfGot = Cookies.get("csrftoken");
@@ -237,7 +256,7 @@ export const AuthProvider = ({ children }) => {
       const profile = await getProfileByToken(profileToken, csrfGot);
       setUser(profile);
       if (profile) {
-        //return await getSavedRecipes(profile.id, csrfGot);
+        //return await getSavedRecipes(profile.id, csrfGot); PERSIST DOES NOT WORK
       }
     };
     fetchData();
@@ -286,6 +305,7 @@ export const AuthProvider = ({ children }) => {
     getIngredient: getIngredient,
     changePassword: changePassword,
     setSavedRecipes: setSavedRecipes,
+    addFoodIntake: addFoodIntake,
   };
 
   return (

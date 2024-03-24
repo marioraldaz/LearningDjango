@@ -13,8 +13,13 @@ export function RecipePage() {
   const [showNutrition, setShowNutrition] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [saved, setSaved] = useState(false);
-  const { saveRecipe, savedRecipes, unSaveRecipe, setSavedRecipes } =
-    useContext(AuthContext);
+  const {
+    saveRecipe,
+    savedRecipes,
+    unSaveRecipe,
+    setSavedRecipes,
+    addFoodIntake,
+  } = useContext(AuthContext);
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
@@ -44,7 +49,7 @@ export function RecipePage() {
     };
 
     fetchRecipe();
-  }, [id, savedRecipes]); // Fetch recipe whenever ID or recipes array changes
+  }, [id, savedRecipes]);
 
   const toggleNutrition = () => {
     setShowNutrition(!showNutrition);
@@ -54,7 +59,14 @@ export function RecipePage() {
     setShowInstructions(!showInstructions);
   };
 
-  const addToBalance = () => {};
+  const addToDaily = () => {
+    const formData = new FormData();
+    formData.append("meal_type", "Breakfast");
+    formData.append("intake_date", "2024-03-25");
+    formData.append("profile_id", 1);
+
+    addFoodIntake(formData);
+  };
 
   if (!recipe) {
     return <div>Loading...</div>;
@@ -89,7 +101,6 @@ export function RecipePage() {
       </div>
       <div className="w-full flex flex-wrap gap-8">
         {/*second row*/}
-
         <div className="h-[60px] flex gap-4">
           {!saved && (
             <GrayButton

@@ -17,4 +17,5 @@ class FoodIntake(models.Model):
     intake_date = models.DateField(_('Intake Date'), default=timezone.now)
 
     class Meta:
-        db_table = 'profiles_foodintake'  # Specify the correct table name here
+        db_table = 'profiles_foodintake' 
+        
