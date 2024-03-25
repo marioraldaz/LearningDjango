@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   let [savedRecipes, setSavedRecipes] = useState([]);
   const navigate = useNavigate();
 
-  //PROFILES
+  ////////////////////////////////////////////////////////////////////////   PROFILE FUNCTIONS         ////////////////////////////////
   let loginUser = async (e) => {
     e.preventDefault();
     const formData = {
@@ -138,6 +138,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const changePassword = async (formData) => {
+    const response = await axios.post(
+      "http://localhost:8000/api/change-password/",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "X-CSRFToken": csrftoken,
+        },
+        withCredentials: true,
+      }
+    );
+  };
+
+  ////////////////////////////////////////////////////////////////////////////////////////// RECIPES FUNCTIONS////////////////////////////////
+
   const saveRecipe = async (recipe_id) => {
     const formData = new FormData();
     formData.append("profile_id", user.id);
@@ -153,10 +169,6 @@ export const AuthProvider = ({ children }) => {
         withCredentials: true,
       }
     );
-  };
-
-  const getRecipe = async (id) => {
-    ç;
   };
 
   const getSavedRecipes = async (id, csrftoken) => {
@@ -217,6 +229,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const getRecipe = async (id) => {
+    const recipeFound = recipes.find((recipeToFind) => {
+      if (String(recipeToFind?.id) == String(id)) {
+        return recipeToFind;
+      }
+      return false;
+    });
+    if (recipeFound === undefined && id) {
+      const res = await getRecipeById(id, 1);
+      const data = res;
+      dispatch(addRecipe(data));
+      return data;
+    } else {
+      return recipeFound;
+    }
+  };
+
+  ///////////////////////////////////////////////////////////////////////////// recipes FUNCTIONS//////////////////////////////////////////////////
   const getIngredient = async (id, ingredients, dispatch) => {
     const ingredientFound = ingredients.find((ingredientToFind) => {
       if (String(ingredientToFind?.id) == String(id)) {
@@ -233,6 +263,8 @@ export const AuthProvider = ({ children }) => {
       return ingredientFound;
     }
   };
+
+  //////////////////////////////////////////////////////////////////////////// FOOD INTAKE FUNCTIONS //////////////////////////////////////////////////////////////////////////
 
   const addFoodIntake = async (formData) => {
     const response = await axios.post(
@@ -277,20 +309,6 @@ export const AuthProvider = ({ children }) => {
 
     return () => clearInterval(interval);
   }, [user?.id]);
-
-  const changePassword = async (formData) => {
-    const response = await axios.post(
-      "http://localhost:8000/api/change-password/",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "X-CSRFToken": csrftoken,
-        },
-        withCredentials: true,
-      }
-    );
-  };
 
   let contextData = {
     user: user,
