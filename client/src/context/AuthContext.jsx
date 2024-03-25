@@ -5,6 +5,8 @@ import { getRecipeById } from "../api/recipes.api";
 import { getIngredientById } from "../api/ingredients.api";
 import { addIngredient } from "../redux/ingredientsSlice";
 import { addRecipe } from "../redux/recipesSlice";
+import { useSelector, useDispatch } from "react-redux";
+
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -170,7 +172,7 @@ export const AuthProvider = ({ children }) => {
     );
   };
 
-  const getSavedRecipes = async (id, csrftoken) => {
+  const getSavedRecipes = async (id, csrftoken, recipes, dispatch) => {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/get-saved-recipes",
@@ -183,17 +185,15 @@ export const AuthProvider = ({ children }) => {
           withCredentials: true,
         }
       );
-
       if (response.data.saved_recipes) {
         const recipesIds = response.data.saved_recipes;
-        const recipes = await Promise.all(
+        const foundRecipes = await Promise.all(
           recipesIds.map(async (recipe_id) => {
-            const recipe = await getRecipeById(recipe_id);
+            const recipe = getRecipe(recipe_id, recipes, dispatch);
             return recipe;
           })
         );
-
-        setSavedRecipes(recipes);
+        setSavedRecipes(foundRecipes);
       }
     } catch (error) {
       console.error("Error fetching saved recipes:", error);
@@ -235,7 +235,7 @@ export const AuthProvider = ({ children }) => {
     if (dataFound === undefined && id) {
       const res = await getDataById(id, 1);
       const data = res;
-      dispatch(addData(data));
+      dispatch(await addData(data));
       return data;
     } else {
       return dataFound;
@@ -243,11 +243,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getRecipe = async (id, recipes, dispatch) => {
-    return fetchData(id, recipes, getRecipeById, dispatch, addRecipe);
+    return await fetchData(id, recipes, getRecipeById, dispatch, addRecipe);
   };
 
   const getIngredient = async (id, ingredients, dispatch) => {
-    return fetchData(
+    return await fetchData(
       id,
       ingredients,
       getIngredientById,
@@ -272,6 +272,8 @@ export const AuthProvider = ({ children }) => {
     );
   };
 
+  const recipes = useSelector((state) => state.recipes.recipes);
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
       const csrfGot = Cookies.get("csrftoken");
@@ -280,7 +282,7 @@ export const AuthProvider = ({ children }) => {
       const profile = await getProfileByToken(profileToken, csrfGot);
       setUser(profile);
       if (profile) {
-        //return await getSavedRecipes(profile.id, csrfGot); PERSIST DOES NOT WORK
+        return await getSavedRecipes(profile.id, csrfGot, recipes, dispatch);
       }
     };
     fetchData();
@@ -317,6 +319,7 @@ export const AuthProvider = ({ children }) => {
     setSavedRecipes: setSavedRecipes,
     addFoodIntake: addFoodIntake,
     getRecipe: getRecipe,
+    savedRecipes: savedRecipes,
   };
 
   return (

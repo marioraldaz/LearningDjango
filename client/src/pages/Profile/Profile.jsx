@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { NavigationButton } from "../../components/Buttons/NavigationButton";
 import { ProfileOptions } from "../../components/Profile/ProfileOptions";
 import { ProfileData } from "../../components/Profile/ProfileData";
-import { CardsList } from "../../components/Lists/CardsList";
+import { SavedRecipes } from "../../components/Profile/SavedRecipes";
 import fitnessCalculatorFunctions from "fitness-calculator";
 
 export function Profile() {
@@ -12,6 +12,7 @@ export function Profile() {
   const [profile, setProfile] = useState(null);
   const context = useContext(AuthContext);
   const logout = context.logoutUser;
+  const savedRecipes = context.savedRecipes;
   useEffect(() => {
     setProfile(context.user);
     const myCalorieNeeds = fitnessCalculatorFunctions.calorieNeeds(
@@ -41,16 +42,7 @@ export function Profile() {
         />
       </div>
       <div className="col-span-1 p-4 border rounded-lg">
-        <h2 className="text-2xl">My Saved Recipes</h2>
-        {context.savedRecipes.length > 0 ? (
-          <div className="flex flex-row overflow-x-scroll">
-            <CardsList products={context.savedRecipes} />
-          </div>
-        ) : (
-          <h3 className="text-2xl gradient-text mt-2">
-            Your Saved Recipes Will Appear Here
-          </h3>
-        )}
+        <SavedRecipes profile={profile} />
       </div>
 
       <div className="w-[200px] p-4">
