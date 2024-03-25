@@ -12,7 +12,6 @@ export function Profile() {
   const [profile, setProfile] = useState(null);
   const context = useContext(AuthContext);
   const logout = context.logoutUser;
-  const savedRecipes = context.savedRecipes;
   useEffect(() => {
     setProfile(context.user);
     const myCalorieNeeds = fitnessCalculatorFunctions.calorieNeeds(
@@ -42,7 +41,7 @@ export function Profile() {
         />
       </div>
       <div className="col-span-1 p-4 border rounded-lg">
-        <SavedRecipes profile={profile} />
+        <SavedRecipes savedRecipes={context.savedRecipes} />
       </div>
 
       <div className="w-[200px] p-4">

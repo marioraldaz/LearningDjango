@@ -5,8 +5,7 @@ export function CardsList({ products }) {
     return <h1>Loading....</h1>;
   }
   return (
-    <div className="flex flex-wrap h-full justify-center items-center p-[10px]">
-      {console.log(products)}
+    <>
       {products.map((product) => (
         <a
           href={
@@ -31,6 +30,6 @@ export function CardsList({ products }) {
           </div>
         </a>
       ))}
-    </div>
+    </>
   );
 }

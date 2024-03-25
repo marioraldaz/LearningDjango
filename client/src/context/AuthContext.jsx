@@ -275,6 +275,7 @@ export const AuthProvider = ({ children }) => {
   const recipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log("triggered", savedRecipes);
     const fetchData = async () => {
       const csrfGot = Cookies.get("csrftoken");
       setCsrfToken(csrfGot);
