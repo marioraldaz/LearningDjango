@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import { getRecipeById } from "../../api/recipes.api";
 import { useParams } from "react-router-dom";
 import { GrayButton } from "../../components/Buttons/GrayButton";
 import { RecipeNutrition } from "../../components/Recipes/RecipeNutrition";
 import { useSelector, useDispatch } from "react-redux";
-import { addRecipe } from "../../redux/recipesSlice";
 import AuthContext from "../../context/AuthContext";
 
 export function RecipePage() {
@@ -19,37 +17,19 @@ export function RecipePage() {
     unSaveRecipe,
     setSavedRecipes,
     addFoodIntake,
+    getRecipe,
   } = useContext(AuthContext);
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchRecipe = async () => {
-      const recipeFound = recipes.find((recipeToFind) => {
-        if (String(recipeToFind.id) == String(id)) {
-          return recipeToFind;
-        }
-        return false;
-      });
-      if (recipeFound === undefined && id) {
-        const res = await getRecipeById(id);
-        setRecipe(res);
-        dispatch(addRecipe(res));
-      } else {
-        setRecipe(recipeFound);
-      }
-      setSaved(false);
-      savedRecipes.map((recipe) => {
-        console.log(String(recipe), id);
-        if (String(recipe) == id) {
-          setSaved(true);
-        }
-      });
+    const fetchIngredient = async () => {
+      const searched = await getRecipe(id, recipes, dispatch);
+      setRecipe(searched);
     };
-
-    fetchRecipe();
-  }, [id, savedRecipes]);
+    fetchIngredient();
+  }, []);
 
   const toggleNutrition = () => {
     setShowNutrition(!showNutrition);
@@ -128,7 +108,7 @@ export function RecipePage() {
               Unsave Recipe
             </GrayButton>
           )}
-          <GrayButton onClick={addToBalance}>Log Recipe For Today</GrayButton>
+          <GrayButton onClick={addToDaily}>Log Recipe For Today</GrayButton>
           <GrayButton onClick={toggleNutrition}>
             {!showNutrition ? "Show Nutrition" : "Hide Nutrition"}
           </GrayButton>

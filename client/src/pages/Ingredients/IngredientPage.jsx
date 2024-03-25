@@ -6,7 +6,6 @@ export function IngredientPage() {
   const { id } = useParams();
   const [ingredient, setIngredient] = useState(null);
   const [amount, setAmount] = useState(1);
-  const [fetched, setFetched] = useState(false);
   const { getIngredient } = useContext(AuthContext);
   const ingredients = useSelector((state) => state.ingredients.ingredients);
   const dispatch = useDispatch();
@@ -14,7 +13,6 @@ export function IngredientPage() {
   useEffect(() => {
     const fetchIngredient = async () => {
       const searched = await getIngredient(id, ingredients, dispatch);
-      console.log(searched);
       setIngredient(searched);
     };
     fetchIngredient();
