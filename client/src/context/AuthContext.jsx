@@ -24,6 +24,8 @@ export const AuthProvider = ({ children }) => {
   let [loading, setLoading] = useState(true);
   let [csrftoken, setCsrfToken] = useState(null);
   let [savedRecipes, setSavedRecipes] = useState([]);
+  const [recipesForDaily, setRecipesForDaily] = useState([]);
+  const [ingredientsForDaily, setIngredientsForDaily] = useState([]);
   const navigate = useNavigate();
 
   ////////////////////////////////////////////////////////////////////////   PROFILE FUNCTIONS         ////////////////////////////////
@@ -321,7 +323,10 @@ export const AuthProvider = ({ children }) => {
     setSavedRecipes: setSavedRecipes,
     addFoodIntake: addFoodIntake,
     getRecipe: getRecipe,
-    savedRecipes: savedRecipes,
+    ingredientsForDaily: ingredientsForDaily,
+    recipesForDaily: recipesForDaily,
+    setIngredientsForDaily: setIngredientsForDaily,
+    setRecipesForDaily: setRecipesForDaily,
   };
 
   return (
