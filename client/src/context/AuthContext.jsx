@@ -259,6 +259,7 @@ export const AuthProvider = ({ children }) => {
   //////////////////////////////////////////////////////////////////////////// FOOD INTAKE FUNCTIONS //////////////////////////////////////////////////////////////////////////
 
   const addFoodIntake = async (formData) => {
+    console.log(formData);
     const response = await axios.post(
       "http://localhost:8000/api/unsave-recipe",
       formData,

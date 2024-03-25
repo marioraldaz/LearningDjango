@@ -54,6 +54,7 @@ def save_food_intake(request):
         meal_type = intake_data.get('meal_type')
         intake_date = intake_data.get('intake_date')
         profile_id = intake_data.get('profile_id')
+        print(intake_date, profile_id, intake_data, meal_type)
         if intake_date is None:
                 intake_date = timezone.now()
         try:

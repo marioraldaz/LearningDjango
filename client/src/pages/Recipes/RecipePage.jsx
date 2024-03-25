@@ -4,6 +4,7 @@ import { GrayButton } from "../../components/Buttons/GrayButton";
 import { RecipeNutrition } from "../../components/Recipes/RecipeNutrition";
 import { useSelector, useDispatch } from "react-redux";
 import AuthContext from "../../context/AuthContext";
+import { NavigationButton } from "../../components/Buttons/NavigationButton";
 
 export function RecipePage() {
   const { id } = useParams();
@@ -11,21 +12,14 @@ export function RecipePage() {
   const [showNutrition, setShowNutrition] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [saved, setSaved] = useState(false);
-  const {
-    saveRecipe,
-    savedRecipes,
-    unSaveRecipe,
-    setSavedRecipes,
-    addFoodIntake,
-    getRecipe,
-  } = useContext(AuthContext);
+  const { saveRecipe, savedRecipes, unSaveRecipe, setSavedRecipes, getRecipe } =
+    useContext(AuthContext);
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchIngredient = async () => {
-      console.log("Fetching");
       const searched = await getRecipe(id, recipes, dispatch);
       setRecipe(searched);
       savedRecipes.map((savedRecipe) => {
@@ -43,15 +37,6 @@ export function RecipePage() {
 
   const toggleInstructions = () => {
     setShowInstructions(!showInstructions);
-  };
-
-  const addToDaily = () => {
-    const formData = new FormData();
-    formData.append("meal_type", "Breakfast");
-    formData.append("intake_date", "2024-03-25");
-    formData.append("profile_id", 1);
-
-    addFoodIntake(formData);
   };
 
   if (!recipe) {
@@ -114,7 +99,10 @@ export function RecipePage() {
               Unsave Recipe
             </GrayButton>
           )}
-          <GrayButton onClick={addToDaily}>Log Recipe For Today</GrayButton>
+          <div className="w-[500px] flex h-[60px] items-center">
+            <NavigationButton text={"Save As Intake"} link={"/FoodIntake"} />
+          </div>
+
           <GrayButton onClick={toggleNutrition}>
             {!showNutrition ? "Show Nutrition" : "Hide Nutrition"}
           </GrayButton>
@@ -150,7 +138,7 @@ export function RecipePage() {
             </div>
           )}
           <ol className="list-decimal">
-            {recipe.analyzedInstructions[0].steps.map((instruction, index) => (
+            {recipe.analyzedInstructions[0]?.steps.map((instruction, index) => (
               <li
                 key={index}
                 className="flex flex-row gap-4 items-center p-4 border-b border-gray-500 border-b-0.5 "
