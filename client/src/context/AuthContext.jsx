@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getRecipeById } from "../api/recipes.api";
 import { getIngredientById } from "../api/ingredients.api";
 import { addIngredient } from "../redux/ingredientsSlice";
-
-import { getCookie } from "../api/users.api";
+import { addRecipe } from "../redux/recipesSlice";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -152,7 +151,7 @@ export const AuthProvider = ({ children }) => {
     );
   };
 
-  ////////////////////////////////////////////////////////////////////////////////////////// RECIPES FUNCTIONS////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////// RECIPES AND INGREDIENTS FUNCTIONS////////////////////////////////
 
   const saveRecipe = async (recipe_id) => {
     const formData = new FormData();
@@ -229,39 +228,32 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const getRecipe = async (id) => {
-    const recipeFound = recipes.find((recipeToFind) => {
-      if (String(recipeToFind?.id) == String(id)) {
-        return recipeToFind;
-      }
-      return false;
-    });
-    if (recipeFound === undefined && id) {
-      const res = await getRecipeById(id, 1);
+  const fetchData = async (id, dataArray, getDataById, dispatch, addData) => {
+    const dataFound = dataArray.find(
+      (dataToFind) => String(dataToFind?.id) === String(id)
+    );
+    if (dataFound === undefined && id) {
+      const res = await getDataById(id, 1);
       const data = res;
-      dispatch(addRecipe(data));
+      dispatch(addData(data));
       return data;
     } else {
-      return recipeFound;
+      return dataFound;
     }
   };
 
-  ///////////////////////////////////////////////////////////////////////////// recipes FUNCTIONS//////////////////////////////////////////////////
+  const getRecipe = async (id, recipes, dispatch) => {
+    return fetchData(id, recipes, getRecipeById, dispatch, addRecipe);
+  };
+
   const getIngredient = async (id, ingredients, dispatch) => {
-    const ingredientFound = ingredients.find((ingredientToFind) => {
-      if (String(ingredientToFind?.id) == String(id)) {
-        return ingredientToFind;
-      }
-      return false;
-    });
-    if (ingredientFound === undefined && id) {
-      const res = await getIngredientById(id, 1);
-      const data = res;
-      dispatch(addIngredient(data));
-      return data;
-    } else {
-      return ingredientFound;
-    }
+    return fetchData(
+      id,
+      ingredients,
+      getIngredientById,
+      dispatch,
+      addIngredient
+    );
   };
 
   //////////////////////////////////////////////////////////////////////////// FOOD INTAKE FUNCTIONS //////////////////////////////////////////////////////////////////////////
@@ -324,6 +316,7 @@ export const AuthProvider = ({ children }) => {
     changePassword: changePassword,
     setSavedRecipes: setSavedRecipes,
     addFoodIntake: addFoodIntake,
+    getRecipe: getRecipe,
   };
 
   return (
