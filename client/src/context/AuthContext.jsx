@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
   let [loading, setLoading] = useState(true);
   let [csrftoken, setCsrfToken] = useState(null);
   let [savedRecipes, setSavedRecipes] = useState([]);
+  const [currentRecipe, setCurrentRecipe] = useState(null);
   const [recipesForDaily, setRecipesForDaily] = useState([]);
   const [ingredientsForDaily, setIngredientsForDaily] = useState([]);
   const navigate = useNavigate();
@@ -327,8 +328,10 @@ export const AuthProvider = ({ children }) => {
     recipesForDaily: recipesForDaily,
     setIngredientsForDaily: setIngredientsForDaily,
     setRecipesForDaily: setRecipesForDaily,
+    currentRecipe: currentRecipe,
+    setCurrentRecipe: setCurrentRecipe,
   };
-
+  useEffect(() => {}, [setCurrentRecipe, currentRecipe]);
   return (
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
   );

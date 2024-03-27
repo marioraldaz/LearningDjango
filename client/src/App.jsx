@@ -36,7 +36,7 @@ function App() {
                   <Route path="/Profile" element={<Profile />} />
                   <Route path="/RequireAuth" element={<RequireAuth />} />
                   <Route path="/Recipe/:id" element={<RecipePage />} />
-                  <Route path="/FoodIntake" element={<FoodIntake />} />
+                  <Route path="/FoodIntake/:add" element={<FoodIntake />} />
                 </Routes>
               </div>
               <Footer />

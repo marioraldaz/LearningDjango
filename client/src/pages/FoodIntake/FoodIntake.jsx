@@ -3,17 +3,32 @@ import { AuthContext } from "../../context/AuthContext";
 import { NavigationButton } from "../../components/Buttons/NavigationButton";
 import { GrayButton } from "../../components/Buttons/GrayButton";
 import { CardsList } from "../../components/Lists/CardsList.jsx";
+import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
 export function FoodIntake() {
   const [formData, setFormData] = useState({
     meal_type: "Breakfast",
     intake_date: null,
     profile_id: null,
   });
-  const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
-  const { addFoodIntake, user, getIngredient } = useContext(AuthContext);
+  const [recipeToAdd, setRecipeToAdd] = useState([]);
+  const { addFoodIntake, user, getRecipe } = useContext(AuthContext);
+  const { add } = useParams();
+  const recipes = useSelector((state) => state.recipes.recipes);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getRecipeToAdd = async () => {
+      setRecipeToAdd(await getRecipe(add, recipes, dispatch));
+    };
+    getRecipeToAdd();
+  }, [add]);
 
   const handleSubmit = (e) => {
+    history.push("/FoodIntake");
+
     e.preventDefault();
     addFoodIntake(formData);
   };
@@ -31,20 +46,25 @@ export function FoodIntake() {
     <div className="h-full overflow-hidden gap-8 tex-center text-xl m-12 flex bg-neutral-900 items-center justify-center">
       <div className="">
         <form className="flex flex-col gap-4 mb-8" onSubmit={handleSubmit}>
-          <h3 className="text-3xl gradient-text mb-4">Log Your Meal</h3>
-          <div className="flex gap-4">
-            <label htmlFor="meal_type">Type:</label>
-            <select
-              name="meal_type"
-              className="text-black flex gap-4"
-              value={formData.meal_type}
-              onChange={handleInputChange}
-            >
-              <option value="Breakfast">Breakfast</option>
-              <option value="Lunch">Lunch</option>
-              <option value="Dinner">Dinner</option>
-              <option value="Snack">Snack</option>
-            </select>
+          <h3 className="text-3xl gradient-text text-center mt-8 mb-4">
+            Log Your Meal
+          </h3>
+          <div className="grid grid-cols-2 gap-4">
+            <CardsList products={[recipeToAdd]} />
+            <div className="flex gap-4 items-center justify-center">
+              <label htmlFor="meal_type">Type:</label>
+              <select
+                name="meal_type"
+                className="text-black h-8"
+                value={formData.meal_type}
+                onChange={handleInputChange}
+              >
+                <option value="Breakfast">Breakfast</option>
+                <option value="Lunch">Lunch</option>
+                <option value="Dinner">Dinner</option>
+                <option value="Snack">Snack</option>
+              </select>
+            </div>
           </div>
 
           <div className="">

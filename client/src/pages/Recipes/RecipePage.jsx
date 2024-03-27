@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import { GrayButton } from "../../components/Buttons/GrayButton";
 import { RecipeNutrition } from "../../components/Recipes/RecipeNutrition";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,8 +12,15 @@ export function RecipePage() {
   const [showNutrition, setShowNutrition] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [saved, setSaved] = useState(false);
-  const { saveRecipe, savedRecipes, unSaveRecipe, setSavedRecipes, getRecipe } =
-    useContext(AuthContext);
+  const {
+    saveRecipe,
+    savedRecipes,
+    unSaveRecipe,
+    setSavedRecipes,
+    getRecipe,
+    setCurrentRecipe,
+    currentRecipe,
+  } = useContext(AuthContext);
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
@@ -100,7 +107,10 @@ export function RecipePage() {
             </GrayButton>
           )}
           <div className="w-[500px] flex h-[60px] items-center">
-            <NavigationButton text={"Save As Intake"} link={"/FoodIntake"} />
+            <NavigationButton
+              link={"/FoodIntake/" + recipe.id}
+              text={"Add To Daily"}
+            />
           </div>
 
           <GrayButton onClick={toggleNutrition}>
