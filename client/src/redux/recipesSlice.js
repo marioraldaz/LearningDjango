@@ -1,19 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   recipes: [],
 };
 
 const recipesSlice = createSlice({
-  name: 'recipes',
+  name: "recipes",
   initialState,
   reducers: {
     addRecipe(state, action) {
-        console.log(action)
-      state.recipes.push(action.payload);
+      if (action.payload) {
+        state.recipes.push(action.payload);
+      }
     },
     removeRecipe(state, action) {
-      state.recipes = state.recipes.filter(recipe => recipe.id !== action.payload.id);
+      state.recipes = state.recipes.filter(
+        (recipe) => recipe.id !== action.payload.id
+      );
     },
   },
 });
