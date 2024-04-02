@@ -14,7 +14,6 @@ export function IntakeForm({ recipeToAdd }) {
 
     e.preventDefault();
     addFoodIntake(formData);
-    console.log(persistRecipes);
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;

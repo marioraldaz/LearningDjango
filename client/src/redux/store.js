@@ -36,11 +36,11 @@ const store = configureStore({
 
 const persistor = persistStore(store);
 
-const emptyPersistor = async () => {
+const purgePersistor = async () => {
   persistor.pause();
   persistor.flush().then(() => {
     return persistor.purge();
   });
 };
 
-export { store, persistor, emptyPersistor };
+export { store, persistor, purgePersistor };

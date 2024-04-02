@@ -10,7 +10,12 @@ const recipesSlice = createSlice({
   reducers: {
     addRecipe(state, action) {
       if (action.payload) {
-        state.recipes.push(action.payload);
+        const found = state.recipes.find(
+          (recipe) => recipe.id === action.payload.id
+        );
+        if (!found) {
+          state.recipes.push(action.payload);
+        }
       }
     },
     removeRecipe(state, action) {
