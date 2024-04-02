@@ -12,6 +12,7 @@ from django.utils import timezone
 def food_intake_list(request):
     if request.method == 'GET':
         food_intakes = FoodIntake.objects.all()
+        print(food_intakes)
         serializer = FoodIntakeSerializer(food_intakes, many=True)
         return Response(serializer.data)
     
