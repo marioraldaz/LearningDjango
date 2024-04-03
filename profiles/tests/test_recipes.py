@@ -1,23 +1,5 @@
 import pytest
-from django.urls import reverse
 from ..user_recipe import UserRecipe
-from ..user_profile import UserProfile
-
-@pytest.fixture
-@pytest.mark.django_db
-def create_user_profile():
-    user_profile = UserProfile.objects.create(
-        username='test_user',
-        password='test_password',
-        gender='Male', 
-        email='test@example.com',
-        weight=70,
-        height=180,
-        date_of_birth='2000-01-01',
-        activityLevel=1
-    )
-    yield user_profile
-    user_profile.delete()  # Clean up after the test
     
 @pytest.mark.django_db
 def test_user_recipe_complex(create_user_profile):
