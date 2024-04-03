@@ -1,4 +1,3 @@
-
 from django.core.exceptions import ValidationError
 
 def validate_positive_float(value):
@@ -11,6 +10,7 @@ def validate_positive_float(value):
         )
 
     if float_value < 0:
+        print(f"Invalid value detected: {value}")
         raise ValidationError(
             'Value must be a positive float',
             params={'value': value},

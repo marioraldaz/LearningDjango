@@ -7,7 +7,7 @@ from ..utils.validators import validate_positive_float
     (0, None),    # Zero is considered a positive float in this context
     (-0.1, ValidationError),  # Negative float should raise ValidationError
     ("string", ValidationError),  # Non-float value should raise ValidationError
-    (-3.0, ValidationError),  # Another negative float should raise ValidationError
+    (-500.0, ValidationError),  # Another negative float should raise ValidationError
 ])
 def test_validate_positive_float(value, expected_exception):
     if expected_exception is not None:
