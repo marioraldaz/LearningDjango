@@ -16,3 +16,4 @@ class ProfileFactory(factory.django.DjangoModelFactory):
     height = factory.Faker('random_int', min=150, max=200)  # Random height between 150 and 200
     date_of_birth = factory.Faker('date_of_birth')  # Random date of birth
     activityLevel = factory.Faker('random_int', min=1, max=5)  # Random activity level between 1 and 5
+    
