@@ -8,16 +8,16 @@ class UserDaily(models.Model):
     profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     date = models.DateField()
     total_calories_consumed = models.FloatField(
-        validators=[validate_positive_float],default=0.0
+        validators=[validate_positive_float, MinValueValidator(0)],default=0.0
         )
     total_protein_consumed = models.FloatField(
-        validators=[validate_positive_float],default=0.0
+        validators=[validate_positive_float, MinValueValidator(0)],default=0.0
         )
     total_fat_consumed = models.FloatField(
-        validators=[validate_positive_float],default=0.0
+        validators=[validate_positive_float, MinValueValidator(0)],default=0.0
         )
     total_carbohydrates_consumed = models.FloatField(
-        validators=[validate_positive_float],default=0.0
+        validators=[validate_positive_float, MinValueValidator(0)],default=0.0
         )
 
     def __str__(self):

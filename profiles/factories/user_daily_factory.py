@@ -17,3 +17,14 @@ class UserDailyFactory(factory.django.DjangoModelFactory):
     total_fat_consumed = fake.random_int(min=20, max=100)  # Random integer between 20 and 100
     total_carbohydrates_consumed = fake.random_int(min=100, max=300)  # Random integer between 100 and 300
     
+
+class UserDailyNegativeValuesFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = UserDaily
+
+    profile = factory.SubFactory(ProfileFactory)
+    date = fake.date_this_year()
+    total_calories_consumed = fake.random_int(min=-1000, max=-1)  # Negative value
+    total_protein_consumed = fake.random_int(min=-1000, max=-1)  # Negative value
+    total_fat_consumed = fake.random_int(min=-1000, max=-1)  # Negative value
+    total_carbohydrates_consumed = fake.random_int(min=-1000, max=-1)  # Negative value
