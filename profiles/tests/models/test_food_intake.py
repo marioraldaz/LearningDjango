@@ -1,6 +1,7 @@
 import pytest
 from django.urls import reverse
 from ...food_intake import FoodIntake
+from ...factories.food_intake_factory import FoodIntakeFactory
 
 
 @pytest.mark.django_db
@@ -61,3 +62,11 @@ def test_save_food_intake(client, create_user_profile):
     print(response.content)
     assert response.status_code == 200
     assert FoodIntake.objects.filter(meal_type='Breakfast').exists()
+    
+
+
+@pytest.mark.django_db
+def test_food_intake_creation():
+    intake = FoodIntakeFactory()
+    assert FoodIntake.objects.count() == 1
+    assert intake.profile is not None
