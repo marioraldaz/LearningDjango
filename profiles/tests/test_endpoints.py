@@ -4,11 +4,11 @@ from ..factories.profile_factory import ProfileFactory
 from django.utils import timezone
 from ..factories.food_intake_factory import FoodIntakeFactory
 from django.shortcuts import HttpResponse
-
+from ..food_intake import FoodIntake
 @pytest.mark.django_db
 def test_save_food_intake(client):
     user_profile = ProfileFactory()  # Create a user profile using the factory
-    url = reverse('save_food_intake')  # Assuming 'save_food_intake' is the name of your URL pattern
+    url = reverse('save_food_intake') 
     intake_data = {
         'meal_type': 'Breakfast',
         'intake_date': timezone.now().date(),  # Use today's date
@@ -40,8 +40,7 @@ def test_food_intake_list(client):
     assert response.status_code == HttpResponse.status_code
 
     # Check other assertions as needed based on your view's behavior
-    assert len(response.content) > 0  # Assuming the response has content
-    # Add more assertions as needed
+    assert len(response.content) > 0 
 
 @pytest.mark.django_db
 def test_food_intake_detail(client):
@@ -50,6 +49,29 @@ def test_food_intake_detail(client):
 
     # Get the URL for the food_intake_detail view with the food intake's pk
     url = reverse('food_intake_detail', kwargs={'pk': food_intake.pk})
+
+    # Make a GET request to the URL using the test client
+    response = client.get(url)
+
+    # Check that the response status code is 200 OK
+    assert response.status_code == HttpResponse.status_code
+
+    assert len(response.content) > 0  # Assuming the response has content
+
+@pytest.mark.django_db
+def test_food_intake_list_monkey(client, monkeypatch):
+    # Create some fake FoodIntake instances using the factory
+    food_intakes = FoodIntakeFactory.create_batch(5)
+
+    # Define a mock function to replace FoodIntake.objects.all()
+    def mock_food_intake_all():
+        return food_intakes
+
+    # Patch the FoodIntake.objects.all() method with the mock function
+    monkeypatch.setattr(FoodIntake.objects, 'all', mock_food_intake_all)
+
+    # Get the URL for the food_intake_list view
+    url = reverse('food_intake_list')
 
     # Make a GET request to the URL using the test client
     response = client.get(url)
