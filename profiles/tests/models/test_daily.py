@@ -1,11 +1,11 @@
 import pytest
 from django.core.exceptions import ValidationError
-from ..factories.user_daily_factory import UserDailyFactory, UserDailyNegativeValuesFactory
+from ...factories.user_daily_factory import UserDailyFactory, UserDailyNegativeValuesFactory
 from datetime import date 
-from ..user_profile import UserProfile
-from ..user_daily import UserDaily
-from ..factories.profile_factory import ProfileFactory  # Import your ProfileFactory
-from ..utils.validators import validate_positive_float  # Import the validator function
+from ...user_profile import UserProfile
+from ...user_daily import UserDaily
+from ...factories.profile_factory import ProfileFactory  # Import your ProfileFactory
+from ...utils.validators import validate_positive_float  # Import the validator function
 
 
 @pytest.mark.django_db
