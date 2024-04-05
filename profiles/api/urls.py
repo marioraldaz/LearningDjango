@@ -17,7 +17,7 @@ router.register(r'userrecipe', views.UserRecipeViewSet, 'userrecipe')
 urlpatterns = [
     path("api/v1/", include(router.urls)),
     path("docs/", include_docs_urls(title="User API")),
-    path('', views.get_routes),
+    path('', views.get_routes, name="get_routes"),
     path('token/refresh/', refresh_token, name='token_refresh'),
     path('profile/', views.get_profile),
     path("login/", login, name='login'),

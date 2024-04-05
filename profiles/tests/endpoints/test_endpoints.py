@@ -1,10 +1,11 @@
 import pytest
 from django.urls import reverse
-from ..factories.profile_factory import ProfileFactory 
+from ...factories.profile_factory import ProfileFactory 
 from django.utils import timezone
-from ..factories.food_intake_factory import FoodIntakeFactory
+from ...factories.food_intake_factory import FoodIntakeFactory
 from django.shortcuts import HttpResponse
-from ..food_intake import FoodIntake
+from ...food_intake import FoodIntake
+#####################################################################################TESTS FOR SAVE_FOOD_INTAKE#########################################################################################################    
 
 @pytest.mark.django_db
 def test_save_food_intake(client):
@@ -25,23 +26,15 @@ def test_save_food_intake(client):
     assert response.json()['success'] is True
     assert 'message' in response.json()
     assert response.json()['message'] == 'Food intake saved successfully'
+    
+##############################################################################################################################################################################################    
 
-@pytest.mark.django_db
-def test_food_intake_list(client):
-    # Create some food intake instances using the factory
-    FoodIntakeFactory.create_batch(5)
 
-    # Get the URL for the food_intake_list view
-    url = reverse('food_intake_list')
 
-    # Make a GET request to the URL using the test client
-    response = client.get(url)
 
-    # Check that the response status code is 200 OK
-    assert response.status_code == HttpResponse.status_code
 
-    # Check other assertions as needed based on your view's behavior
-    assert len(response.content) > 0 
+###################################################################################TESTS FOR /FOOD_INTAKE_DETAIL/#################################################################################################    
+
 
 @pytest.mark.django_db
 def test_food_intake_detail(client):
@@ -58,7 +51,35 @@ def test_food_intake_detail(client):
     assert response.status_code == HttpResponse.status_code
 
     assert len(response.content) > 0  # Assuming the response has content
+    
+##############################################################################################################################################################################################    
 
+
+##################################################################################TESTS FOR /FOOD_INTAKE_LIST/ #############################################################################################    
+
+
+
+#CHECKING STATUS CODE CORRECT FOR SIMPLE GET 
+@pytest.mark.django_db
+def test_food_intake_list(client):
+    # Create some food intake instances using the factory
+    FoodIntakeFactory.create_batch(5)
+
+    # Get the URL for the food_intake_list view
+    url = reverse('food_intake_list')
+
+    # Make a GET request to the URL using the test client
+    response = client.get(url)
+
+    # Check that the response status code is 200 OK
+    assert response.status_code == HttpResponse.status_code
+
+    # Check other assertions as needed based on your view's behavior
+    assert len(response.content) > 0 
+    
+    
+    
+#USING MONKEYPATCH FOR SIMPLE GET STATUS CODE CHECK
 @pytest.mark.django_db
 def test_food_intake_list_monkey(client, monkeypatch):
     # Create some fake FoodIntake instances using the factory
@@ -84,10 +105,12 @@ def test_food_intake_list_monkey(client, monkeypatch):
     assert len(response.content) > 0  # Assuming the response has content
 
 from django.test import RequestFactory
-from ..api.views_food_intake import food_intake_list
+from ...api.views_food_intake import food_intake_list
 import json
 
 
+
+#USING MONKEYPATCH TO CHECK IF HTTP RETURNS "PROFILE REQUIRED" WHEN IT IS NOT IN THE REQUEST
 @pytest.mark.django_db
 def test_simulate_exception(monkeypatch):
     # Define a mock function that raises a ValueError for missing profile
@@ -117,4 +140,5 @@ def test_simulate_exception(monkeypatch):
     assert isinstance(response, HttpResponse)
     assert response.status_code == 400
 
+##############################################################################################################################################################################################    
     
