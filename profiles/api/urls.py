@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 from .views_ingredients_spoonacular import *
+from .views_recipes_spoonacular import *
 from rest_framework.documentation import include_docs_urls
 from profiles.api import views
 from .views import *
@@ -30,9 +31,13 @@ urlpatterns = [
     path('food-intake/<int:pk>/', food_intake_detail, name='food_intake_detail'),
     path('change-password/', change_password, name='change_password'),
     path('save-food-intake/', save_food_intake, name='save_food_intake'),
-     path('fetch-ingredients-by-name/<str:name>/', fetch_ingredients_by_name, name='fetch_ingredients_by_name'),
+    path('fetch-ingredients-by-name/<str:name>/', fetch_ingredients_by_name, name='fetch_ingredients_by_name'),
     path('get-ingredient-details/<int:ingredient_id>/<str:amount>/', get_ingredient_details, name='get_ingredient_details'),
     path('fetch-filtered-ingredients/', fetch_filtered_ingredients, name='fetch_filtered_ingredients'),
+    path('fetch-recipes-by-name/<str:name>/', fetch_recipes_by_name, name='fetch_recipes_by_name'),
+    path('get-recipe-info/<int:id>/', get_recipe_info, name='get_recipe_info'),
+    path('fetch-filtered-recipes/', fetch_filtered_recipes, name='fetch_filtered_recipes'),
+    path('get-recipe-by-id/<int:recipe_id>/', get_recipe_by_id, name='get_recipe_by_id'),
 ]
 
 

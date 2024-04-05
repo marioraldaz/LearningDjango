@@ -8,6 +8,7 @@ def fetch_recipe_from_spoonacular(url):
     response = requests.get(url)
     return response
 
+@pytest.mark.ingredients
 @pytest.mark.spoonacular_api
 @pytest.mark.parametrize("url, expected_response", [
     (

@@ -1,62 +1,63 @@
 import axios from "axios";
 
-const API_KEY2 = "72ed57384eea4e91b4390428f582a705";
-const API_KEY = "8347c0a7ffc148269108ea0a29f1509e";
+export const BASE_URL = process.env.BASE_URL || "http://localhost:8000";
 
 export const fetchFilteredRecipes = async (filters) => {
-  const params = new URLSearchParams();
-  Object.entries(filters).forEach((filter) => {
-    if (filter[1] !== "") {
-      params.append(filter[0], filter[1]);
+  try {
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach((filter) => {
+      if (filter[1] !== "") {
+        params.append(filter[0], filter[1]);
+      }
+    });
+    console.log(params.toString());
+    const response = await axios.get(
+      `${BASE_URL}/recipes/fetch-filtered-recipes/?${params.toString()}`
+    );
+
+    if (!response.data) {
+      throw new Error("Failed to fetch recipes");
     }
-  });
-  console.log(params.toString());
-  const response = await fetch(
-    `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&${params.toString()}`
-  );
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch ingredients");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error; // Rethrow the error for handling in the calling code
   }
-
-  const data = await response.json();
-  return data.results;
 };
 
 export async function getRecipeInfo(id) {
   try {
-    const response = await axios.request(
-      `https://api.spoonacular.com/recipes/${id}/information?apiKey=` + API_KEY
+    const response = await axios.get(
+      `${BASE_URL}/recipes/get-recipe-info/${id}/`
     );
-    return response;
+    return response.data;
   } catch (error) {
     console.error(error);
+    throw error; // Rethrow the error for handling in the calling code
   }
 }
 
 export async function fetchRecipesByName(name) {
   try {
-    const response = await axios.request(
-      "https://api.spoonacular.com/recipes/complexSearch?apiKey=" +
-        API_KEY +
-        "&query=" +
-        name +
-        "&sort=popularity"
+    const response = await axios.get(
+      `${BASE_URL}/recipes/fetch-recipes-by-name/name=${name}`
     );
-    return response.data.results;
+    return response.data;
   } catch (error) {
     console.error(error);
+    throw error; // Rethrow the error for handling in the calling code
   }
 }
 
 export async function getRecipeById(recipeId) {
   try {
     const response = await axios.get(
-      `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}&includeNutrition=true`
+      `${BASE_URL}/recipes/get-recipe-by-id/${recipeId}/`
     );
-    console.log(response);
     return response.data;
   } catch (error) {
     console.error(error);
+    throw error; // Rethrow the error for handling in the calling code
   }
 }
