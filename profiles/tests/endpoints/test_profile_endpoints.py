@@ -1,8 +1,10 @@
 import pytest
 from rest_framework.test import APIClient
 from rest_framework import status
-from datetime import date
+from profiles.user_profile import UserProfile
+from django.core.exceptions import ValidationError 
 
+#Test for model behavior under different circumstances
 @pytest.mark.django_db
 @pytest.mark.parametrize(
     "username, password, gender, email, weight, height, date_of_birth, activityLevel, expected_valid",
@@ -33,8 +35,18 @@ def test_create_user_profile(username, password, gender, email, weight, height, 
     response = client.post('/user/api/v1/user/', data, format='json')
 
     if expected_valid:
-        assert response.status_code == status.HTTP_201_CREATED
-        # Add more assertions if needed
+        assert response.status_code == status.HTTP_201_CREATED # Check valid response
+        created_profile = UserProfile.objects.get(username=username)
+        
+        # Assert that the attributes of the created profile match the provided data
+        assert created_profile.username == username
+        assert created_profile.gender == gender
+        assert created_profile.email == email
+        assert created_profile.weight == weight
+        assert created_profile.height == height
+        assert created_profile.date_of_birth == date_of_birth
+        assert created_profile.activityLevel == activityLevel
+         
     else:
         assert response.status_code != status.HTTP_201_CREATED
         # Add more assertions if needed
