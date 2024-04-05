@@ -5,6 +5,7 @@ from django.utils import timezone
 from ..factories.food_intake_factory import FoodIntakeFactory
 from django.shortcuts import HttpResponse
 from ..food_intake import FoodIntake
+
 @pytest.mark.django_db
 def test_save_food_intake(client):
     user_profile = ProfileFactory()  # Create a user profile using the factory
@@ -81,4 +82,39 @@ def test_food_intake_list_monkey(client, monkeypatch):
 
     # Check other assertions as needed based on your view's behavior
     assert len(response.content) > 0  # Assuming the response has content
-    # Add more assertions as needed
+
+from django.test import RequestFactory
+from ..api.views_food_intake import food_intake_list
+import json
+
+
+@pytest.mark.django_db
+def test_simulate_exception(monkeypatch):
+    # Define a mock function that raises a ValueError for missing profile
+    def mock_create_food_intake(*args, **kwargs):
+        if 'profile' not in kwargs:
+            raise ValueError("Profile is required")
+        return FoodIntake.objects.create(*args, **kwargs)
+
+    # Monkeypatch the FoodIntake.objects.create method with our mock function
+    monkeypatch.setattr(FoodIntake.objects, 'create', mock_create_food_intake)
+
+    # Create a test request with POST data missing 'profile'
+    post_data = {'meal_type': 'Breakfast'}  # Only include meal_type, omit profile
+    request = RequestFactory().post(reverse('food_intake_list'), post_data)
+
+    # Call the view function with the test request
+    response = food_intake_list(request)
+   # Render the response content
+    response.render()
+    
+    
+    response_json = json.loads(response.content.decode())
+    assert 'profile' in response_json  # Check if 'profile' is in the response JSON keys
+    assert 'This field is required.' in response_json['profile']  # Check the error message in the 'profile' key
+
+    # Assert that the response is a HttpResponse with status 400
+    assert isinstance(response, HttpResponse)
+    assert response.status_code == 400
+
+    
