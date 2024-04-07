@@ -6,6 +6,8 @@ from rest_framework.documentation import include_docs_urls
 from profiles.api import views
 from .views import *
 from rest_framework_simplejwt.views import TokenRefreshView
+from .views_profile import UserProfileView
+
 #api versioning
 router = routers.DefaultRouter()
 router.register(r'user', views.UserViewSet, 'user')
@@ -20,9 +22,7 @@ urlpatterns = [
     path("docs/", include_docs_urls(title="User API")),
     path('', views.get_routes, name="get_routes"),
     path('token/refresh/', refresh_token, name='token_refresh'),
-    path('profile/', views.get_profile),
-    path("login/", login, name='login'),
-    path("get_profile/", get_profile, name='login'),
+    path('profiles/', UserProfileView.as_view(), name='user_profiles'),
     path('upload-profile-picture/', upload_profile_picture, name='upload_profile_picture'),
     path('save-recipe', save_recipe, name="save_recipe"),
     path('get-saved-recipes', get_saved_recipes, name="get_saved_recipes"),

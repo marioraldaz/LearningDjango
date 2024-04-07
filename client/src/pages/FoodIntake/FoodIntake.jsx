@@ -20,7 +20,6 @@ export function FoodIntake() {
       setRecipeToAdd(await getRecipe(add, persistRecipes, dispatch));
     };
     getRecipeToAdd();
-    purgePersistor();
     console.log(persistRecipes);
   }, [add]);
 
