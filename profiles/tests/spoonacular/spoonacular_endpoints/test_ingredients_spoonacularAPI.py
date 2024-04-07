@@ -9,7 +9,7 @@ API_KEY = settings.API_KEY
 
 
 ###############################################  Functions  ###################################################
-
+S
 def fetch_recipe_from_spoonacular(url):
     response = requests.get(url)
     return response
@@ -50,6 +50,7 @@ def fetch_recipe_from_spoonacular(url):
         }
     ),
 ])
+
 @pytest.mark.ingredients
 @pytest.mark.spoonacular_api
 def test_fetch_recipe_from_spoonacular(monkeypatch, url, expected_response):

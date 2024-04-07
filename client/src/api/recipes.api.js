@@ -1,6 +1,5 @@
 import axios from "axios";
-
-export const BASE_URL = process.env.BASE_URL || "http://localhost:8000";
+export const BASE_URL = "http://localhost:8000/api";
 
 export const fetchFilteredRecipes = async (filters) => {
   try {
@@ -12,7 +11,7 @@ export const fetchFilteredRecipes = async (filters) => {
     });
     console.log(params.toString());
     const response = await axios.get(
-      `${BASE_URL}/recipes/fetch-filtered-recipes/?${params.toString()}`
+      `${BASE_URL}/fetch-filtered-recipes/?${params.toString()}`
     );
 
     if (!response.data) {
@@ -28,9 +27,7 @@ export const fetchFilteredRecipes = async (filters) => {
 
 export async function getRecipeInfo(id) {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/recipes/get-recipe-info/${id}/`
-    );
+    const response = await axios.get(`${BASE_URL}/get-recipe-info/${id}/`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -41,7 +38,7 @@ export async function getRecipeInfo(id) {
 export async function fetchRecipesByName(name) {
   try {
     const response = await axios.get(
-      `${BASE_URL}/recipes/fetch-recipes-by-name/name=${name}`
+      `${BASE_URL}/fetch-recipes-by-name/${name}/`
     );
     return response.data;
   } catch (error) {
@@ -53,7 +50,7 @@ export async function fetchRecipesByName(name) {
 export async function getRecipeById(recipeId) {
   try {
     const response = await axios.get(
-      `${BASE_URL}/recipes/get-recipe-by-id/${recipeId}/`
+      `${BASE_URL}/get-recipe-by-id/${recipeId}/`
     );
     return response.data;
   } catch (error) {

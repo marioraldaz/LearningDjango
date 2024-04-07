@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = process.env.BASE_URL || "http://localhost:8000"; // Adjust the base URL as needed
+export const BASE_URL = "http://localhost:8000/api";
 
 export async function fetchIngredientsByName(name) {
   try {
@@ -41,7 +41,7 @@ export async function fetchFilteredIngredients(filters) {
 export async function getIngredientById(id, amount) {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/get-ingredient-details/${id}/${amount}/`
+      `${BASE_URL}/get-ingredient-details/${id}/${amount}/`
     );
     return response.data;
   } catch (error) {
