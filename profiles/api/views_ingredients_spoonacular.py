@@ -17,7 +17,7 @@ def fetch_ingredients_by_name(request, name):
         return Response({'error': str(e)}, status=500)
 
 @api_view(['GET'])
-def get_ingredient_details(request, ingredient_id, amount):
+def fetch_ingredient_by_id(request, ingredient_id, amount):
     try:
         api_key = settings.API_KEY
         url = f"https://api.spoonacular.com/food/ingredients/{ingredient_id}/information"
@@ -29,11 +29,12 @@ def get_ingredient_details(request, ingredient_id, amount):
     except requests.RequestException as e:
         return Response({'error': str(e)}, status=500)
 
+
 @api_view(['GET'])
-def fetch_filtered_ingredients(request):
+def fetch_filtered_recipes(request):
     try:
-        api_key = settings.API_KEY
-        url = "https://api.spoonacular.com/food/ingredients/search"
+        api_key = settings.API_KEY  
+        url = "https://api.spoonacular.com/recipes/complexSearch"
         params = request.query_params.dict()
         params['apiKey'] = api_key
         response = requests.get(url, params=params)
@@ -42,5 +43,3 @@ def fetch_filtered_ingredients(request):
         return Response(data['results'])
     except requests.RequestException as e:
         return Response({'error': str(e)}, status=500)
-
-

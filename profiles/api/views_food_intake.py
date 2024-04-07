@@ -4,8 +4,7 @@ from rest_framework.response import Response
 from ..food_intake import FoodIntake
 from ..food_intake_detail import FoodIntakeDetail
 from .serializer import FoodIntakeSerializer, FoodIntakeDetailSerializer
-from django.shortcuts import render, redirect
-from django.views.decorators.http import require_POST
+
 
 from django.utils import timezone
 @api_view(['GET', 'POST'])

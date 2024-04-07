@@ -3,6 +3,12 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
+from django.conf import settings
+
+API_KEY = settings.API_KEY
+
+
+#######################################################   Tests on my endpoints #################################################
 @pytest.mark.recipes
 @pytest.mark.spoonacular_api
 @pytest.mark.django_db
@@ -40,3 +46,5 @@ def test_get_recipe_by_id(client):
     url = reverse('get_recipe_by_id', kwargs={'recipe_id': 200})
     response = client.get(url)
     assert response.status_code == status.HTTP_200_OK
+    
+#######################################################################################################################################

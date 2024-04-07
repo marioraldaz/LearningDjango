@@ -38,3 +38,14 @@ export async function fetchFilteredIngredients(filters) {
     throw new Error("Failed to fetch filtered ingredients");
   }
 }
+export async function getIngredientById(id, amount) {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/api/get-ingredient-details/${id}/${amount}/`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to fetch ingredient details");
+  }
+}

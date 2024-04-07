@@ -1,12 +1,24 @@
 import requests
 import pytest
+from django.urls import reverse
+from rest_framework import status
 
-API_KEY = "8347c0a7ffc148269108ea0a29f1509e"
+from django.conf import settings
 
+API_KEY = settings.API_KEY
+
+
+###############################################  Functions  ###################################################
 
 def fetch_recipe_from_spoonacular(url):
     response = requests.get(url)
     return response
+
+#################################################################################################################
+
+
+
+################################################ Tests Directly into the API #########################################################
 
 @pytest.mark.ingredients
 @pytest.mark.spoonacular_api
@@ -37,8 +49,9 @@ def fetch_recipe_from_spoonacular(url):
             "totalResults": 39
         }
     ),
-    # Add more test cases with different URLs and expected responses as needed
 ])
+@pytest.mark.ingredients
+@pytest.mark.spoonacular_api
 def test_fetch_recipe_from_spoonacular(monkeypatch, url, expected_response):
     # Define a mock function to replace requests.get
     def mock_get(url):
@@ -52,3 +65,5 @@ def test_fetch_recipe_from_spoonacular(monkeypatch, url, expected_response):
 
     # Assert that the result matches the expected response
     assert result == expected_response
+
+
