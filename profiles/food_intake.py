@@ -14,7 +14,7 @@ class FoodIntake(models.Model):
     meal_type = models.CharField(
         _('Meal Type'), max_length=20, choices=MEAL_CHOICES, default='Breakfast'
     )
-    intake_date = models.DateField(_('Intake Date'), default=timezone.now)
+    intake_date = models.DateField(('Intake Date'), default=timezone.now)
 
     class Meta:
         db_table = 'profiles_foodintake' 

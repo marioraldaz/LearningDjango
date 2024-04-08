@@ -9,7 +9,7 @@ API_KEY = settings.API_KEY
 
 
 ###############################################  Functions  ###################################################
-S
+
 def fetch_recipe_from_spoonacular(url):
     response = requests.get(url)
     return response

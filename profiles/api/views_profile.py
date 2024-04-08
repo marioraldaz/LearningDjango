@@ -1,3 +1,12 @@
+from rest_framework.views import APIView
+from django.contrib.auth import authenticate
+from ..forms import ProfilePictureForm
+from rest_framework.response import Response
+from rest_framework import status
+import jwt
+from django.conf import settings
+from..user_profile import UserProfile
+
 
 class UserProfileView(APIView):
     def post(self, request, *args, **kwargs):

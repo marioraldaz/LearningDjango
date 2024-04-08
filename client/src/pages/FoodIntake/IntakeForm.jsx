@@ -9,12 +9,13 @@ export function IntakeForm({ recipeToAdd }) {
     intake_date: null,
     profile_id: null,
   });
+
   const handleSubmit = (e) => {
     history.push("/FoodIntake");
-
     e.preventDefault();
     addFoodIntake(formData);
   };
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
