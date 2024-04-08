@@ -4,14 +4,14 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from..user_profile import UserProfile
 from..food import Food
-from..food_intake import FoodIntake
+from...food_intake.food_intake import FoodIntake
 from..allergies import Allergy
 from..saved_recipes import SavedRecipe
 from..user_recipe import UserRecipe
 from django.contrib.auth.hashers import make_password, check_password
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
-from.serializer import (
+from.serializers import (
     UserSerializer,
     FoodSerializer,
     FoodIntakeSerializer,
@@ -23,18 +23,15 @@ from ..forms import ProfilePictureForm
 from rest_framework.decorators import api_view
 from ..saved_recipes import SavedRecipe
 from rest_framework.response import Response
-from rest_framework import status
 import json
 from django.http import JsonResponse
-from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
-from .views_food_intake import *
-from rest_framework.views import APIView
+from ...food_intake.api.views.view_food_intake import *
 from django.conf import settings
 import jwt
 
@@ -111,32 +108,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
-    
-@api_view(['POST'])
-def upload_profile_picture(request):
-    if request.method == 'POST':
-        form = ProfilePictureForm(request.data, request.FILES)
-        if form.is_valid():
-            profile_id = request.data.get('profile_id')
-            try:
-                profile = UserProfile.objects.get(id=profile_id)
-            except UserProfile.DoesNotExist:
-                return Response({'success': False, 'message': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
-
-            # Check if profile already has a profile picture
-            if profile.profile_picture:
-                # Delete the previous profile picture from storage and database
-                profile.profile_picture.delete()
-
-            # Save the new profile picture
-            profile.profile_picture = request.FILES['profile_picture']
-            profile.save()
-            return Response({'success': True, 'message': 'Profile picture uploaded successfully'})
-        else:
-            return Response({'success': False, 'message': 'Invalid form data'}, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response({'success': False, 'message': 'Invalid request method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
+  
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @require_http_methods(["POST"])

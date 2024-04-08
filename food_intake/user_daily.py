@@ -1,7 +1,7 @@
 from django.db import models
-from .user_profile import UserProfile
+from profiles.user_profile import UserProfile
 from django.core.validators import MinValueValidator
-from .utils.validators import validate_positive_float
+from profiles.utils.validators import validate_positive_float
 
 
 class UserDaily(models.Model):

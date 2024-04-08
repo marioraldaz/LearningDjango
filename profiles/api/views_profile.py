@@ -50,3 +50,5 @@ class UserProfileView(APIView):
                 return Response({'success': False, 'error': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
             return Response({'success': False, 'error': 'Token is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+

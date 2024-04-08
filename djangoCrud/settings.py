@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'coreapi',
     'profiles',
+    'food_intake',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'pytest',

@@ -1,6 +1,6 @@
 import pytest
 from django.urls import reverse
-from ...factories.profile_factory import ProfileFactory 
+from ....profiles.factories.profile_factory import ProfileFactory 
 from django.utils import timezone
 from ...factories.food_intake_factory import FoodIntakeFactory
 from django.shortcuts import HttpResponse
@@ -105,7 +105,7 @@ def test_food_intake_list_monkey(client, monkeypatch):
     assert len(response.content) > 0  # Assuming the response has content
 
 from django.test import RequestFactory
-from ...api.views_food_intake import food_intake_list
+from ...api.views.view_food_intake import food_intake_list
 import json
 
 

@@ -5,7 +5,7 @@ import django.db.models.deletion
 import django.utils.timezone
 from django.conf import settings
 from django.db import migrations, models
-from ..user_daily import UserDaily
+from ...food_intake.user_daily import UserDaily
 
 
 class Migration(migrations.Migration):
