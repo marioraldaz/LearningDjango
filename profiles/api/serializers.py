@@ -3,10 +3,10 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import serializers
 from ..user_profile import UserProfile
-from ..food import Food
+from ...foods.food import Food
 from ..allergies import Allergy
 from ..saved_recipes import SavedRecipe
-from ..user_recipe import UserRecipe
+from ...foods.recipe import UserRecipe
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:

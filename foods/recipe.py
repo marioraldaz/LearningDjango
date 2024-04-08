@@ -3,7 +3,7 @@ from .ingredient import Ingredient
 from utils.validators import validate_positive_float
 from django.core.validators import MinValueValidator
 from django.contrib.postgres.fields import JSONField
-
+from .nutrition import Nutrition
 class Recipe(models.Model):
     profile = models.ForeignKey('UserProfile', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
@@ -41,7 +41,8 @@ class Recipe(models.Model):
     extendedIngredients = models.JSONField(null=True)
     summary = models.TextField(null=True)
     winePairing = models.JSONField(null=True)
-    
+    nutrition = models.OneToOneField(Nutrition, on_delete=models.CASCADE, related_name='recipe')
+
     def add_ingredient(self, ingredient):
         self.ingredients.add(ingredient)
 

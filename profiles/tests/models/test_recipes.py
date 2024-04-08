@@ -1,5 +1,5 @@
 import pytest
-from ...user_recipe import UserRecipe
+from ....foods.recipe import UserRecipe
     
 @pytest.mark.django_db
 def test_user_recipe_complex(create_user_profile):

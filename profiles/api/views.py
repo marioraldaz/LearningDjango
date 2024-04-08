@@ -3,11 +3,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from..user_profile import UserProfile
-from..food import Food
+from...foods.food import Food
 from...food_intake.food_intake import FoodIntake
 from..allergies import Allergy
 from..saved_recipes import SavedRecipe
-from..user_recipe import UserRecipe
+from...foods.recipe import UserRecipe
 from django.contrib.auth.hashers import make_password, check_password
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
