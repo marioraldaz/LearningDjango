@@ -1,24 +1,48 @@
-from django.db import models
-from profiles.user_profile import UserProfile
-from django.core.validators import MinValueValidator
-from profiles.utils.validators import validate_positive_float
 
+from django.db import models
 
 class UserDaily(models.Model):
-    profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     date = models.DateField()
-    total_calories_consumed = models.FloatField(
-        validators=[validate_positive_float, MinValueValidator(0)],default=0.0
-        )
-    total_protein_consumed = models.FloatField(
-        validators=[validate_positive_float, MinValueValidator(0)],default=0.0
-        )
-    total_fat_consumed = models.FloatField(
-        validators=[validate_positive_float, MinValueValidator(0)],default=0.0
-        )
-    total_carbohydrates_consumed = models.FloatField(
-        validators=[validate_positive_float, MinValueValidator(0)],default=0.0
-        )
+    # Other fields...
+    total_nutrients = models.JSONField(null=True, blank=True)
+    total_properties = models.JSONField(null=True, blank=True)
+    total_flavonoids = models.JSONField(null=True, blank=True)
+    total_caloric_breakdown = models.JSONField(null=True, blank=True)
+    total_weight_per_serving = models.JSONField(null=True, blank=True)
 
-    def __str__(self):
-        return f"{self.profile.username} - {self.date}"
+    def calculate_and_save_nutrition(self):
+        total_nutrients = {}
+        total_properties = {}
+        total_flavonoids = {}
+        total_caloric_breakdown = {}
+        total_weight_per_serving = {}
+
+        # Iterate over all FoodIntake instances associated with this UserDaily
+        for food_intake in self.foodintake_set.all():
+            for food_intake_detail in food_intake.foodintakedetail_set.all():
+                if food_intake_detail.ingredient:
+                    ingredient_nutrition = food_intake_detail.ingredient.nutrition
+                    # Add ingredient nutrition to total nutrition
+                    for key, value in ingredient_nutrition.items():
+                        total_nutrients[key] = total_nutrients.get(key, 0) + value.get('nutrients', 0)
+                        total_properties[key] = total_properties.get(key, 0) + value.get('properties', 0)
+                        total_flavonoids[key] = total_flavonoids.get(key, 0) + value.get('flavonoids', 0)
+                        total_caloric_breakdown[key] = total_caloric_breakdown.get(key, 0) + value.get('caloricBreakdown', 0)
+                        total_weight_per_serving[key] = total_weight_per_serving.get(key, 0) + value.get('weightPerServing', 0)
+                elif food_intake_detail.recipe:
+                    recipe_nutrition = food_intake_detail.recipe.nutrition
+                    # Add recipe nutrition to total nutrition
+                    for key, value in recipe_nutrition.items():
+                        total_nutrients[key] = total_nutrients.get(key, 0) + value.get('nutrients', 0)
+                        total_properties[key] = total_properties.get(key, 0) + value.get('properties', 0)
+                        total_flavonoids[key] = total_flavonoids.get(key, 0) + value.get('flavonoids', 0)
+                        total_caloric_breakdown[key] = total_caloric_breakdown.get(key, 0) + value.get('caloricBreakdown', 0)
+                        total_weight_per_serving[key] = total_weight_per_serving.get(key, 0) + value.get('weightPerServing', 0)
+
+        # Save the total nutrition to the UserDaily instance
+        self.total_nutrients = total_nutrients
+        self.total_properties = total_properties
+        self.total_flavonoids = total_flavonoids
+        self.total_caloric_breakdown = total_caloric_breakdown
+        self.total_weight_per_serving = total_weight_per_serving
+        self.save()

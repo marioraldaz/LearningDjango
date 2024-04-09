@@ -1,6 +1,5 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
+from food_intake.user_daily import UserDaily
 from profiles.user_profile import UserProfile
 
 class FoodIntake(models.Model): 
@@ -12,10 +11,12 @@ class FoodIntake(models.Model):
     ]
    
     profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    
+    user_daily = models.ForeignKey(UserDaily, on_delete=models.CASCADE)
+    
     meal_type = models.CharField(
         _('Meal Type'), max_length=20, choices=MEAL_CHOICES, default='Breakfast'
     )
-    intake_date = models.DateField(('Intake Date'), default=timezone.now)
 
     class Meta:
         db_table = 'profiles_foodintake' 

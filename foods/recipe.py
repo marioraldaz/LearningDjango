@@ -6,12 +6,13 @@ from django.contrib.postgres.fields import JSONField
 from .nutrition import Nutrition
 class Recipe(models.Model):
     profile = models.ForeignKey('UserProfile', on_delete=models.CASCADE)
+    nutrition = models.OneToOneField(Nutrition, on_delete=models.CASCADE, related_name='recipe')
+    ingredients = models.ManyToManyField(Ingredient, related_name='recipes')
     title = models.CharField(max_length=100)
     image = models.URLField(max_length=600)
     servings = 2
     readyInMinutes = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(0)] )
     instructions = models.TextField()
-    ingredients = models.ManyToManyField(Ingredient, related_name='recipes')
     spoonacular_id = models.IntegerField(unique=True)
     sourceName = models.CharField(max_length=100)
     sourceUrl = models.URLField(max_length=600)
@@ -41,7 +42,6 @@ class Recipe(models.Model):
     extendedIngredients = models.JSONField(null=True)
     summary = models.TextField(null=True)
     winePairing = models.JSONField(null=True)
-    nutrition = models.OneToOneField(Nutrition, on_delete=models.CASCADE, related_name='recipe')
 
     def add_ingredient(self, ingredient):
         self.ingredients.add(ingredient)
