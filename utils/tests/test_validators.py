@@ -1,6 +1,6 @@
 import pytest
 from django.core.exceptions import ValidationError
-from ...utils.validators import validate_positive_float, validate_is_date_before_today, validate_activity_level
+from utils.validators import validate_positive_float, validate_is_date_before_today, validate_activity_level
 from datetime import datetime, date, timedelta
 
 

@@ -1,6 +1,7 @@
 from django.db import models
 from .nutrition import Nutrition
 class Ingredient(models.Model):
+    nutrition = models.OneToOneField(Nutrition, on_delete=models.CASCADE, related_name='recipe_ingredient')
     name = models.CharField(max_length=100)
     spoonacular_id = models.IntegerField(unique=True)
     original = models.CharField(max_length=255, null=True)
@@ -18,7 +19,6 @@ class Ingredient(models.Model):
     aisle = models.CharField(max_length=255, null=True)
     image = models.URLField(null=True)
     meta = models.JSONField(null=True)
-    nutrition = models.OneToOneField(Nutrition, on_delete=models.CASCADE, related_name='recipe')
     categoryPath = models.JSONField(null=True)
 
     @classmethod

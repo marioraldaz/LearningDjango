@@ -1,6 +1,7 @@
 from django.db import models
 from food_intake.user_daily import UserDaily
 from profiles.user_profile import UserProfile
+from django.utils.translation import gettext_lazy as _
 
 class FoodIntake(models.Model): 
     MEAL_CHOICES = [

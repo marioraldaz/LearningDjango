@@ -1,11 +1,11 @@
+from food_intake import user_daily
 import pytest
 from datetime import datetime, timedelta
-from myapp.models import Profile, UserDaily, NutritionStats
 
 @pytest.fixture
 def create_user_daily(profile):
     def _create_user_daily(date, total_nutrients):
-        return UserDaily.objects.create(profile=profile, date=date, total_nutrients=total_nutrients)
+        return user_daily.objects.create(profile=profile, date=date, total_nutrients=total_nutrients)
     return _create_user_daily
 
 @pytest.fixture

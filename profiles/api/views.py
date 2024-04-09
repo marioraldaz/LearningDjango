@@ -2,28 +2,17 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
-from..user_profile import UserProfile
-from...foods.food import Food
-from...food_intake.food_intake import FoodIntake
-from..allergies import Allergy
-from..saved_recipes import SavedRecipe
-from...foods.recipe import UserRecipe
+from profiles.user_profile import UserProfile
+from food_intake.food_intake import FoodIntake
+from profiles.allergies import Allergy
 from django.contrib.auth.hashers import make_password, check_password
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from.serializers import (
-    UserSerializer,
-    FoodSerializer,
-    FoodIntakeSerializer,
-    AllergySerializer,
-    SavedRecipeSerializer,
-    UserRecipeSerializer
+    UserProfileSerializer,
 )
-from ..forms import ProfilePictureForm
 from rest_framework.decorators import api_view
-from ..saved_recipes import SavedRecipe
 from rest_framework.response import Response
-import json
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -31,13 +20,11 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
-from ...food_intake.api.views.view_food_intake import *
-from django.conf import settings
-import jwt
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserProfileSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -60,31 +47,6 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
-
-class FoodViewSet(viewsets.ModelViewSet):
-    queryset = Food.objects.all()
-    serializer_class = FoodSerializer
-
-
-class FoodIntakeViewSet(viewsets.ModelViewSet):
-    queryset = FoodIntake.objects.all()
-    serializer_class = FoodIntakeSerializer
-
-
-class AllergyViewSet(viewsets.ModelViewSet):
-    queryset = Allergy.objects.all()
-    serializer_class = AllergySerializer
-
-
-class SavedRecipeViewSet(viewsets.ModelViewSet):
-    queryset = SavedRecipe.objects.all()
-    serializer_class = SavedRecipeSerializer
-
-
-class UserRecipeViewSet(viewsets.ModelViewSet):
-    queryset = UserRecipe.objects.all()
-    serializer_class = UserRecipeSerializer
 
 
 @api_view(['GET'])
@@ -123,82 +85,6 @@ def refresh_token(request):
         return Response({'access': access_token}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-
-@api_view(['POST'])
-
-def save_recipe(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            recipe_id = data.get('recipe_id')
-            profile_id = data.get('profile_id')
-
-            # Check if the recipe_id and profile_id are provided
-            if recipe_id is None or profile_id is None:
-                return JsonResponse({'error': 'Missing data'}, status=400)
-
-            # Check if the recipe_id already exists
-            if SavedRecipe.objects.filter(recipe_id=recipe_id).exists():
-                return JsonResponse({'error': 'Recipe already saved'}, status=400)
-
-            # Save the recipe data into the SavedRecipe model
-            SavedRecipe.objects.create(recipe_id=recipe_id, profile_id=profile_id)
-
-            # Return a success response
-            return JsonResponse({'message': 'Recipe saved successfully'})
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
-    else:
-        # Return an error for unsupported HTTP methods
-        return JsonResponse({'error': 'Method Not Allowed'}, status=405)
-
-def get_saved_recipes(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            profile_id = data.get('profile_id')
-
-            # Check if profile_id is provided
-            if profile_id is None:
-                return JsonResponse({'error': 'Missing profile_id'}, status=400)
-
-            # Query SavedRecipe model to get saved recipes for the profile_id
-            saved_recipes = SavedRecipe.objects.filter(profile_id=profile_id)
-
-            # Convert queryset to list of dictionaries for JSON response
-            recipes_data = [recipe.recipe_id for recipe in saved_recipes]
-
-            # Return the list of saved recipes as JSON response
-            return JsonResponse({'saved_recipes': recipes_data})
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
-    else:
-        # Return an error for unsupported HTTP methods
-        return JsonResponse({'error': 'Method Not Allowed'}, status=405)
-    
-def unsave_recipe(request):
-    if request.method == 'POST':
-        try:
-            profile_id = request.POST.get('profile_id')
-            recipe_id = request.POST.get('recipe_id')
-
-            # Check if profile_id and recipe_id are provided
-            if profile_id is None or recipe_id is None:
-                return JsonResponse({'error': 'Missing data'}, status=400)
-
-            # Find the saved recipe entry and delete it
-            saved_recipe = SavedRecipe.objects.filter(profile_id=profile_id, recipe_id=recipe_id).first()
-            if saved_recipe:
-                saved_recipe.delete()
-                return JsonResponse({'success': True, 'message': 'Recipe unsaved successfully'})
-            else:
-                return JsonResponse({'error': 'Saved recipe not found'}, status=404)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
-    else:
-        return JsonResponse({'error': 'Method Not Allowed'}, status=405)
 
 
 def change_password(request):

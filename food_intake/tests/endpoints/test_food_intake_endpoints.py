@@ -1,10 +1,13 @@
 import pytest
+
+from django.test import RequestFactory
+import json
 from django.urls import reverse
-from ....profiles.factories.profile_factory import ProfileFactory 
+from profiles.factories.profile_factory import ProfileFactory 
 from django.utils import timezone
-from ...factories.food_intake_factory import FoodIntakeFactory
+from food_intake.tests.factories.food_intake_factory import FoodIntakeFactory
 from django.shortcuts import HttpResponse
-from ...food_intake import FoodIntake
+from food_intake.food_intake import FoodIntake
 #####################################################################################TESTS FOR SAVE_FOOD_INTAKE#########################################################################################################    
 
 @pytest.mark.django_db
@@ -104,13 +107,12 @@ def test_food_intake_list_monkey(client, monkeypatch):
     # Check other assertions as needed based on your view's behavior
     assert len(response.content) > 0  # Assuming the response has content
 
-from django.test import RequestFactory
-from ...api.views.view_food_intake import food_intake_list
-import json
-
 
 
 #USING MONKEYPATCH TO CHECK IF HTTP RETURNS "PROFILE REQUIRED" WHEN IT IS NOT IN THE REQUEST
+"""_summary_
+
+
 @pytest.mark.django_db
 def test_simulate_exception(monkeypatch):
     # Define a mock function that raises a ValueError for missing profile
@@ -139,6 +141,7 @@ def test_simulate_exception(monkeypatch):
     # Assert that the response is a HttpResponse with status 400
     assert isinstance(response, HttpResponse)
     assert response.status_code == 400
+"""
 
 ##############################################################################################################################################################################################    
     

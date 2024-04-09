@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import MinLengthValidator
 from django.core.validators import EmailValidator
 
+from foods.recipe import Recipe
 from utils.validators import validate_is_date_before_today,validate_positive_float, validate_activity_level
 class UserProfile(models.Model):
     username = models.CharField(max_length=25, unique=True, validators=[MinLengthValidator(6)])
@@ -13,7 +14,6 @@ class UserProfile(models.Model):
     date_of_birth = models.DateField(validators=[validate_is_date_before_today])
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     activityLevel = models.PositiveIntegerField(default=1, validators=[validate_activity_level])
-    
     saved_recipes = models.ManyToManyField(Recipe, related_name='saved_by_profiles')
 
     def save_recipe(self, recipe):

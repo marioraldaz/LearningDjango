@@ -2,11 +2,9 @@ from django.db import models
 from .ingredient import Ingredient
 from utils.validators import validate_positive_float
 from django.core.validators import MinValueValidator
-from django.contrib.postgres.fields import JSONField
 from .nutrition import Nutrition
 class Recipe(models.Model):
-    profile = models.ForeignKey('UserProfile', on_delete=models.CASCADE)
-    nutrition = models.OneToOneField(Nutrition, on_delete=models.CASCADE, related_name='recipe')
+    nutrition = models.OneToOneField(Nutrition, on_delete=models.CASCADE, related_name='recipe_nutrition')
     ingredients = models.ManyToManyField(Ingredient, related_name='recipes')
     title = models.CharField(max_length=100)
     image = models.URLField(max_length=600)
@@ -19,10 +17,10 @@ class Recipe(models.Model):
     healthScore = models.FloatField(null=True, validators=[validate_positive_float])
     spoonacularScore = models.FloatField(null=True, validators=[validate_positive_float])
     pricePerServing = models.FloatField(null=True, validators=[validate_positive_float])
-    analyzedInstructions = JSONField(null=True)
+    analyzedInstructions = models.JSONField(null=True)
     cheap = models.BooleanField(default=False, null=True)
     creditsText = models.TextField(null=True, max_length=200)
-    cuisines = JSONField(null=True)
+    cuisines = models.JSONField(null=True)
     dairyFree = models.BooleanField(default=False, null=True)
     diets = models.JSONField(null=True)
     gaps = models.CharField(max_length=10, null=True)
