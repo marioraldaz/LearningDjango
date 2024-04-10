@@ -1,8 +1,8 @@
 import pytest
 from django.urls import reverse
 from food_intake.food_intake import FoodIntake
-from food_intake.tests.factories.food_intake_factory import FoodIntakeFactory
-from profiles.tests.factories.profile_factory import ProfileFactory
+from factories.food_intake_factory import FoodIntakeFactory
+from factories.profile_factory import ProfileFactory
 from django.db import transaction
 from django.db.transaction import TransactionManagementError
 

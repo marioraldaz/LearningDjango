@@ -2,7 +2,6 @@ import pytest
 from rest_framework.test import APIClient
 from rest_framework import status
 from profiles.user_profile import UserProfile
-from django.core.exceptions import ValidationError 
 
 #Test for model behavior under different circumstances
 @pytest.mark.django_db

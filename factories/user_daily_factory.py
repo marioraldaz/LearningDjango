@@ -3,7 +3,7 @@ from django.utils import timezone
 from faker import Faker  # Import Faker
 from food_intake.user_daily import UserDaily
 from profiles.user_profile import UserProfile
-from profiles.tests.factories.profile_factory import ProfileFactory
+from factories.profile_factory import ProfileFactory
 fake = Faker()  # Initialize Faker
     
 class UserDailyFactory(factory.django.DjangoModelFactory):

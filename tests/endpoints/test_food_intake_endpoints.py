@@ -1,11 +1,8 @@
 import pytest
-
-from django.test import RequestFactory
-import json
 from django.urls import reverse
-from profiles.tests.factories.profile_factory import ProfileFactory 
+from factories.profile_factory import ProfileFactory 
 from django.utils import timezone
-from food_intake.tests.factories.food_intake_factory import FoodIntakeFactory
+from factories.food_intake_factory import FoodIntakeFactory
 from django.shortcuts import HttpResponse
 from food_intake.food_intake import FoodIntake
 #####################################################################################TESTS FOR SAVE_FOOD_INTAKE#########################################################################################################    

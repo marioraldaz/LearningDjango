@@ -1,6 +1,6 @@
 import factory
 from food_intake.food_intake import FoodIntake
-from profiles.tests.factories.profile_factory import ProfileFactory  
+from factories.profile_factory import ProfileFactory  
 
 class FoodIntakeFactory(factory.django.DjangoModelFactory):
     class Meta:

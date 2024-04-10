@@ -3,21 +3,12 @@ from django.urls import reverse
 from food_intake.food_intake import FoodIntake
 from food_intake.food_intake_detail import FoodIntakeDetail
 from profiles.user_profile import UserProfile
+from factories.profile_factory import ProfileFactory
 
 @pytest.fixture
 def create_user_profile():
-    user_profile = UserProfile.objects.create(
-        username='test_user',
-        password='test_password',
-        gender='Male',  # or 'Female'
-        email='test@example.com',
-        weight=70,
-        height=180,
-        date_of_birth='2000-01-01',
-        activityLevel=1
-    )
-    yield user_profile
-    user_profile.delete()  # Clean up after the test
+    user_profile=ProfileFactory.create()
+    return user_profile
     
 
 @pytest.fixture
