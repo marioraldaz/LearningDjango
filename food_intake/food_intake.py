@@ -14,7 +14,7 @@ class FoodIntake(models.Model):
     profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     
     user_daily = models.ForeignKey(UserDaily, on_delete=models.CASCADE)
-    
+        
     meal_type = models.CharField(
         _('Meal Type'), max_length=20, choices=MEAL_CHOICES, default='Breakfast'
     )

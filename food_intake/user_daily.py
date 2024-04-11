@@ -3,7 +3,6 @@ from django.db import models
 
 class UserDaily(models.Model):
     date = models.DateField()
-    # Other fields...
     total_nutrients = models.JSONField(null=True, blank=True)
     total_properties = models.JSONField(null=True, blank=True)
     total_flavonoids = models.JSONField(null=True, blank=True)

@@ -3,13 +3,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import ValidationError
 from datetime import datetime, date
 from profiles.user_profile import UserProfile
-from factories.profile_factory import ProfileFactory
+from factories.profile_factory import UserProfileFactory
 
 #Basic test using factory
 @pytest.mark.django_db
 def test_user_profile_factory():
     # Create a UserProfile instance using the factory
-    ProfileFactory(username='test_user', email='test@example.com', gender='Male', weight=70, height=180, date_of_birth='2000-01-01', activityLevel=1)
+    UserProfileFactory(username='test_user', email='test@example.com', gender='Male', weight=70, height=180, date_of_birth='2000-01-01', activityLevel=1)
 
     # Verify that a UserProfile instance was created
     assert UserProfile.objects.count() == 1
@@ -55,7 +55,7 @@ def test_user_profile_validation(username, password, gender, email, weight, heig
     try:
         print(username, password, gender, email, weight, height, date_of_birth, profile_picture, activityLevel, expected_valid)
         # Use the factory to create a UserProfile object
-        ProfileFactory(
+        UserProfileFactory(
             username=username,
             password=password,
             gender=gender,

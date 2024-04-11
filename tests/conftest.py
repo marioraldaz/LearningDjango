@@ -1,13 +1,19 @@
 import pytest
+from pytest_factoryboy import register
 from django.urls import reverse
 from food_intake.food_intake import FoodIntake
 from food_intake.food_intake_detail import FoodIntakeDetail
 from profiles.user_profile import UserProfile
-from factories.profile_factory import ProfileFactory
+from factories.profile_factory import UserProfileFactory
+
+register(FoodIntakeFactory, name="food_intake")
+register(FoodIntakeDetailFactory, name="food_intake_detail")
+register(UserProfileFactory, name="user_profile")
+
 
 @pytest.fixture
 def create_user_profile():
-    user_profile=ProfileFactory.create()
+    user_profile=UserProfileFactory.create()
     return user_profile
     
 

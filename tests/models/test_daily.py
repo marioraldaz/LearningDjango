@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from factories.user_daily_factory import UserDailyFactory
 from datetime import date 
 from food_intake.user_daily import UserDaily
-from factories.profile_factory import ProfileFactory 
+from factories.profile_factory import UserProfileFactory 
 
 
 @pytest.mark.django_db
@@ -25,7 +25,7 @@ def test_user_daily_edge_cases(total_calories_consumed, total_protein_consumed, 
     if expected_exception is not None:
         with pytest.raises(expected_exception):
             daily_stats = UserDaily.objects.create(
-                profile=ProfileFactory(),  # Use ProfileFactory to create a test UserProfile instance
+                profile=UserProfileFactory(),  # Use ProfileFactory to create a test UserProfile instance
                 date=date.today(),  # Use today's date
                 total_calories_consumed=total_calories_consumed,
                 total_protein_consumed=total_protein_consumed,
@@ -36,7 +36,7 @@ def test_user_daily_edge_cases(total_calories_consumed, total_protein_consumed, 
     else:
         # If no exception is expected, create the UserDaily instance and assert its attributes
         daily_stats = UserDaily.objects.create(
-            profile=ProfileFactory(),  # Use ProfileFactory to create a test UserProfile instance
+            profile=UserProfileFactory(),  # Use ProfileFactory to create a test UserProfile instance
             date=date.today(),  # Use today's date
             total_calories_consumed=total_calories_consumed,
             total_protein_consumed=total_protein_consumed,

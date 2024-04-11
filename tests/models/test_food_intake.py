@@ -2,7 +2,7 @@ import pytest
 from django.urls import reverse
 from food_intake.food_intake import FoodIntake
 from factories.food_intake_factory import FoodIntakeFactory
-from factories.profile_factory import ProfileFactory
+from factories.profile_factory import UserProfileFactory
 from django.db import transaction
 from django.db.transaction import TransactionManagementError
 
@@ -59,7 +59,7 @@ def test_food_intake_detail(client, create_food_intake_and_detail):
 
 @pytest.fixture
 def user_profile():
-    return ProfileFactory()
+    return UserProfileFactory()
 
 @pytest.mark.django_db
 @pytest.mark.parametrize(
@@ -81,7 +81,7 @@ def test_save_food_intake(client, meal_type, intake_date, expected_status_code, 
         with transaction.atomic():
             user_profile = None
             if should_exist:
-                user_profile = ProfileFactory()
+                user_profile = UserProfileFactory()
 
             url = reverse('save_food_intake')
             data = {'meal_type': meal_type, 'intake_date': intake_date}

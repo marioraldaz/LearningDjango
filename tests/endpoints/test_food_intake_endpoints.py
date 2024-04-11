@@ -1,6 +1,6 @@
 import pytest
 from django.urls import reverse
-from factories.profile_factory import ProfileFactory 
+from factories.profile_factory import UserProfileFactory 
 from django.utils import timezone
 from factories.food_intake_factory import FoodIntakeFactory
 from django.shortcuts import HttpResponse
@@ -9,7 +9,7 @@ from food_intake.food_intake import FoodIntake
 
 @pytest.mark.django_db
 def test_save_food_intake(client):
-    user_profile = ProfileFactory()  # Create a user profile using the factory
+    user_profile = UserProfileFactory()  # Create a user profile using the factory
     url = reverse('save_food_intake') 
     intake_data = {
         'meal_type': 'Breakfast',

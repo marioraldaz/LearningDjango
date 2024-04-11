@@ -4,7 +4,7 @@ from profiles.user_profile import UserProfile
 
 fake = Faker()
 
-class ProfileFactory(factory.django.DjangoModelFactory):
+class UserProfileFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = UserProfile
 

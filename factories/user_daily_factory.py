@@ -3,14 +3,14 @@ from django.utils import timezone
 from faker import Faker  # Import Faker
 from food_intake.user_daily import UserDaily
 from profiles.user_profile import UserProfile
-from factories.profile_factory import ProfileFactory
+from factories.profile_factory import UserProfileFactory
 fake = Faker()  # Initialize Faker
     
 class UserDailyFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = UserDaily
 
-    profile = factory.SubFactory(ProfileFactory)  
+    profile = factory.SubFactory(UserProfileFactory)  
     date = factory.LazyFunction(timezone.now().date)
     total_calories_consumed = fake.random_int(min=1000, max=5000)  # Random integer between 1000 and 5000
     total_protein_consumed = fake.random_int(min=50, max=200)  # Random integer between 50 and 200
@@ -22,7 +22,7 @@ class UserDailyNegativeValuesFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = UserDaily
 
-    profile = factory.SubFactory(ProfileFactory)
+    profile = factory.SubFactory(UserProfileFactory)
     date = fake.date_this_year()
     total_calories_consumed = fake.random_int(min=-1000, max=-1)  # Negative value
     total_protein_consumed = fake.random_int(min=-1000, max=-1)  # Negative value

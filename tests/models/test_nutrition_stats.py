@@ -2,9 +2,14 @@ from food_intake import user_daily
 import pytest
 from datetime import datetime, timedelta
 from food_intake.nutrition_stats import NutritionStats
-from factories.profile_factory import ProfileFactory
+from factories.profile_factory import UserProfileFactory
 from factories.user_daily_factory import UserDailyFactory
 
+
+"""_summary_
+
+    Returns:
+        _type_: _description_
 @pytest.fixture
 def profile(create_user_profile):
     return create_user_profile
@@ -46,3 +51,5 @@ def test_compute_last_week_nutrients(create_user_daily, create_nutrition_stats):
     assert nutrition_stats.last_week_fat == 70
 
 # Similar tests for compute_last_30_days_nutrients, and other scenarios as needed...
+
+"""
