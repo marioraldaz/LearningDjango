@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from factories.user_daily_factory import UserDailyFactory
 from datetime import date 
 from food_intake.user_daily import UserDaily
-from factories.profile_factory import UserProfileFactory 
+from factories.user_profile_factory import UserProfileFactory 
 
 
 @pytest.mark.django_db

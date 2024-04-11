@@ -4,7 +4,9 @@ from django.urls import reverse
 from food_intake.food_intake import FoodIntake
 from food_intake.food_intake_detail import FoodIntakeDetail
 from profiles.user_profile import UserProfile
-from factories.profile_factory import UserProfileFactory
+from factories.user_profile_factory import UserProfileFactory
+from factories.food_intake_factory import FoodIntakeFactory
+from factories.food_intake_detail import FoodIntakeDetailFactory
 
 register(FoodIntakeFactory, name="food_intake")
 register(FoodIntakeDetailFactory, name="food_intake_detail")

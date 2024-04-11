@@ -1,6 +1,6 @@
 import pytest
 from django.urls import reverse
-from factories.profile_factory import UserProfileFactory 
+from factories.user_profile_factory import UserProfileFactory 
 from django.utils import timezone
 from factories.food_intake_factory import FoodIntakeFactory
 from django.shortcuts import HttpResponse

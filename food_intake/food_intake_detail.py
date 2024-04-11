@@ -12,7 +12,8 @@ class FoodIntakeDetail(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='food_intakes', null=True, blank=True)
 
     # Ensure only one of the foreign keys is set using OneToOneField
-    food_id = models.OneToOneField(Ingredient, on_delete=models.CASCADE, related_name='food_intake', null=True, blank=True)    amount = models.IntegerField(default=1, validators=[MinValueValidator(0)])
+    food_id = models.OneToOneField(Ingredient, on_delete=models.CASCADE, related_name='food_intake', null=True, blank=True) 
+    amount = models.IntegerField(default=1, validators=[MinValueValidator(0)])
     def __str__(self):
         return f"{self.item_name} ({self.item_type}) for {self.food_intake}"
     

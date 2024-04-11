@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import ValidationError
 from datetime import datetime, date
 from profiles.user_profile import UserProfile
-from factories.profile_factory import UserProfileFactory
+from factories.user_profile_factory import UserProfileFactory
 
 #Basic test using factory
 @pytest.mark.django_db
