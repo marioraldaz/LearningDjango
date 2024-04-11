@@ -4,8 +4,6 @@ from rest_framework import status
 
 from django.conf import settings
 
-API_KEY = settings.API_KEY
-
 
 #######################################################   Tests on my endpoints #################################################
 @pytest.mark.recipes

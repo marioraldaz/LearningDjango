@@ -3,15 +3,23 @@ from pytest_factoryboy import register
 from django.urls import reverse
 from food_intake.food_intake import FoodIntake
 from food_intake.food_intake_detail import FoodIntakeDetail
-from profiles.user_profile import UserProfile
 from factories.user_profile_factory import UserProfileFactory
 from factories.food_intake_factory import FoodIntakeFactory
-from factories.food_intake_detail import FoodIntakeDetailFactory
+from factories.food_intake_detail_factory import FoodIntakeDetailFactory
+from factories.ingredient_factory import IngredientFactory
+from factories.nutrition_factory import NutritionFactory
+from factories.nutrition_stats_factory import NutritionStatsFactory
+from factories.recipe_factory import RecipeFactory
+from factories.user_daily_factory import UserDailyFactory
 
-register(FoodIntakeFactory, name="food_intake")
-register(FoodIntakeDetailFactory, name="food_intake_detail")
-register(UserProfileFactory, name="user_profile")
-
+register(UserProfileFactory, name="user_profile_factory")
+register(FoodIntakeFactory, name="food_intake_factory")
+register(FoodIntakeDetailFactory, name="food_intake_detail_factory")
+register(IngredientFactory, name="ingredient_factory")
+register(NutritionFactory, name="nutrition_factory")
+register(NutritionStatsFactory, name="nutrition_stats_factory")
+register(RecipeFactory, name="recipe_factory")
+register(UserDailyFactory, name="user_daily_factory")
 
 @pytest.fixture
 def create_user_profile():
