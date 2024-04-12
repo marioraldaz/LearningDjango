@@ -9,13 +9,13 @@ class NutritionFactory(factory.django.DjangoModelFactory):
         model = Nutrition
 
     # Generate a dictionary of nutrients with random names and values
-    nutrients = fake.pydict_of(value_types=[("float", {"min_value": 0, "max_value": 100}), "str"], nb_elements=5)
+    nutrients = fake.pydict(value_types=[("float", {"min_value": 0, "max_value": 100}), "str"], nb_elements=5)
 
     # Generate a dictionary of properties with random names and values
-    properties = fake.pydict_of(value_types=[("float", {"min_value": 0, "max_value": 100}), "str"], nb_elements=2)
+    properties = fake.pydict(value_types=[("float", {"min_value": 0, "max_value": 100}), "str"], nb_elements=2)
 
     # Generate a dictionary of flavonoids with random names and values
-    flavonoids = fake.pydict_of(value_types=[("float", {"min_value": 0, "max_value": 100}), "str"], nb_elements=1)
+    flavonoids = fake.pydict(value_types=[("float", {"min_value": 0, "max_value": 100}), "str"], nb_elements=1)
 
     # Generate a random floating-point number between 0 and 100 for percent_protein, percent_fat, and percent_carbs
     percent_protein = fake.pyfloat(left_digits=2, right_digits=2, min_value=0, max_value=100)

@@ -1,6 +1,9 @@
 import factory
 from django.contrib.contenttypes.models import ContentType
-
+from food_intake.food_intake_detail import FoodIntakeDetail
+from .food_intake_factory import FoodIntakeFactory
+from .ingredient_factory import IngredientFactory
+from .recipe_factory import RecipeFactory
 
 class FoodIntakeDetailFactory(factory.django.DjangoModelFactory):
     class Meta:

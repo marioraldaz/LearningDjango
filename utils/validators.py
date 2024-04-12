@@ -47,3 +47,12 @@ def validate_activity_level(value):
     if value < 1 or value > 4:
         raise ValidationError(('Activity level must be an integer between 1 and 4.'), code='invalid')
     
+    
+
+def validate_meal_type(value):
+    print(value)
+    valid_meal_types = ['Breakfast', 'Lunch', 'Dinner', 'Snack']
+    if value not in valid_meal_types:
+        raise ValidationError(
+            'Invalid meal type: %(value)s' % {'value': value}
+        )

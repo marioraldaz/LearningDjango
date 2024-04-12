@@ -2,7 +2,7 @@ import pytest
 from django.core.exceptions import ValidationError
 from utils.validators import validate_positive_float, validate_is_date_before_today, validate_activity_level
 from datetime import datetime, date, timedelta
-
+from food_intake.food_intake import FoodIntake
 
 
 
@@ -82,3 +82,29 @@ def test_validate_activity_level(activity_level, is_valid):
         assert not is_valid, f"ValidationError raised for activity level {activity_level}"
         
         ##############################################################################################################################################################################################    
+
+
+##############################################################################TESTS FOR MEAL_TYPE_VALIDATOR################################################################################
+
+from utils.validators import validate_meal_type
+from django.utils.translation import gettext_lazy as _
+
+    
+@pytest.mark.parametrize("meal_type, is_valid", [
+    ("Breakfast", True),
+    ("Lunch", True),
+    ("Dinner", True),
+    ("Snack", True),
+    ("Invalid", False),
+    ("", False),
+    (None, False),
+])
+def test_validate_meal_type(meal_type, is_valid):
+    if is_valid:
+        # The validator should return None for valid meal types
+        assert validate_meal_type(meal_type) is None
+    else:
+        # The validator should raise a ValidationError for invalid meal types
+        with pytest.raises(ValidationError):
+            validate_meal_type(meal_type)
+##############################################################################################################################################################################################
