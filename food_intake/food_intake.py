@@ -20,3 +20,4 @@ class FoodIntake(models.Model):
     class Meta:
         db_table = 'profiles_foodintake' 
         
+        
