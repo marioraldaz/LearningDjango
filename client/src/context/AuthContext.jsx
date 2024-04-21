@@ -7,7 +7,7 @@ import { addIngredient } from "../redux/ingredientsSlice";
 import { addRecipe } from "../redux/recipesSlice";
 import { useSelector, useDispatch } from "react-redux";
 
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 
 export const AuthContext = createContext();
@@ -30,6 +30,33 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   ////////////////////////////////////////////////////////////////////////   PROFILE FUNCTIONS         ////////////////////////////////
+
+  async function register(user) {
+    try {
+      const { username, password, gender, date_of_birth, email } = user;
+      console.log(user);
+      const formData = {
+        username: username,
+        password: password,
+        gender: gender,
+        date_of_birth: date_of_birth,
+        email,
+      };
+      const response = await axios.post(
+        "http://localhost:8000/api/register/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+          },
+          withCredentials: true,
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  }
   let loginUser = async (e) => {
     e.preventDefault();
     const formData = {
@@ -37,7 +64,7 @@ export const AuthProvider = ({ children }) => {
       password: e.target.password.value,
     };
     const response = await axios.post(
-      "http://localhost:8000/user/login/",
+      "http://localhost:8000/api/login/",
       formData,
       {
         headers: {
@@ -330,6 +357,7 @@ export const AuthProvider = ({ children }) => {
     setRecipesForDaily: setRecipesForDaily,
     currentRecipe: currentRecipe,
     setCurrentRecipe: setCurrentRecipe,
+    register: register,
   };
   useEffect(() => {}, [setCurrentRecipe, currentRecipe]);
   return (

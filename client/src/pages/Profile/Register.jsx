@@ -1,7 +1,9 @@
-import { useState } from "react";
-import { register } from "../../api/users.api";
+import React, { useState, useEffect, useContext } from "react";
+import AuthContext from "../../context/AuthContext";
+
 export function Register() {
   const [error, setError] = useState(null);
+  const { register } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
