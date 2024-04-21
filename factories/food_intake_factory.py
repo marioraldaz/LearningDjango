@@ -7,5 +7,5 @@ class FoodIntakeFactory(factory.django.DjangoModelFactory):
         model = FoodIntake
 
     profile = factory.SubFactory(UserProfileFactory)
-    user_daily = factory.SubFactory(UserDailyFactory)
     meal_type = factory.Faker('random_element', elements=['Breakfast', 'Lunch', 'Dinner', 'Snack'])
+    date = factory.Faker('date')

@@ -31,6 +31,7 @@ class FoodIntakeView(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except FoodIntake.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        
     def get_food_intake_details(self, food_intake_id):
         try:
             food_intake = FoodIntake.objects.get(pk=food_intake_id)

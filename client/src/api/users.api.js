@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const UsersApi = axios.create({
-  baseURL: "http://localhost:8000/user/api/v1/user/",
+  baseURL: "http://localhost:8000/api/profiles",
 });
 export function getProfileByID(id) {
   // const res = axios.get());

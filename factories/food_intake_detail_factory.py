@@ -10,7 +10,8 @@ class FoodIntakeDetailFactory(factory.django.DjangoModelFactory):
         model = FoodIntakeDetail
 
     food_intake = factory.SubFactory(FoodIntakeFactory)  # Assuming you have a FoodIntakeFactory defined
-    content_type = factory.Iterator(ContentType.objects.all())
+    content_type = factory.Iterator(ContentType.objects.filter(app_label='food_intake', model__in=['ingredient', 'recipe']))
     ingredient = factory.SubFactory(IngredientFactory)
     recipe = factory.SubFactory(RecipeFactory)
     amount = factory.Faker('random_int', min=0, max=100)
+    

@@ -59,7 +59,7 @@ class IngredientView:
 
         # Return a JSON response with the saved ingredient and nutrition information
         return response_data
-    r
+    
     def get_recipe_by_id(self, spoonacular_id):
         # Check if the recipe exists in the database
         if spoonacular_id in self.recipe_database:

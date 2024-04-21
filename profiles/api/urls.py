@@ -13,11 +13,9 @@ router = routers.DefaultRouter()
 router.register(r'user', views.UserViewSet, 'user')
 
 urlpatterns = [
-    path("api/v1/", include(router.urls)),
-    path("docs/", include_docs_urls(title="User API")),
-    path('', views.get_routes, name="get_routes"),
-    path('token/refresh/', refresh_token, name='token_refresh'),
-    path('profiles/', UserProfileView.as_view(), name='user_profiles'),
+    path('profiles/', UserProfileView.as_view(), name='user_profiles')
+]
+"""
     path('change-password/', change_password, name='change_password'),
     path('fetch-ingredients-by-name/<str:name>/', fetch_ingredients_by_name, name='fetch_ingredients_by_name'),
     path('get-ingredient-details/<int:ingredient_id>/<str:amount>/', fetch_ingredient_by_id, name='fetch_ingredient_by_id'),
@@ -26,7 +24,7 @@ urlpatterns = [
     path('get-recipe-info/<int:id>/', get_recipe_info, name='get_recipe_info'),
     path('fetch-filtered-recipes/', fetch_filtered_recipes, name='fetch_filtered_recipes'),
     path('get-recipe-by-id/<int:recipe_id>/', get_recipe_by_id, name='get_recipe_by_id'),
-]
+"""
 
 
 from django.conf import settings

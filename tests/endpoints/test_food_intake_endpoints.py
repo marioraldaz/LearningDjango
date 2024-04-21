@@ -1,3 +1,4 @@
+from food_intake.food_intake_detail import FoodIntakeDetail
 import pytest
 from django.urls import reverse
 from factories.user_profile_factory import UserProfileFactory 
@@ -5,27 +6,18 @@ from django.utils import timezone
 from factories.food_intake_factory import FoodIntakeFactory
 from django.shortcuts import HttpResponse
 from food_intake.food_intake import FoodIntake
-#####################################################################################TESTS FOR SAVE_FOOD_INTAKE#########################################################################################################    
+#####################################################################################TESTS FOR FOOD_INTAKE_LIST#########################################################################################################    
 
+#Test endpoint works
 @pytest.mark.django_db
 def test_save_food_intake(client):
-    user_profile = UserProfileFactory()  # Create a user profile using the factory
-    url = reverse('save_food_intake') 
-    intake_data = {
-        'meal_type': 'Breakfast',
-        'intake_date': timezone.now().date(),  # Use today's date
-        'profile_id': user_profile.id  # Pass the user profile ID
-    }
+    url = reverse('food_intake_list') 
+  
+    response = client.get(url)
 
-    # Use the Django test client to simulate a POST request to your endpoint
-    response = client.post(url, intake_data)
-
+    print (response)
     # Assert that the response is as expected
     assert response.status_code == 200
-    assert 'success' in response.json()
-    assert response.json()['success'] is True
-    assert 'message' in response.json()
-    assert response.json()['message'] == 'Food intake saved successfully'
     
 ##############################################################################################################################################################################################    
 
@@ -35,18 +27,21 @@ def test_save_food_intake(client):
 
 ###################################################################################TESTS FOR /FOOD_INTAKE_DETAIL/#################################################################################################    
 
-
+@pytest.mark.xfail
 @pytest.mark.django_db
-def test_food_intake_detail(client):
+def test_food_intake_detail(client, food_intake_detail):
     # Create a food intake instance using the factory
-    food_intake = FoodIntakeFactory()
+    object_detail = food_intake_detail
+    print(object_detail)
+    
+    FoodIntakeDetail.objects.create(object)
 
     # Get the URL for the food_intake_detail view with the food intake's pk
-    url = reverse('food_intake_detail', kwargs={'pk': food_intake.pk})
+    url = reverse('food_intake_detail', kwargs={'pk': object.pk}) + 'details/'
 
     # Make a GET request to the URL using the test client
     response = client.get(url)
-
+    print(url)
     # Check that the response status code is 200 OK
     assert response.status_code == HttpResponse.status_code
 

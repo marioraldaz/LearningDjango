@@ -14,7 +14,7 @@ class UserProfile(models.Model):
     date_of_birth = models.DateField(validators=[validate_is_date_before_today])
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     activityLevel = models.PositiveIntegerField(default=1, validators=[validate_activity_level])
-    saved_recipes = models.ManyToManyField(Recipe, related_name='saved_by_profiles')
+    saved_recipes = models.ManyToManyField(Recipe, related_name='saved_by_profiles', null=True, blank=True)
 
     def save_recipe(self, recipe):
         # Method to save a recipe for this user profile

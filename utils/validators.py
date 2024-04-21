@@ -38,7 +38,7 @@ def validate_is_date_before_today(date_obj):
         except ValueError:
             return False
     else:
-        return False
+            return False
     
 def validate_activity_level(value):
     """
@@ -48,11 +48,9 @@ def validate_activity_level(value):
         raise ValidationError(('Activity level must be an integer between 1 and 4.'), code='invalid')
     
     
-
 def validate_meal_type(value):
-    print(value)
     valid_meal_types = ['Breakfast', 'Lunch', 'Dinner', 'Snack']
     if value not in valid_meal_types:
         raise ValidationError(
-            'Invalid meal type: %(value)s' % {'value': value}
+            ('Invalid meal type: %(value)s') % {'value': value}
         )
