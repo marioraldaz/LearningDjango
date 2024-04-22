@@ -1,11 +1,14 @@
 from django.urls import path
-from .views.view_ingredient import IngredientView
-from .views.view_recipe import RecipeView
+from .view_ingredient import IngredientView
+from .view_recipe import RecipeView
 
 urlpatterns = [
-    path('ingredient/save/', IngredientView().post, name='save_ingredient'),
-    path('ingredient/save-nutrition/', IngredientView().save_nutrition, name='save_nutrition'),
-    path('recipe/save/', RecipeView().post, name='save_recipe'),
-    path('recipe/save-extended-ingredients/', RecipeView().save_extended_ingredients, name='save_extended_ingredients'),
-    path('recipe/save-nutrition/', RecipeView().save_nutrition, name='save_recipe_nutrition'),
+    path('ingredient/save/', IngredientView().save_ingredient, name='save_ingredient'),
+    path('fetch-ingredients-by-name/<str:name>', IngredientView().fetch_ingredients_by_name, name='fetch_ingredients_by_name'),
+    path('get-ingredient-details/<int:id>/<int:amount>', IngredientView().get_ingredient_info, name="get_ingredient_details"),
+    path('recipe/save/', RecipeView().save_recipe, name='save_recipe'),
+    path('fetch-filtered-recipes/', RecipeView().fetch_filtered_recipes, name='fetch_filtered_recipes'),
+    path('get-recipe-info/<int:id>/', RecipeView().get_recipe_info, name='get_recipe_info'),
+    path('fetch-recipes-by-name/<str:name>', RecipeView().fetch_recipes_by_name, name='fetch_recipes_by_name'),
 ]
+

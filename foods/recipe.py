@@ -11,7 +11,7 @@ class Recipe(models.Model):
     servings = 2
     readyInMinutes = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(0)] )
     instructions = models.TextField()
-    spoonacular_id = models.IntegerField(unique=True)
+    spoonacular_id = models.IntegerField(unique=True, null=True, blank=True)
     sourceName = models.CharField(max_length=100)
     sourceUrl = models.URLField(max_length=600)
     healthScore = models.FloatField(null=True, validators=[validate_positive_float])

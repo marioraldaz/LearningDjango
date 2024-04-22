@@ -3,7 +3,7 @@ from .nutrition import Nutrition
 class Ingredient(models.Model):
     nutrition = models.OneToOneField(Nutrition, on_delete=models.CASCADE, related_name='recipe_ingredient')
     name = models.CharField(max_length=100)
-    spoonacular_id = models.IntegerField(unique=True)
+    spoonacular_id = models.IntegerField(unique=True, null=True, blank=True)
     original = models.CharField(max_length=255, null=True)
     originalName = models.CharField(max_length=255, null=True)
     name = models.CharField(max_length=255, null=True)
@@ -25,4 +25,5 @@ class Ingredient(models.Model):
     def add(cls, name, spoonacular_id):
         ingredient = cls.objects.create(name=name, spoonacular_id=spoonacular_id)
         return ingredient
+    
     

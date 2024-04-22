@@ -46,15 +46,3 @@ export async function fetchRecipesByName(name) {
     throw error; // Rethrow the error for handling in the calling code
   }
 }
-
-export async function getRecipeById(recipeId) {
-  try {
-    const response = await axios.get(
-      `${BASE_URL}/get-recipe-by-id/${recipeId}/`
-    );
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error; // Rethrow the error for handling in the calling code
-  }
-}
