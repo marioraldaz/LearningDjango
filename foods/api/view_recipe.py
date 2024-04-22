@@ -10,7 +10,6 @@ import json
 
 class RecipeView:
 
-    @require_POST
     def save_recipe(request):
         try:
             # Deserialize the JSON data from the request body into a Recipe object
@@ -25,7 +24,6 @@ class RecipeView:
         except Exception as e:
             return Response({'error': str(e)}, status=500)  # Return any other errors
     
-    @api_view(['GET'])
     def get_recipe_info(request, recipe_id):
 
         # Check if a recipe with the same spoonacular_id already exists

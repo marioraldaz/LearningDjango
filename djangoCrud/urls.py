@@ -26,7 +26,6 @@ urlpatterns = [
     path('api/', include('profiles.api.urls')),
     path('api/', include('food_intake.api.urls')),
     path('api/', include('foods.api.urls'))
-
 ]
 
 from django.conf import settings

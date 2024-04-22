@@ -25,7 +25,7 @@ export const fetchFilteredRecipes = async (filters) => {
   }
 };
 
-export async function getRecipeInfo(id) {
+export async function getRecipeById(id) {
   try {
     const response = await axios.get(`${BASE_URL}/get-recipe-info/${id}/`);
     return response.data;
@@ -35,10 +35,14 @@ export async function getRecipeInfo(id) {
   }
 }
 
+export async function getRecipeInfo(id) {
+  getRecipeById(id);
+}
+
 export async function fetchRecipesByName(name) {
   try {
     const response = await axios.get(
-      `${BASE_URL}/fetch-recipes-by-name/${name}/`
+      `${BASE_URL}/fetch-recipes-by-name/${name}`
     );
     return response.data;
   } catch (error) {

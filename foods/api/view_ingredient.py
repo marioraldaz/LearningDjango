@@ -9,11 +9,12 @@ from django.views.decorators.http import require_POST
 from .ingredient_serializer import IngredientSerializer
 import json
 from ..ingredient import Ingredient
+from rest_framework.views import APIView
+from django.http import JsonResponse
 
-class IngredientView:
+class IngredientView(APIView):
     
-    @require_POST
-    def save_ingredient(request):
+    def save_ingredient(self,request):
         # This code snippet is a method named `save_ingredient` within a class named `IngredientView`.
         # Here's a breakdown of what the code is doing:
         try:
@@ -23,26 +24,25 @@ class IngredientView:
             if serializer.is_valid():
                 # Save the validated Ingredient object to the database
                 serializer.save()
-                return Response(serializer.data, status=201)  # Return the serialized Ingredient object
+                return JsonResponse(serializer.data, status=201)  # Return the serialized Ingredient object
             else:
-                return Response(serializer.errors, status=400)  # Return validation errors
+                return JsonResponse(serializer.errors, status=400)  # Return validation errors
         except Exception as e:
-            return Response({'error': str(e)}, status=500)  # Return any other errors
+            return JsonResponse({'error': str(e)}, status=500)  # Return any other errors
         
         
-    @api_view(['GET'])
-    def get_ingredient_info(request, ingredient_id):
+    def get_ingredient_info(self, request, id, amount):
         try:
             # Check if an ingredient with the same spoonacular_id already exists
-            existing_ingredient = Ingredient.objects.filter(spoonacular_id=ingredient_id).first()
+            existing_ingredient = Ingredient.objects.filter(spoonacular_id=id).first()
             
             if existing_ingredient:
                 # If the ingredient exists, serialize it and return it
                 serialized_ingredient = IngredientSerializer(existing_ingredient).data
-                return Response(serialized_ingredient)
+                return JsonResponse(serialized_ingredient)
             
             # If the ingredient doesn't exist, fetch it from Spoonacular API
-            url = f'https://api.spoonacular.com/food/ingredients/{ingredient_id}/information'
+            url = f'https://api.spoonacular.com/food/ingredients/{id}/information'
             params = {
                 'apiKey': settings.API_KEY
             }
@@ -82,13 +82,12 @@ class IngredientView:
             
             # Serialize the ingredient data
             serialized_ingredient = IngredientSerializer(ingredient).data
-            return Response(serialized_ingredient)
+            return JsonResponse(serialized_ingredient)
         except requests.RequestException as e:
-            return Response({'error': str(e)}, status=500)
+            return JsonResponse({'error': str(e)}, status=500)
 
-
-    @api_view(['GET'])
-    def fetch_ingredients_by_name(request, name):
+    
+    def fetch_ingredients_by_name(self, request, name):
         try:
             # Construct the API URL
             url = f'https://api.spoonacular.com/food/ingredients/search'
@@ -96,7 +95,7 @@ class IngredientView:
             # Set query parameters
             params = {
                 'apiKey': settings.API_KEY,
-                'query': name
+                'query': name  # Access 'name' parameter from request query parameters
             }
             
             # Send GET request to the API
@@ -110,13 +109,11 @@ class IngredientView:
             ingredients = data.get('results', [])
             
             # Return the list of ingredients as JSON response
-            return Response(ingredients)
+            return JsonResponse(ingredients, safe=False)
         except requests.RequestException as e:
-            return Response({'error': str(e)}, status=500)
-        
-
-    @api_view(['GET'])
-    def fetch_filtered_ingredients(request):
+            return JsonResponse({'error': str(e)}, status=500)
+            
+    def fetch_filtered_ingredients(self, request):
         try:
             # Construct the API URL
             url = 'https://api.spoonacular.com/food/ingredients/search'
@@ -138,6 +135,6 @@ class IngredientView:
             ingredients = data.get('results', [])
             
             # Return the list of ingredients as JSON response
-            return Response(ingredients)
+            return JsonResponse(ingredients)
         except requests.RequestException as e:
-            return Response({'error': str(e)}, status=500)
+            return JsonResponse({'error': str(e)}, status=500)
