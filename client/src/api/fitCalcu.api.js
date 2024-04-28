@@ -1,3 +1,6 @@
+import axios from "axios";
+export const BASE_URL = "http://localhost:8000/api";
+
 export const getActivityLevelByNumber = (number) => {
   switch (number) {
     case 1:
@@ -28,3 +31,20 @@ export const calculateAge = (birthDateString) => {
   );
   return ageInYears;
 };
+
+export async function updateFitnessProfile(profile, goal) {
+  const formData = new FormData();
+  formData.append("goal", goal);
+  formData.append("activityLevel", profile.activityLevel); // Assuming profile includes activityLevel
+
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/profiles/fitness-profile/`,
+      formData
+    );
+    return response.data; // Return updated fitness profile data
+  } catch (error) {
+    console.error("Error updating fitness profile:", error);
+    throw error; // Propagate the error for handling in the calling code
+  }
+}

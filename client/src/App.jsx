@@ -24,7 +24,7 @@ function App() {
           <AuthProvider>
             <div className="bg-black absolute z-[-1] min-h-screen w-full text-white flex flex-col overflow-hidden">
               <Header />
-              <div className="flex-1 relative z-[0]  overflow-y-auto">
+              <div className="flex-1 relative z-[0]">
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/Ingredients" element={<Ingredients />} />

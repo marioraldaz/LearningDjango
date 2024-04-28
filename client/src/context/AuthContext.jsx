@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [recipesForDaily, setRecipesForDaily] = useState([]);
   const [ingredientsForDaily, setIngredientsForDaily] = useState([]);
+
   const navigate = useNavigate();
 
   ////////////////////////////////////////////////////////////////////////   PROFILE FUNCTIONS         ////////////////////////////////
