@@ -164,6 +164,7 @@ def upload_profile_picture(request):
             profile.save()
             return Response({'success': True, 'message': 'Profile picture uploaded successfully'})
         else:
+            print(request)
             return Response({'success': False, 'message': 'Invalid form data'}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({'success': False, 'message': 'Invalid request method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

@@ -18,4 +18,24 @@ class Nutrition(models.Model):
     # Field for weight per serving
     weight_per_serving = models.JSONField()
 
-    
+    @classmethod
+    def create_from_json(cls, nutrition_data):
+        # Extract necessary data from nutrition_data JSON
+        nutrients = nutrition_data.get('nutrients')
+        properties = nutrition_data.get('properties')
+        flavonoids = nutrition_data.get('flavonoids')
+        percent_protein = nutrition_data.get('caloricBreakdown', {}).get('percentProtein')
+        percent_fat = nutrition_data.get('caloricBreakdown', {}).get('percentFat')
+        percent_carbs = nutrition_data.get('caloricBreakdown', {}).get('percentCarbs')
+        weight_per_serving = nutrition_data.get('weightPerServing')
+
+        # Create and return a new Nutrition object
+        return cls.objects.create(
+            nutrients=nutrients,
+            properties=properties,
+            flavonoids=flavonoids,
+            percent_protein=percent_protein,
+            percent_fat=percent_fat,
+            percent_carbs=percent_carbs,
+            weight_per_serving=weight_per_serving
+        )

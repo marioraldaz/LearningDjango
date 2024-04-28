@@ -22,13 +22,9 @@ export function ProfileData({ profile, uploadProfilePicture, changePassword }) {
     setChangePasswordForm(false);
   };
   const handleSubmit = async (e) => {
-    e.preventDefault();
     const formData = new FormData();
     formData.append("profile_picture", file);
     formData.append("profile_id", profile.id);
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
     uploadProfilePicture(formData);
   };
 
@@ -70,22 +66,32 @@ export function ProfileData({ profile, uploadProfilePicture, changePassword }) {
         )}
       </div>
       <div className="col-span-1">
-        <div className="h-16 m-2">
+        <div className="h-16 m-2 ">
           <GrayButton
             onClick={() => setShowChangeProfileForm(!showChangeProfileForm)}
           >
             Change Profile Picture
           </GrayButton>
         </div>
-        {showChangeProfileForm && (
-          <form onSubmit={handleSubmit} className="m-2 gap-2 p-4">
-            <>
-              <input type="file" onChange={handleFileChange} />
-              <button type="submit">Upload</button>
-            </>
-          </form>
-        )}
       </div>
+      {showChangeProfileForm && (
+        <form
+          onSubmit={handleSubmit}
+          className="m-2 gap-2 p-4 col-span-2 flex items-center justify-center"
+        >
+          <input
+            type="file"
+            className="hover:cursor-pointer items-center hover:scale-110 hover:shadow-xl"
+            onChange={handleFileChange}
+          />
+          <button
+            type="submit"
+            className="text-lg w-[200px] text-nowrap bg-green-700 p-2 m-2 rounded-lg hover:scale-110 h-full"
+          >
+            {file ? "Upload" : "Remove picture"}
+          </button>
+        </form>
+      )}
     </div>
   );
 }

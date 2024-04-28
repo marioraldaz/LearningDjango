@@ -6,7 +6,6 @@ export function SavedRecipes({ savedRecipes }) {
   }
   return (
     <>
-      {console.log(savedRecipes)}
       {savedRecipes.length > 0 ? (
         <div>
           <h1 className="text-2xl gradient-text w-full text-center mb-8">

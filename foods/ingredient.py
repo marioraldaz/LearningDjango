@@ -2,7 +2,6 @@ from django.db import models
 from .nutrition import Nutrition
 class Ingredient(models.Model):
     nutrition = models.OneToOneField(Nutrition, on_delete=models.CASCADE, related_name='recipe_ingredient')
-    name = models.CharField(max_length=100)
     spoonacular_id = models.IntegerField(unique=True, null=True, blank=True)
     original = models.CharField(max_length=255, null=True)
     originalName = models.CharField(max_length=255, null=True)
@@ -22,8 +21,30 @@ class Ingredient(models.Model):
     categoryPath = models.JSONField(null=True)
 
     @classmethod
-    def add(cls, name, spoonacular_id):
-        ingredient = cls.objects.create(name=name, spoonacular_id=spoonacular_id)
+    def create_with_nutrition(cls, name, spoonacular_id, ingredient_data):
+        # Create Nutrition object using Nutrition.create_from_json method
+        nutrition = Nutrition.create_from_json(ingredient_data.get('nutrition'))
+
+        # Create Ingredient object with the associated Nutrition
+        ingredient = cls.objects.create(
+            name=name,
+            spoonacular_id=spoonacular_id,
+            nutrition=nutrition,
+            original=ingredient_data.get('original'),
+            originalName=ingredient_data.get('originalName'),
+            amount=ingredient_data.get('amount'),
+            unit=ingredient_data.get('unit'),
+            unitShort=ingredient_data.get('unitShort'),
+            unitLong=ingredient_data.get('unitLong'),
+            possibleUnits=ingredient_data.get('possibleUnits'),
+            estimatedCost_value=ingredient_data.get('estimatedCost', {}).get('value'),
+            estimatedCost_unit=ingredient_data.get('estimatedCost', {}).get('unit'),
+            consistency=ingredient_data.get('consistency'),
+            shoppingListUnits=ingredient_data.get('shoppingListUnits'),
+            aisle=ingredient_data.get('aisle'),
+            image=ingredient_data.get('image'),
+            meta=ingredient_data.get('meta'),
+            categoryPath=ingredient_data.get('categoryPath')
+        )
+
         return ingredient
-    
-    
