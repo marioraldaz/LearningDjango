@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 from utils.validators import validate_positive_float, validate_activity_level
 from .user_profile import UserProfile
@@ -13,10 +13,10 @@ class UserFitnessProfile(models.Model):
 
     user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE, related_name='fitness_profile')
     goal = models.CharField(max_length=10, choices=GOAL_CHOICES, default='Maintain')
-    daily_calorie_intake_goal = models.PositiveIntegerField(default=2000, validators=[MinValueValidator(0)])
-    daily_protein_goal = models.FloatField(default=50.0, validators=[validate_positive_float])
-    daily_fat_goal = models.FloatField(default=70.0, validators=[validate_positive_float])
-    daily_carbohydrate_goal = models.FloatField(default=250.0, validators=[validate_positive_float])
+    daily_calorie_intake_goal = models.PositiveIntegerField(default=2000, validators=[MinValueValidator(1200), MaxValueValidator(4500)])
+    daily_protein_goal = models.FloatField(default=50.0, validators=[MinValueValidator(0), MaxValueValidator(500), validate_positive_float])
+    daily_fat_goal = models.FloatField(default=70.0, validators=[MinValueValidator(0), MaxValueValidator(500), validate_positive_float])
+    daily_carbohydrate_goal = models.FloatField(default=250.0, validators=[MinValueValidator(0), MaxValueValidator(1000), validate_positive_float])
     activity_level = models.PositiveIntegerField(default=1, validators=[validate_activity_level])
 
     def calculate_and_set_daily_calorie_intake_goal(self):
