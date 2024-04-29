@@ -1,74 +1,111 @@
 import pytest
 from foods.recipe import Recipe
 
-# Define test data for Recipe creation
-test_data = [
-    {
-        "title": "Pasta Carbonara",
-        "image": "https://example.com/pasta.jpg",
+@pytest.fixture
+def recipe_data():
+    return {
+        "title": "Delicious Recipe",
+        "image": "https://example.com/image.jpg",
         "servings": 4,
         "readyInMinutes": 30,
-        "instructions": "Cook pasta. Fry bacon. Mix eggs and cheese. Combine all ingredients.",
+        "instructions": "Cook it well!",
         "spoonacular_id": 12345,
-        "sourceName": "Italian Recipes",
-        "sourceUrl": "https://example.com/pasta-recipes",
-        "healthScore": 80.5,
-        "spoonacularScore": 90.0,
+        "sourceName": "Food Blog",
+        "sourceUrl": "https://example.com/recipe",
+        "healthScore": 8.5,
+        "spoonacularScore": 9.2,
         "pricePerServing": 2.5,
-        "cheap": False,
-        "dairyFree": False,
-        "diets": ["balanced", "high-protein"],
-        "vegetarian": False,
-        "extendedIngredients": [{"name": "Pasta", "amount": 200, "unit": "g"}, {"name": "Bacon", "amount": 100, "unit": "g"}]
-    },
-    # Add more test data as needed
-]
+        "analyzedInstructions": {"step1": "Do this", "step2": "Then do that"},
+        "cheap": True,
+        "creditsText": "Credits to the chef",
+        "cuisines": ["Italian", "French"],
+        "dairyFree": True,
+        "diets": ["Vegetarian", "Vegan"],
+        "gaps": "No",
+        "glutenFree": True,
+        "ketogenic": False,
+        "lowFodmap": True,
+        "occasions": ["Dinner", "Party"],
+        "sustainable": True,
+        "vegan": True,
+        "vegetarian": True,
+        "veryHealthy": True,
+        "veryPopular": True,
+        "whole30": False,
+        "weightWatcherSmartPoints": 5,
+        "dishTypes": ["Main Dish", "Side Dish"],
+        "summary": "This is a delicious recipe.",
+        "winePairing": {"pairing1": "Wine A", "pairing2": "Wine B"},
+        "nutrition": {
+            "nutrients": {"protein": 20, "fat": 10, "carbohydrate": 30}
+        }
+    }
 
-# Parametrize the test with the recipe_data
 @pytest.mark.django_db
-@pytest.mark.parametrize("recipe_data", test_data)
-def test_recipe_creation(recipe_data):
-    # Create a Recipe instance using the provided recipe_data
-    recipe = Recipe.objects.create(
-        title=recipe_data["title"],
-        image=recipe_data["image"],
-        servings=recipe_data["servings"],
-        readyInMinutes=recipe_data["readyInMinutes"],
-        instructions=recipe_data["instructions"],
-        spoonacular_id=recipe_data["spoonacular_id"],
-        sourceName=recipe_data["sourceName"],
-        sourceUrl=recipe_data["sourceUrl"],
-        healthScore=recipe_data["healthScore"],
-        spoonacularScore=recipe_data["spoonacularScore"],
-        pricePerServing=recipe_data["pricePerServing"],
-        cheap=recipe_data["cheap"],
-        dairyFree=recipe_data["dairyFree"],
-        vegetarian=recipe_data["vegetarian"]
-        # Add other fields as necessary
-    )
+def test_creation_recipe_without_ingredients(recipe_data):
+    # Create a Recipe object with associated Nutrition (without ingredients)
+    recipe = Recipe.create_with_nutrition(recipe_data)
 
-    # Validate the Recipe instance properties
+    # Validate that the Recipe is created successfully
     assert recipe is not None
-    assert recipe.title == recipe_data["title"]
-    assert recipe.image == recipe_data["image"]
-    assert recipe.servings == recipe_data["servings"]
-    assert recipe.readyInMinutes == recipe_data["readyInMinutes"]
-    assert recipe.instructions == recipe_data["instructions"]
-    assert recipe.spoonacular_id == recipe_data["spoonacular_id"]
-    assert recipe.sourceName == recipe_data["sourceName"]
-    assert recipe.sourceUrl == recipe_data["sourceUrl"]
-    assert recipe.healthScore == pytest.approx(recipe_data["healthScore"], abs=0.01)
-    assert recipe.spoonacularScore == pytest.approx(recipe_data["spoonacularScore"], abs=0.01)
-    assert recipe.pricePerServing == pytest.approx(recipe_data["pricePerServing"], abs=0.01)
-    assert recipe.cheap == recipe_data["cheap"]
-    assert recipe.dairyFree == recipe_data["dairyFree"]
-    assert recipe.vegetarian == recipe_data["vegetarian"]
 
-    # Validate extendedIngredients association
-    assert recipe.ingredients.count() == len(recipe_data["extendedIngredients"])
-    for ingredient_data in recipe_data["extendedIngredients"]:
-        ingredient_name = ingredient_data["name"]
-        ingredient = recipe.ingredients.filter(name=ingredient_name).first()
-        assert ingredient is not None
-        assert ingredient.amount == pytest.approx(ingredient_data["amount"], abs=0.01)
-        assert ingredient.unit == ingredient_data["unit"]
+    # Validate that the Recipe has the expected attributes
+    assert recipe.title == "Delicious Recipe"
+    assert recipe.image == "https://example.com/image.jpg"
+    assert recipe.servings == 4
+    assert recipe.readyInMinutes == 30
+    assert recipe.instructions == "Cook it well!"
+    assert recipe.spoonacular_id == 12345
+    assert recipe.sourceName == "Food Blog"
+    assert recipe.sourceUrl == "https://example.com/recipe"
+    assert recipe.healthScore == 8.5
+    assert recipe.spoonacularScore == 9.2
+    assert recipe.pricePerServing == 2.5
+    assert recipe.cheap is True
+    assert recipe.creditsText == "Credits to the chef"
+    assert recipe.cuisines == ["Italian", "French"]
+    assert recipe.dairyFree is True
+    assert recipe.diets == ["Vegetarian", "Vegan"]
+    assert recipe.gaps == "No"
+    assert recipe.glutenFree is True
+    assert recipe.ketogenic is False
+    assert recipe.lowFodmap is True
+    assert recipe.occasions == ["Dinner", "Party"]
+    assert recipe.sustainable is True
+    assert recipe.vegan is True
+    assert recipe.vegetarian is True
+    assert recipe.veryHealthy is True
+    assert recipe.veryPopular is True
+    assert recipe.whole30 is False
+    assert recipe.weightWatcherSmartPoints == 5
+    assert recipe.dishTypes == ["Main Dish", "Side Dish"]
+    assert recipe.summary == "This is a delicious recipe."
+    assert recipe.winePairing == {"pairing1": "Wine A", "pairing2": "Wine B"}
+
+    # Validate that the Recipe has associated Nutrition
+    assert recipe.nutrition is not None
+    assert recipe.nutrition.nutrients == {"protein": 20, "fat": 10, "carbohydrate": 30}
+
+    # Validate that the Recipe has no associated ingredients
+    assert recipe.ingredients.count() == 0
+    
+    
+@pytest.mark.django_db
+@pytest.mark.parametrize("invalid_data, error_field", [
+    ({"title": ""}, "title"),  # Empty title
+    ({"image": "invalid_url"}, "image"),  # Invalid image URL
+    ({"servings": -1}, "servings"),  # Negative servings
+    ({"readyInMinutes": -10}, "readyInMinutes"),  # Negative readyInMinutes
+    ({"healthScore": "invalid"}, "healthScore"),  # Invalid healthScore (non-float)
+    ({"spoonacularScore": "invalid"}, "spoonacularScore"),  # Invalid spoonacularScore (non-float)
+    ({"pricePerServing": "invalid"}, "pricePerServing"),  # Invalid pricePerServing (non-float)
+    ({"cuisines": "invalid"}, "cuisines"),  # Invalid cuisines (non-list)
+    ({"diets": "invalid"}, "diets"),  # Invalid diets (non-list)
+    ({"gaps": 123}, "gaps"),  # Invalid gaps (non-string)
+    ({"weightWatcherSmartPoints": "invalid"}, "weightWatcherSmartPoints"),  # Invalid weightWatcherSmartPoints (non-int)
+    # Add more test cases for other fields
+])
+def test_recipe_validation_errors(invalid_data, error_field, recipe_factory):
+    # Create a recipe using the recipe_factory with the specified invalid_data
+    with pytest.raises(Exception):  # Replace Exception with the appropriate error type
+        recipe = recipe_factory(**invalid_data)

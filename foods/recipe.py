@@ -3,6 +3,8 @@ from .ingredient import Ingredient
 from utils.validators import validate_positive_float
 from django.core.validators import MinValueValidator
 from .nutrition import Nutrition
+from django.db import transaction
+import requests
 
 class Recipe(models.Model):
     nutrition = models.OneToOneField(Nutrition, on_delete=models.CASCADE, related_name='recipe_nutrition')
@@ -54,6 +56,7 @@ class Recipe(models.Model):
     def __str__(self):
         return self.title
     
+    
     @classmethod
     def create_with_nutrition(cls, recipe_data):
         nutrition_data = recipe_data.get('nutrition')
@@ -100,11 +103,26 @@ class Recipe(models.Model):
         )
 
         # Add ingredients to the recipe (if provided)
-        ingredients_data = recipe_data.get('ingredients')
+        ingredients_data = recipe_data.get('extendedIngredients')
         if ingredients_data:
             for ingredient_data in ingredients_data:
-                ingredient = Ingredient.create_with_nutrition(ingredient_data)
-                recipe.ingredients.add(ingredient)
+                # Extract ingredient_id and amount from ingredient_data
+                ingredient_id = ingredient_data.get('id')
+                amount = ingredient_data.get('amount')
+
+                # Call the get_ingredient_info view using requests
+                url = f'https://localhost:8000/api/get_ingredient_info/{ingredient_id}/{amount}/'
+
+                try:
+                    response = requests.get(url)
+                    response.raise_for_status()  # Raise an exception for non-2xx responses
+
+                    # Process the response as needed (e.g., print response content)
+                    print(response.content)
+
+                except requests.RequestException as e:
+                    print(f"Error fetching ingredient information: {e}")
+                
 
         return recipe
 
