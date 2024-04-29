@@ -11,4 +11,5 @@ urlpatterns = [
     path('user-dailies/<int:profile_id>/<int:pk>/', UserDailyView.as_view(), name='user_daily_detail'),
     path('user-daily/list-food-intakes/', UserDailyView.as_view(), name='list_food_intakes'),
     path('user-daily/list-food-intakes-with-details/', UserDailyView.as_view(), name='list_food_intakes_with_details'),
+    path('nutrition-stats/<int:profile_id>/', NutritionStatsDetailView.as_view(), name='nutrition_stats_detail'),
 ]
