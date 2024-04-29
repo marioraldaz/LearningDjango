@@ -7,20 +7,25 @@ from food_intake.food_intake_detail import FoodIntakeDetail
 from food_intake.api.serializers import UserDailySerializer, FoodIntakeSerializer, FoodIntakeDetailSerializer
 
 class UserDailyView(APIView):
-    def get(self, request):
-        user_dailies = UserDaily.objects.all()
+    def get(self, request, profile_id):
+        user_dailies = UserDaily.objects.filter(profile_id=profile_id)
         serializer = UserDailySerializer(user_dailies, many=True)
         return Response(serializer.data)
 
-    def post(self, request):
+    def post(self, request, profile_id):
+        request.data['profile'] = profile_id  # Set the profile_id in the request data
         serializer = UserDailySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk):
-        user_daily = self.get_object(pk)
+    def delete(self, request, profile_id, pk):
+        try:
+            user_daily = UserDaily.objects.get(profile_id=profile_id, pk=pk)
+        except UserDaily.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
         user_daily.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

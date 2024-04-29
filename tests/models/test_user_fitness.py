@@ -1,54 +1,47 @@
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth.models import User
-from profiles.user_profile import UserProfile
-from profiles.profile_fitness import  UserFitnessProfile
-
+from profiles.profile_fitness import UserFitnessProfile
+from django.shortcuts import get_object_or_404
+import pytest
 import json
 
-class TestFitnessProfileView(TestCase):
 
-    def setUp(self):
-        # Create a test user and associated profiles
-        self.user = User.objects.create_user(username='testuser', password='password')
-        self.user_profile = UserProfile.objects.create(user=self.user)
-        self.fitness_profile = UserFitnessProfile.objects.create(user_profile=self.user_profile)
+@pytest.fixture
+def client_logged_in(client, user):
+    # Log in the client with the test userr
+    client.force_login(user)
+    return client
 
-    def test_fitness_profile_view_GET(self):
-        # Test GET request to the fitness_profile view
-        self.client.force_login(self.user)
-        response = self.client.get(reverse('fitness_profile'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'fitness_profile.html')
+def test_fitness_profile_view_authenticated_GET(client_logged_in):
+    # Test GET request to the fitness_profile view with authentication
+    response = client_logged_in.get(reverse('fitness_profile'))
+    assert response.status_code == 200
+    assert 'fitness_profile.html' in [t.name for t in response.templates]
 
-    def test_fitness_profile_view_POST(self):
-        # Test POST request to the fitness_profile view
-        self.client.force_login(self.user)
-        url = reverse('fitness_profile')
-        data = {
-            'goal': 'Lose',
-            'activityLevel': 2
-        }
-        response = self.client.post(url, data=json.dumps(data), content_type='application/json')
-        self.assertEqual(response.status_code, 200)
+def test_fitness_profile_view_authenticated_POST(client_logged_in, user_profile):
+    # Test POST request to the fitness_profile view with authentication
+    url = reverse('fitness_profile')
+    data = {
+        'goal': 'Lose',
+        'activityLevel': 2
+    }
+    response = client_logged_in.post(url, data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 200
 
-        # Verify that fitness profile fields are updated
-        self.fitness_profile.refresh_from_db()
-        self.assertEqual(self.fitness_profile.goal, 'Lose')
-        self.assertEqual(self.fitness_profile.activity_level, 2)
+    # Refresh fitness profile from the database and verify updated fields
+    fitness_profile = get_object_or_404(UserFitnessProfile, user_profile=user_profile)
+    assert fitness_profile.goal == 'Lose'
+    assert fitness_profile.activity_level == 2
 
-    def test_fitness_profile_view_invalid_JSON(self):
-        # Test POST request with invalid JSON payload
-        self.client.force_login(self.user)
-        url = reverse('fitness_profile')
-        invalid_data = '{invalid-json}'  # Invalid JSON payload
-        response = self.client.post(url, data=invalid_data, content_type='application/json')
-        self.assertEqual(response.status_code, 400)
+def test_fitness_profile_view_invalid_JSON(client_logged_in):
+    # Test POST request with invalid JSON payload
+    url = reverse('fitness_profile')
+    invalid_data = '{invalid-json}'  # Invalid JSON payload
+    response = client_logged_in.post(url, data=invalid_data, content_type='application/json')
+    assert response.status_code == 400
 
-    def test_fitness_profile_view_unauthenticated(self):
-        # Test access to the fitness_profile view without authentication
-        url = reverse('fitness_profile')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)  # Redirect to login page (status code 302)
-
-    # Add more tests as needed to cover additional scenarios
+def test_fitness_profile_view_unauthenticated(client):
+    # Test access to the fitness_profile view without authentication
+    url = reverse('fitness_profile')
+    response = client.get(url)
+    assert response.status_code == 302  # Redirect to login page (status code 302)

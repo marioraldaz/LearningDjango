@@ -40,4 +40,3 @@ export function AreaChart() {
   );
 }
 
-export default AreaChart;

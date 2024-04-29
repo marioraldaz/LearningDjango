@@ -11,6 +11,7 @@ from factories.nutrition_factory import NutritionFactory
 from factories.nutrition_stats_factory import NutritionStatsFactory
 from factories.recipe_factory import RecipeFactory
 from factories.user_daily_factory import UserDailyFactory
+from factories.profile_fitness_factory import UserFitnessProfileFactory
 
 register(UserProfileFactory, name="user_profile_factory")
 register(FoodIntakeFactory, name="food_intake_factory")
@@ -20,6 +21,8 @@ register(NutritionFactory, name="nutrition_factory")
 register(NutritionStatsFactory, name="nutrition_stats_factory")
 register(RecipeFactory, name="recipe_factory")
 register(UserDailyFactory, name="user_daily_factory")
+register(UserFitnessProfileFactory, name="user_fitness_profile_factory")
+
 
 @pytest.fixture
 def create_user_profile():
