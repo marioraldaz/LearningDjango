@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from profiles.user_profile import UserProfile
 from food_intake.food_intake import FoodIntake
-from profiles.allergies import Allergy
+from profiles.allergies import Allergies
 from django.contrib.auth.hashers import make_password, check_password
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
