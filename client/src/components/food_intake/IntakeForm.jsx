@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { NavigationButton } from "../../components/Buttons/NavigationButton";
-import { GrayButton } from "../../components/Buttons/GrayButton";
-import { CardsList } from "../../components/Lists/CardsList.jsx";
+import { NavigationButton } from "../Buttons/NavigationButton.jsx";
+import { GrayButton } from "../Buttons/GrayButton.jsx";
+import { CardsList } from "../Lists/CardsList.jsx";
 
 export function IntakeForm({ recipeToAdd }) {
   const [formData, setFormData] = useState({
@@ -15,7 +15,7 @@ export function IntakeForm({ recipeToAdd }) {
     e.preventDefault();
     addFoodIntake(formData);
   };
-  
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -41,6 +41,7 @@ export function IntakeForm({ recipeToAdd }) {
               <option value="Dinner">Dinner</option>
               <option value="Snack">Snack</option>
             </select>
+            <div>{console.log(recipeToAdd)}</div>
           </div>
         </div>
 

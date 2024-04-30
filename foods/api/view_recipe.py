@@ -37,7 +37,7 @@ def get_recipe_info(request, id):
         serialized_recipe = RecipeSerializer(existing_recipe).data
         return Response(serialized_recipe, status=status.HTTP_200_OK)
 
-    url = f'https://api.spoonacular.com/recipes/{recipe_id}/information'
+    url = f'https://api.spoonacular.com/recipes/{recipe_id}/information?includeNutrition=true'
     params = {
         'apiKey': settings.API_KEY
     }
@@ -50,9 +50,9 @@ def get_recipe_info(request, id):
         # Extract necessary data from Spoonacular API response
         nutrition_data = data.get('nutrition', {})
         ingredients_data = data.get('extendedIngredients', [])
-
         # Create Nutrition object
-        nutrition = Nutrition.objects.create(**nutrition_data)
+        print(nutrition_data )
+        nutrition = Nutrition.create_from_json(nutrition_data)
 
         # Create Recipe object
         recipe_data = {
