@@ -95,58 +95,72 @@ export function RecipePage() {
           dangerouslySetInnerHTML={{ __html: recipe.summary }}
         />
       </div>
-      <div className="w-full flex flex-wrap gap-8">
+      <div className="w-full flex gap-8">
         {/*second row*/}
-        <div className="h-[60px] flex gap-4">
+        <div className="h-[60px] flex flex-wrap  gap-4">
           {!saved && (
-            <GrayButton
-              onClick={() => {
-                saveRecipe(recipe.id);
-                setSaved(true);
-                setSavedRecipes([...savedRecipes, recipe]);
-              }}
-            >
-              Save Recipe
-            </GrayButton>
+            <div className="w-[200px]">
+              <GrayButton
+                onClick={() => {
+                  saveRecipe(recipe.id);
+                  setSaved(true);
+                  setSavedRecipes([...savedRecipes, recipe]);
+                }}
+              >
+                Save Recipe
+              </GrayButton>
+            </div>
           )}
           {saved && (
-            <GrayButton
-              onClick={() => {
-                unSaveRecipe(recipe.id);
-                setSaved(false);
-                setSavedRecipes(
-                  savedRecipes.filter(
-                    (savedRecipe) => savedRecipe.id !== recipe.id
-                  )
-                );
-              }}
-            >
-              Unsave Recipe
-            </GrayButton>
+            <div className="w-[200px]">
+              <GrayButton
+                onClick={() => {
+                  unSaveRecipe(recipe.id);
+                  setSaved(false);
+                  setSavedRecipes(
+                    savedRecipes.filter(
+                      (savedRecipe) => savedRecipe.id !== recipe.id
+                    )
+                  );
+                }}
+              >
+                Unsave Recipe
+              </GrayButton>
+            </div>
           )}
-          <div className="w-[500px] flex h-[60px] items-center">
+          <div className="w-[600px] flex h-[60px] items-center">
             <NavigationButton
               link={"/FoodIntake/" + recipe.id}
               text={"Add To Daily"}
             />
           </div>
+          <div className="w-[200px]">
+            <GrayButton onClick={toggleNutrition}>
+              {!showNutrition ? "Show Nutrition" : "Hide Nutrition"}
+            </GrayButton>
+          </div>
 
-          <GrayButton onClick={toggleNutrition}>
-            {!showNutrition ? "Show Nutrition" : "Hide Nutrition"}
-          </GrayButton>
-          <GrayButton onClick={toggleInstructions}>
-            {!showInstructions ? "Show Instructions" : "Hide Instructions"}
-          </GrayButton>
-          <GrayButton onClick={toggleIngredients}>
-            {!showIngredients ? "Show Ingredients" : "Hide Ingredients"}
-          </GrayButton>
+          <div className="w-[200px]">
+            <GrayButton onClick={toggleInstructions}>
+              {!showInstructions ? "Show Instructions" : "Hide Instructions"}
+            </GrayButton>
+          </div>
+
+          <div className="w-[200px] ">
+            <GrayButton onClick={toggleIngredients}>
+              {!showIngredients ? "Show Ingredients" : "Hide Ingredients"}
+            </GrayButton>
+          </div>
         </div>
 
-        <div className="border p-2 rounded-lg ">
+        <div className="border p-2 rounded-lg w-[200px]">
           <h2 className="mb-8">Compatible Diets </h2>
-          <ul className="flex items-center">
+          <ul className="flex ">
             {recipe.diets.map((diet) => (
-              <li key={diet} className="flex flex-row gap-4 w-full border p-4">
+              <li
+                key={diet}
+                className="flex flex-row border p-2 h-[70px] w-[100px] text-center items-center"
+              >
                 {diet}
               </li>
             ))}
