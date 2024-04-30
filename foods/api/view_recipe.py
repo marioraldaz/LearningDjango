@@ -120,26 +120,11 @@ from django.conf import settings
 from django.http import JsonResponse, HttpResponseServerError
 
 def fetch_recipes_by_name(request, name):
-    url = 'https://api.spoonacular.com/recipes/complexSearch'
-    params = {
-        'apiKey': settings.API_KEY,
-        'query': name,
-        'number': 10  # Adjust this value to specify the number of results to fetch
-    }
-
     try:
-        response = requests.get(url, params=params)
-        response.raise_for_status()  # Raise exception for any error status codes
-
+        url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={settings.API_KEY}&query={name}&sort=popularity"
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception for HTTP errors
         data = response.json()
-        recipes = data.get('results', [])
-
-        if not recipes:
-            return JsonResponse({'error': 'No recipes found for the given name'}, status=404)
-
-        # Serialize recipes list to JSON string
-        serialized_recipes = json.dumps(recipes)
-        return JsonResponse(serialized_recipes, safe=False)  # Use safe=False to allow non-dict objects
-
+        return JsonResponse(data['results'], safe=False)
     except requests.RequestException as e:
-        return HttpResponseServerError(json.dumps({'error': str(e)}))
+        return JsonResponse({'error': str(e)}, status=500)
