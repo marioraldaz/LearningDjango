@@ -56,7 +56,7 @@ export function IngredientPage() {
           Nutrients (For {amount} {ingredient.name}):
         </h3>
         <ul className="overflow-y-scroll h-[300px] mt-[40px] w-full flex flex-col">
-          {ingredient.nutrition?.nutrients.map((nutrient) => (
+          {ingredient.nutrition?.nutrients?.map((nutrient) => (
             <ul
               key={nutrient.name}
               className="flex flex-row gap-4 w-full border p-4 odd:bg-rgb-rgb(0, 0, 0) even:bg-yellow-500 even:text-black"

@@ -51,8 +51,24 @@ def get_recipe_info(request, id):
         nutrition_data = data.get('nutrition', {})
         ingredients_data = data.get('extendedIngredients', [])
         # Create Nutrition object
-        print(nutrition_data )
         nutrition = Nutrition.create_from_json(nutrition_data)
+        recipes = []
+
+                # Iterate over the list of ingredient objects
+        for ingredient in ingredients_data:
+            ingredient_id = ingredient.get('id')  # Extract the ID from the ingredient object
+            if ingredient_id:
+                ingredient_url = f'http://localhost:8000/api/get-ingredient-details/{ingredient_id}/'
+                # Call the function to get recipe info based on the ingredient ID
+                ingredientFetched =  requests.get(ingredient_url)
+                print(ingredientFetched)
+                if ingredientFetched:
+                    # Process the recipe data as needed
+                    print(f"Recipe info for ingredient ID {ingredient_id}: {ingredientFetched}")
+                else:
+                    print(f"Failed to retrieve recipe info for ingredient ID {ingredient_id}")
+            else:
+                print("No ID found for the ingredient")
 
         # Create Recipe object
         recipe_data = {
