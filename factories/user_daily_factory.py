@@ -10,7 +10,11 @@ class UserDailyFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = UserDaily
 
-    date = factory.Faker('date')
+    date = fake.date()  # Use Faker to generate a random date
+
+    # Use a SubFactory to automatically create a UserProfile instance
+    profile = factory.SubFactory(UserProfileFactory)
+
     total_nutrients = factory.Faker('pydict', value_types=['float'], nb_elements=5)
     total_properties = factory.Faker('pydict', value_types=['float'], nb_elements=5)
     total_flavonoids = factory.Faker('pydict', value_types=['float'], nb_elements=5)

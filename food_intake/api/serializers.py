@@ -26,7 +26,7 @@ class FoodIntakeSerializer(serializers.ModelSerializer):
 class UserDailySerializer(serializers.ModelSerializer):
     class Meta:
         model = UserDaily
-        fields = ['id', 'profile', 'date', 'total_calories_consumed', 'total_protein_consumed', 'total_fat_consumed', 'total_carbohydrates_consumed']
+        fields = '__all__'
         
 class NutritionStatsSerializer(serializers.ModelSerializer):
     class Meta:

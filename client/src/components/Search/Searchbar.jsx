@@ -15,6 +15,7 @@ export function Searchbar({ filters, fetchByName, complexFetch }) {
       ? (productsFetched = await complexFetch({ ...filterValues }))
       : (productsFetched = await fetchByName(data.search));
     setProducts(productsFetched);
+    console.log(productsFetched);
     setSearched(true);
   };
 

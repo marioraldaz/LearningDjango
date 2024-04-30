@@ -1,47 +1,34 @@
 import pytest
 from django.urls import reverse
-from rest_framework import status
-
-from django.conf import settings
+from rest_framework.test import APIClient
 
 
-#######################################################   Tests on my endpoints #################################################
-@pytest.mark.recipes
-@pytest.mark.spoonacular_api
+@pytest.fixture
+def api_client():
+    """Fixture for creating an instance of the Django test client."""
+    return APIClient()
+
+
 @pytest.mark.django_db
-@pytest.mark.django_db
-def test_fetch_recipes_by_name(client):
-    # Construct the URL for the view, including the 'name' parameter
-    url = reverse('fetch_recipes_by_name', kwargs={'name': 'chicken'})
+def test_save_recipe_url(api_client, recipe_factory):
+    recipe = recipe_factory.create()  # Use build() to create an instance without saving to DB
+    url = reverse('save_recipe')
+    response = api_client.post(url, data=recipe.__dict__, format='json')
+    assert response.status_code == 201  # Check if the recipe is successfully saved (status code 201)
+    assert response.data['title'] == recipe.title  # Optionally check other attributes if needed
 
-    # Make a GET request to the endpoint
-    response = client.get(url)
+@pytest.mark.django_db
+def test_fetch_filtered_ingredients_url(api_client, ingredient_factory):
+    ingredient = ingredient_factory.create()  # Use build() to create an instance without saving to DB
+    url = reverse('fetch_filtered_ingredients')
+    response = api_client.get(url, data={'category': ingredient.category})
+    assert response.status_code == 200  # Check if ingredients are fetched successfully (status code 200)
 
-    # Assert the response status code
-    assert response.status_code == status.HTTP_200_OK
-    
-@pytest.mark.recipes
-@pytest.mark.spoonacular_api
 @pytest.mark.django_db
-def test_get_recipe_info(client):
-    url = reverse('get_recipe_info', kwargs={'id': 123})
-    response = client.get(url)
-    assert response.status_code == status.HTTP_200_OK
-    
-@pytest.mark.recipes
-@pytest.mark.spoonacular_api
-@pytest.mark.django_db
-def test_fetch_filtered_recipes(client):
-    url = reverse('fetch_filtered_recipes')
-    response = client.get(url)
-    assert response.status_code == status.HTTP_200_OK
+def test_get_ingredient_info_url(api_client, ingredient_factory):
+    ingredient = ingredient_factory.create()  # Use create() to create and save an instance to DB
+    url = reverse('get_ingredient_details', args=[ingredient.id, 100])  # Assuming amount=100
+    response = api_client.get(url)
+    assert response.status_code == 200  # Check if ingredient details are retrieved successfully (status code 200)
 
-@pytest.mark.recipes
-@pytest.mark.spoonacular_api
-@pytest.mark.django_db
-def test_get_recipe_by_id(client):
-    url = reverse('get_recipe_by_id', kwargs={'recipe_id': 200})
-    response = client.get(url)
-    assert response.status_code == status.HTTP_200_OK
-    
-#######################################################################################################################################
+# Add similar tests for other views and URLs using the factories

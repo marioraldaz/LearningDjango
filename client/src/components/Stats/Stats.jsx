@@ -6,12 +6,15 @@ import { RadarChart } from "./RadarChart";
 import { AreaChart } from "./AreaChart";
 
 export function Stats() {
+  const [data, setData] = useState([]);
   return (
     <>
-      <BarChart />
-      <PieChart />
-      <RadarChart />
-      <AreaChart />
+      {/*
+      <BarChart data={data} />
+      <PieChart data={data} />
+      <RadarChart data={data} />
+      <AreaChart data={data} />
+      */}
     </>
   );
 }

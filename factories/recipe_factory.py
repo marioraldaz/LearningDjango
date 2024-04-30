@@ -41,3 +41,22 @@ class RecipeFactory(factory.django.DjangoModelFactory):
     extendedIngredients = factory.Faker('pylist', nb_elements=5, variable_nb_elements=True, value_types=['str'])
     summary = factory.Faker('text')
     winePairing = factory.Faker('pydict', value_types=['str'], nb_elements=5)
+
+    @classmethod
+    def _create(cls, model_class, *args, **kwargs):
+        from decimal import Decimal
+        from datetime import datetime
+        # Custom JSON encoder for Decimal and datetime objects
+        def json_encode(obj):
+            if isinstance(obj, Decimal):
+                return float(obj)
+            elif isinstance(obj, datetime):
+                return obj.isoformat()
+            else:
+                return None
+
+        # Use the custom encoder to serialize kwargs
+        serialized_kwargs = {k: json_encode(v) for k, v in kwargs.items()}
+
+        # Create the model instance with serialized kwargs
+        return model_class.objects.create(**serialized_kwargs)
