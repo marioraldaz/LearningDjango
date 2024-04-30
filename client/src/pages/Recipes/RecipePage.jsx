@@ -170,7 +170,7 @@ export function RecipePage() {
           </ul>
         </div>
       </div>
-      <div className="w-full flex flex-row">
+      <div className="w-full flex flex-col gap-12">
         {showIngredients && recipe.extendedIngredients?.length > 0 && (
           <div className="h-[400px]  flex flex-row overflow-x-auto overflow-y-hidden w-full">
             <CardsList products={recipeIngredients} />
@@ -182,28 +182,32 @@ export function RecipePage() {
         {showNutrition && typeof nutrition !== "object" && (
           <h3 className="text-red-600">Recipe has no nutrition logged :C</h3>
         )}
-      </div>
 
-      {showInstructions && (
-        <div className="">
-          {recipe.instructions.length > 0 && (
-            <div className="flex flex-col">
-              <h2 className="text-2xl mb-2">Instructions:</h2>
-              <div dangerouslySetInnerHTML={{ __html: recipe.instructions }} />
-            </div>
-          )}
-          <ol className="list-decimal">
-            {recipe.analyzedInstructions[0]?.steps.map((instruction, index) => (
-              <li
-                key={index}
-                className="flex flex-row gap-4 items-center p-4 border-b border-gray-500 border-b-0.5 "
-              >
-                {index + ". " + instruction.step}
-              </li>
-            ))}
-          </ol>
-        </div>
-      )}
+        {showInstructions && (
+          <div className="">
+            {recipe.instructions.length > 0 && (
+              <div className="flex flex-col">
+                <h2 className="text-2xl mb-2">Instructions:</h2>
+                <div
+                  dangerouslySetInnerHTML={{ __html: recipe.instructions }}
+                />
+              </div>
+            )}
+            <ol className="list-decimal">
+              {recipe.analyzedInstructions[0]?.steps.map(
+                (instruction, index) => (
+                  <li
+                    key={index}
+                    className="flex flex-row gap-4 items-center p-4 border-b border-gray-500 border-b-0.5 "
+                  >
+                    {index + ". " + instruction.step}
+                  </li>
+                )
+              )}
+            </ol>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
