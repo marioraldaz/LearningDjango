@@ -8,6 +8,7 @@ from ..nutrition import Nutrition
 from django.views.decorators.http import require_POST
 import json
 from django.http import HttpResponseServerError
+from rest_framework import status
 
 
 def save_recipe(request):
@@ -24,30 +25,32 @@ def save_recipe(request):
     except Exception as e:
         return Response({'error': str(e)}, status=500)  # Return any other errors
 
-def get_recipe_info(request, recipe_id):
+@api_view(['GET'])
+def get_recipe_info(request, id):
+    recipe_id = id
 
     # Check if a recipe with the same spoonacular_id already exists
     existing_recipe = Recipe.objects.filter(spoonacular_id=recipe_id).first()
-    
+
     if existing_recipe:
         # If the recipe exists, serialize it and return it
         serialized_recipe = RecipeSerializer(existing_recipe).data
-        return Response(serialized_recipe)
-    
-    
+        return Response(serialized_recipe, status=status.HTTP_200_OK)
+
     url = f'https://api.spoonacular.com/recipes/{recipe_id}/information'
     params = {
-        'api_key' : settings.API_KEY
+        'apiKey': settings.API_KEY
     }
+
     try:
         response = requests.get(url, params=params)
         response.raise_for_status()  # Raise exception for any error status codes
         data = response.json()
-        
+
         # Extract necessary data from Spoonacular API response
-        nutrition_data = data.get('nutrition', {})  # Assuming nutrition data is nested under 'nutrition' key
-        ingredients_data = data.get('extendedIngredients', [])  # Assuming ingredients data is nested under 'extendedIngredients' key
-        
+        nutrition_data = data.get('nutrition', {})
+        ingredients_data = data.get('extendedIngredients', [])
+
         # Create Nutrition object
         nutrition = Nutrition.objects.create(**nutrition_data)
 
@@ -90,13 +93,13 @@ def get_recipe_info(request, recipe_id):
         }
 
         recipe = Recipe.objects.create(**recipe_data)
-        
+
         # Serialize the recipe data
         serialized_recipe = RecipeSerializer(recipe).data
-        return Response(serialized_recipe)
+        return Response(serialized_recipe, status=status.HTTP_201_CREATED)
+
     except requests.RequestException as e:
-        return Response({'error': str(e)}, status=500)
-    
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def fetch_filtered_recipes(request):
     filters = request.GET.dict()
