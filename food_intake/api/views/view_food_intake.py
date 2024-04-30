@@ -7,6 +7,8 @@ from food_intake.food_intake_detail import FoodIntakeDetail
 from ..serializers import FoodIntakeSerializer, FoodIntakeDetailSerializer
 from rest_framework.exceptions import NotFound
 from django.http import Http404
+from rest_framework.exceptions import ValidationError
+from django.db import transaction
 
 
 """_summary_
@@ -38,18 +40,54 @@ class FoodIntakeView(APIView):
             food_intakes = FoodIntake.objects.all()
         serializer = FoodIntakeSerializer(food_intakes, many=True)
         return Response(serializer.data)
-
+    
     def post(self, request):
-        food_intake_serializer = FoodIntakeSerializer(data=request.data)
-        if food_intake_serializer.is_valid():
-            food_intake = food_intake_serializer.save()
-            details_data = request.data.get('details', [])
-            detail_serializer = FoodIntakeDetailSerializer(data=details_data, many=True, context={'food_intake': food_intake})
-            if detail_serializer.is_valid():
-                detail_serializer.save()
-                return Response(food_intake_serializer.data, status=status.HTTP_201_CREATED)
-            food_intake.delete()  # Rollback if detail_serializer fails
-        return Response(food_intake_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Deserialize the request data manually
+        data = request.data
+
+        # Extract the main attributes for FoodIntake creation
+        profile_id = data.get('profile_id')
+        meal_type = data.get('meal_type')
+        date = data.get('date')
+        details_data = data.get('details', [])
+
+        try:
+            with transaction.atomic():  # Use transaction to ensure atomicity of database operations
+                # Create the FoodIntake object
+                food_intake = FoodIntake.objects.create(profile_id=profile_id, meal_type=meal_type, date=date)
+
+                # Create FoodIntakeDetail instances and associate them with the FoodIntake
+                details_instances = []
+                for detail_data in details_data:
+                    content_type = detail_data.get('content_type')
+                    food_id = detail_data.get('food_id')
+                    amount = detail_data.get('amount')
+                    detail_instance = FoodIntakeDetail.objects.create(food_intake=food_intake, content_type=content_type, food_id=food_id, amount=amount)
+                    details_instances.append(detail_instance)
+
+                # Build the response data manually
+                response_data = {
+                    'id': food_intake.id,
+                    'profile_id': food_intake.profile_id,
+                    'meal_type': food_intake.meal_type,
+                    'date': food_intake.date,
+                    'details': [
+                        {
+                            'id': detail.id,
+                            'content_type': detail.content_type,
+                            'food_id': detail.food_id,
+                            'amount': detail.amount
+                        }
+                        for detail in details_instances
+                    ]
+                }
+
+                # Return a successful response with the manually constructed response data
+                return Response(response_data, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            # If any exception occurs during processing, handle it gracefully
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk=None):
         try:

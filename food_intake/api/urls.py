@@ -4,8 +4,8 @@ from .views.view_food_intake_detail import FoodIntakeDetailView
 from .views.view_user_daily import UserDailyView
 from .views.view_nutrition_stats import NutritionStatsView
 urlpatterns = [
-    path('food-intake/', FoodIntakeView.as_view(), name='food_intake_list'),
-    path('food-intake/<int:pk>/', FoodIntakeDetailView.as_view(), name='food_intake_detail'),
+    path('food-intake/', FoodIntakeView.as_view(), name='food_intake'),
+    path('food-intake/<int:pk>/', FoodIntakeDetailView.as_view(), name='food_intake_list'),
     path('food-intake/<int:pk>/details/', FoodIntakeDetailView.as_view(), name='food_intake_details'),
     path('user-dailies/<int:profile_id>/', UserDailyView.as_view(), name='user_dailies'),
     path('user-dailies/<int:profile_id>/<int:pk>/', UserDailyView.as_view(), name='user_daily_detail'),

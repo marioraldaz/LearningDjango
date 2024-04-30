@@ -11,7 +11,7 @@ class FoodIntakeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FoodIntake
-        fields = ['id', 'profile', 'meal_type', 'intake_date', 'intake_details']
+        fields = '__all__'
 
 class FoodIntakeDetailSerializer(serializers.ModelSerializer):
     class Meta:
