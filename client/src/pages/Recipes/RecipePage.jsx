@@ -51,7 +51,7 @@ export function RecipePage() {
       });
     };
     fetchRecipe();
-  }, [id, savedRecipes]);
+  }, [id, savedRecipes, setRecipeIngredients]);
 
   const toggleNutrition = () => {
     setShowNutrition(!showNutrition);
