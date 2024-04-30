@@ -887,6 +887,10 @@ video {
   height: 700px;
 }
 
+.h-\[450px\] {
+  height: 450px;
+}
+
 .min-h-\[80vh\] {
   min-height: 80vh;
 }
@@ -1086,12 +1090,24 @@ video {
   overflow: hidden;
 }
 
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
 .overflow-y-auto {
   overflow-y: auto;
 }
 
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
 .overflow-y-hidden {
   overflow-y: hidden;
+}
+
+.overflow-y-clip {
+  overflow-y: clip;
 }
 
 .overflow-x-scroll {

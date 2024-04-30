@@ -5,28 +5,33 @@ import { RecipeNutrition } from "../../components/Recipes/RecipeNutrition";
 import { useSelector, useDispatch } from "react-redux";
 import AuthContext from "../../context/AuthContext";
 import { NavigationButton } from "../../components/Buttons/NavigationButton";
-
+import { CardsList } from "../../components/Lists/CardsList";
 export function RecipePage() {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
   const [showNutrition, setShowNutrition] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
+  const [showIngredients, setShowIngredients] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [recipeIngredients, setRecipeIngredients] = useState([]);
   const {
     saveRecipe,
     savedRecipes,
     unSaveRecipe,
     setSavedRecipes,
     getRecipe,
+    getIngredient,
     setCurrentRecipe,
     currentRecipe,
   } = useContext(AuthContext);
 
   const recipes = useSelector((state) => state.recipes.recipes);
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchIngredient = async () => {
+    const fetchRecipe = async () => {
       const searched = await getRecipe(id, recipes, dispatch);
       setRecipe(searched);
       savedRecipes.map((savedRecipe) => {
@@ -34,8 +39,18 @@ export function RecipePage() {
           setSaved(true);
         }
       });
+      const foundIngredientsPromises = await recipe.extendedIngredients?.map(
+        async (ing) => {
+          return await getIngredient(ing.id, ingredients, dispatch); // Use await to wait for the promise to resolve
+        }
+      );
+      // Use Promise.all to wait for all promises to resolve
+      Promise.all(foundIngredientsPromises).then((resolvedIngredients) => {
+        setRecipeIngredients(resolvedIngredients); // Log the number of resolved ingredients
+        // Process the resolved ingredients here
+      });
     };
-    fetchIngredient();
+    fetchRecipe();
   }, [id, savedRecipes]);
 
   const toggleNutrition = () => {
@@ -46,6 +61,9 @@ export function RecipePage() {
     setShowInstructions(!showInstructions);
   };
 
+  const toggleIngredients = () => {
+    setShowIngredients(!showIngredients);
+  };
   if (!recipe) {
     return <div>Loading...</div>;
   }
@@ -119,6 +137,9 @@ export function RecipePage() {
           <GrayButton onClick={toggleInstructions}>
             {!showInstructions ? "Show Instructions" : "Hide Instructions"}
           </GrayButton>
+          <GrayButton onClick={toggleIngredients}>
+            {!showIngredients ? "Show Ingredients" : "Hide Ingredients"}
+          </GrayButton>
         </div>
 
         <div className="border p-2 rounded-lg ">
@@ -135,8 +156,18 @@ export function RecipePage() {
           </ul>
         </div>
       </div>
-      <div className="">
-        {showNutrition && <RecipeNutrition nutrition={recipe.nutrition} />}
+      <div className="w-full flex flex-row">
+        {showIngredients && recipe.extendedIngredients?.length > 0 && (
+          <div className="h-[400px]  flex flex-row overflow-x-auto overflow-y-hidden w-full">
+            <CardsList products={recipeIngredients} />
+          </div>
+        )}
+        {showNutrition && typeof nutrition === "object" && (
+          <RecipeNutrition nutrition={recipe.nutrition} />
+        )}
+        {showNutrition && typeof nutrition !== "object" && (
+          <h3 className="text-red-600">Recipe has no nutrition logged :C</h3>
+        )}
       </div>
 
       {showInstructions && (

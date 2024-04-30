@@ -8,6 +8,7 @@ export function RecipeNutrition({ nutrition }) {
   const handleIngredientClick = (ingredient) => {
     setSelectedIngredient(ingredient);
   };
+
   return (
     <div className="w-full h-full text-white bg-neutral-900 p-4 rounded-xl grid grid-auto-rows gap-8">
       <div className="w-min">

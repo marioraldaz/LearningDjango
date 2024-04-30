@@ -58,7 +58,7 @@ def get_recipe_info(request, id):
         for ingredient in ingredients_data:
             ingredient_id = ingredient.get('id')  # Extract the ID from the ingredient object
             if ingredient_id:
-                ingredient_url = f'http://localhost:8000/api/get-ingredient-details/{ingredient_id}/'
+                ingredient_url = f'http://localhost:8000/api/get-ingredient-details/{ingredient_id}/1/'
                 # Call the function to get recipe info based on the ingredient ID
                 ingredientFetched =  requests.get(ingredient_url)
                 print(ingredientFetched)
