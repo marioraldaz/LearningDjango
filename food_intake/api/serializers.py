@@ -1,7 +1,5 @@
 from rest_framework import serializers
-from ..food_intake import FoodIntake
-from ..food_intake_detail import FoodIntakeDetail
-from ..user_daily import UserDaily
+from ..models import *
 
 class FoodIntakeDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,3 +27,8 @@ class UserDailySerializer(serializers.ModelSerializer):
     class Meta:
         model = UserDaily
         fields = ['id', 'profile', 'date', 'total_calories_consumed', 'total_protein_consumed', 'total_fat_consumed', 'total_carbohydrates_consumed']
+        
+class NutritionStatsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NutritionStats
+        fields = '__all__'

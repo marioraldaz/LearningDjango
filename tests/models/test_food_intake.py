@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from food_intake.food_intake import FoodIntake
 from django.core.exceptions import ValidationError
 import datetime
+from datetime import date, timedelta
 
 MEAL_TYPES = ['Breakfast', 'Lunch', 'Dinner', 'Snack']
 
@@ -62,3 +63,50 @@ def test_invalid_date_validation(user_profile):
 
     # Check if the expected validation error message is raised
     assert str(e.value) == 'Invalid date. Please provide a valid date.'
+
+@pytest.mark.django_db
+def test_food_intake_creation(test_profile):
+    # Test that a FoodIntake instance is created successfully
+    food_intake = FoodIntake.objects.create(
+        profile=test_profile,
+        meal_type='Breakfast',
+        date=date.today()
+    )
+    assert isinstance(food_intake, FoodIntake)
+    assert food_intake.profile == test_profile
+    assert food_intake.meal_type == 'Breakfast'
+    assert food_intake.date == date.today()
+
+@pytest.mark.django_db
+def test_invalid_meal_type(test_profile):
+    # Test validation for invalid meal type
+    with pytest.raises(ValidationError):
+        FoodIntake.objects.create(
+            profile=test_profile,
+            meal_type='InvalidType',
+            date=date.today()
+        )
+
+@pytest.mark.django_db
+def test_invalid_date(test_profile):
+    # Test validation for date in the future
+    future_date = date.today() + timedelta(days=1)
+    with pytest.raises(ValidationError):
+        FoodIntake.objects.create(
+            profile=test_profile,
+            meal_type='Lunch',
+            date=future_date
+        )
+
+@pytest.mark.django_db
+def test_get_food_intakes_by_profile(test_profile, food_intake_factory):
+    # Test retrieval of FoodIntake objects by profile
+    # Create multiple FoodIntake instances for the test profile
+    for _ in range(3):
+        food_intake_factory(profile=test_profile)
+
+    # Retrieve FoodIntake instances for the test profile
+    food_intakes = FoodIntake.objects.filter(profile=test_profile)
+    assert food_intakes.count() == 3
+    for food_intake in food_intakes:
+        assert food_intake.profile == test_profile

@@ -1,25 +1,14 @@
-from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView
-from food_intake.models import NutritionStats
-from profiles.models import UserProfile  # Import UserProfile model (adjust path as needed)
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from ...models import NutritionStats
+from ..serializers import NutritionStatsSerializer
 
-class NutritionStatsView(DetailView):
-    model = NutritionStats
-    template_name = 'nutrition_stats_detail.html'  # Specify the template name
-
-    def get_object(self, queryset=None):
-        # Get the UserProfile ID from URL parameters
-        profile_id = self.kwargs.get('profile_id')
-        
-        # Fetch the corresponding UserProfile instance or return 404 if not found
-        profile = get_object_or_404(UserProfile, id=profile_id)
-
-        # Retrieve NutritionStats instance related to the UserProfile
-        nutrition_stats = NutritionStats.objects.filter(profile=profile).first()
-
-        return nutrition_stats
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['profile'] = self.object.profile  # Pass the UserProfile instance to context
-        return context
+class NutritionStatsView(APIView):
+    def get(self, request, profile_id, format=None):
+        try:
+            nutrition_stats = NutritionStats.objects.get(profile_id=profile_id)
+            serializer = NutritionStatsSerializer(nutrition_stats)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except NutritionStats.DoesNotExist:
+            return Response({"error": "NutritionStats not found for this profile"}, status=status.HTTP_404_NOT_FOUND)
