@@ -8,9 +8,15 @@ import { purgePersistor } from "../../redux/store.js";
 export function FoodIntake() {
   const [ingredients, setIngredients] = useState([]);
   const [recipeToAdd, setRecipeToAdd] = useState([]);
-  const { addFoodIntake, user, getRecipe, savedRecipes } = useContext(
-    AuthContext
-  );
+
+  const {
+    addFoodIntake,
+    user,
+    getRecipe,
+    savedRecipes,
+    getDayIntakes,
+  } = useContext(AuthContext);
+
   const { add } = useParams();
   const persistRecipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
@@ -20,26 +26,30 @@ export function FoodIntake() {
       setRecipeToAdd(await getRecipe(add, persistRecipes, dispatch));
     };
     getRecipeToAdd();
-    console.log(persistRecipes);
+    const dayIntakes = getDayIntakes();
+    console.log(dayIntakes);
   }, [add]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
   if (!user) {
     return <h1>Loading...</h1>;
   }
 
   return (
-    <div className="p-4 grid grid-cols-3 items-center justify-center">
+    <section className="p-4 grid grid-cols-3 items-center justify-center">
       <div className="h-[700px] w-[430px] flex flex-col overflow-y-auto items-center bg-neutral-700 p-4 rounded-lg">
         <h3 className="text-2xl mb-4">Recently Seen Recipes</h3>
         <CardsList products={persistRecipes} />
       </div>
-      <div className="">
-        <IntakeForm addFoodIntake={addFoodIntake} recipeToAdd={recipeToAdd} />
-      </div>
+      <IntakeForm addFoodIntake={addFoodIntake} recipes={recipeToAdd} />
+      <form className="" onSubmit={handleSubmit}></form>
       <div className="h-[700px] w-[430px] flex flex-col overflow-y-auto items-center bg-neutral-700 p-4 rounded-lg ml-auto">
         <h3 className="">My Saved Recipes</h3>
         <CardsList products={savedRecipes} />
       </div>
-    </div>
+    </section>
   );
 }

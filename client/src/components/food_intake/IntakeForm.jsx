@@ -1,25 +1,38 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavigationButton } from "../Buttons/NavigationButton.jsx";
 import { GrayButton } from "../Buttons/GrayButton.jsx";
 import { CardsList } from "../Lists/CardsList.jsx";
+import { AuthContext } from "../../context/AuthContext";
 
-export function IntakeForm({ recipeToAdd }) {
+export function IntakeForm({ recipes }) {
   const [formData, setFormData] = useState({
     meal_type: "Breakfast",
     intake_date: null,
     profile_id: null,
   });
 
+  const { addFoodIntake } = useContext(AuthContext);
   const handleSubmit = (e) => {
-    history.push("/FoodIntake");
+    //history.push("/FoodIntake");
+    let details = [];
+
+    recipes.map((recipe) => {
+      details.push({
+        content_type: recipe["extended_ingredients"] ? "Recipe" : "Ingredient",
+        food_id: recipe["id"],
+        amount: e.amount,
+      });
+    });
+
     e.preventDefault();
-    addFoodIntake(formData);
+    addFoodIntake(formData, details);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
   return (
     <>
       <form className="flex flex-col gap-4 mb-8" onSubmit={handleSubmit}>
@@ -27,7 +40,7 @@ export function IntakeForm({ recipeToAdd }) {
           Log Your Meal
         </h3>
         <div className="grid grid-cols-2 gap-4">
-          <CardsList products={[recipeToAdd]} />
+          <CardsList products={[recipes]} />
           <div className="flex gap-4 items-center justify-center">
             <label htmlFor="meal_type">Type:</label>
             <select
@@ -41,7 +54,6 @@ export function IntakeForm({ recipeToAdd }) {
               <option value="Dinner">Dinner</option>
               <option value="Snack">Snack</option>
             </select>
-            <div>{console.log(recipeToAdd)}</div>
           </div>
         </div>
 

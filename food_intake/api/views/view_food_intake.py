@@ -30,6 +30,7 @@ from django.db import transaction
 ]
 }
 """
+from datetime import date
 
 class FoodIntakeView(APIView):
     def get(self, request):
@@ -48,9 +49,10 @@ class FoodIntakeView(APIView):
         # Extract the main attributes for FoodIntake creation
         profile_id = data.get('profile_id')
         meal_type = data.get('meal_type')
-        date = data.get('date')
+        dategiven = data.get('date') 
         details_data = data.get('details', [])
-
+        if not dategiven:
+            dategiven = str(date.today())
         try:
             with transaction.atomic():  # Use transaction to ensure atomicity of database operations
                 # Create the FoodIntake object

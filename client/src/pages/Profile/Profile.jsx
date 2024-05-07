@@ -34,7 +34,7 @@ export function Profile() {
         <SavedRecipes savedRecipes={context.savedRecipes} />
       </div>
       <div className="col-span-2 bg-neutral-600 h-[800px} w-full">
-        <Stats />
+        <Stats profile={profile} />
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import React from "react";
 
 export function CardsList({ products }) {
-  console.log(products);
   if (!products) {
     return <h1>Loading....</h1>;
   }

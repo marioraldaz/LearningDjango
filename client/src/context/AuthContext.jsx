@@ -289,10 +289,21 @@ export const AuthProvider = ({ children }) => {
 
   //////////////////////////////////////////////////////////////////////////// FOOD INTAKE FUNCTIONS //////////////////////////////////////////////////////////////////////////
 
-  const addFoodIntake = async (formData) => {
+  const addFoodIntake = async (mealType, details) => {
+    let formData = {
+      profile_id: user.id,
+      meal_type: mealType,
+      date: "2024-05-07",
+      details: [],
+    };
+
+    details.map((detail) => {
+      formData.details.push(detail);
+    });
+
     console.log(formData);
     const response = await axios.post(
-      "http://localhost:8000/api/unsave-recipe",
+      `http://localhost:8000/api/food-intake/`,
       formData,
       {
         headers: {
@@ -302,7 +313,26 @@ export const AuthProvider = ({ children }) => {
         withCredentials: true,
       }
     );
+    console.log(response.data);
+    return response.data;
   };
+
+  const getDayIntakes = async () => {
+    const response = await axios.post(
+      `http://localhost:8000/api/food-intake/${user.id}`,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "X-CSRFToken": csrftoken,
+        },
+        withCredentials: true,
+      }
+    );
+    console.log(response.data);
+    return response.data;
+  };
+
+  //////////////////////////////////////////////////////////////// useEffects //////////////////////////////////////////////////
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
@@ -351,6 +381,7 @@ export const AuthProvider = ({ children }) => {
     changePassword: changePassword,
     setSavedRecipes: setSavedRecipes,
     addFoodIntake: addFoodIntake,
+    getDayIntakes: getDayIntakes,
     getRecipe: getRecipe,
     ingredientsForDaily: ingredientsForDaily,
     recipesForDaily: recipesForDaily,

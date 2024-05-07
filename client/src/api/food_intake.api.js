@@ -107,7 +107,6 @@ async function deleteFoodIntake(pk) {
   }
 }
 
-s;
 export {
   fetchFoodIntakeDetails,
   fetchUserDailies,

@@ -6,9 +6,10 @@ import { AreaChart } from "./AreaChart";
 import { fetchUserDailies } from "../../api/food_intake.api";
 import AuthContext from "../../context/AuthContext";
 
-export function Stats() {
+export function Stats({ profile }) {
   const [data, setData] = useState([]);
-  fetchUserDailies(data, setData);
+  useEffect(() => {});
+  fetchUserDailies(profile.id);
   const { user } = useContext(AuthContext);
   return (
     <>
