@@ -64,20 +64,22 @@ export function IntakeForm({ recipes }) {
         </div>
       </form>
 
-      <div className="">
-        <h3 className="text-2xl">Search For Recipes</h3>
-        <NavigationButton link="/Recipes" text="Recipes" />
-      </div>
+      <section className="flex flex-col gap-4">
+        <div className="">
+          <h3 className="text-2xl">Search For Recipes</h3>
+          <NavigationButton link="/Recipes" text="Recipes" />
+        </div>
 
-      <div className="">
-        <h3 className="text-2xl">Save Your Own Recipe</h3>
-        <NavigationButton link="/Recipes" text="Create Recipe" />
-      </div>
+        <div className="">
+          <h3 className="text-2xl">Save Your Own Recipe</h3>
+          <NavigationButton link="/Recipes" text="Create Recipe" />
+        </div>
 
-      <div className="">
-        <h3 className="text-2xl">Search For Ingredients</h3>
-        <NavigationButton link="/Ingredients" text="Search For Ingredients" />
-      </div>
+        <div className="">
+          <h3 className="text-2xl">Search For Ingredients</h3>
+          <NavigationButton link="/Ingredients" text="Search For Ingredients" />
+        </div>
+      </section>
     </>
   );
 }

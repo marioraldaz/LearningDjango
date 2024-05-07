@@ -13,7 +13,7 @@ export function CardsList({ products }) {
           }
           key={product.id}
         >
-          <div className="m-2 bg-white h-[360px] w-[350px] border rounded-lg border-gray-300 text-black">
+          <div className="p-2 m-2 bg-white h-[360px] w-[350px] border rounded-lg border-gray-300 text-black">
             <h1 className="text-center mt-5 mb-[30px]">
               {product.name?.toUpperCase()}
               {product.title?.toUpperCase()}

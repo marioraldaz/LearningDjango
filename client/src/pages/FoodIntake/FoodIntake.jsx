@@ -30,10 +30,6 @@ export function FoodIntake() {
     console.log(dayIntakes);
   }, [add]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
   if (!user) {
     return <h1>Loading...</h1>;
   }
@@ -44,8 +40,9 @@ export function FoodIntake() {
         <h3 className="text-2xl mb-4">Recently Seen Recipes</h3>
         <CardsList products={persistRecipes} />
       </div>
-      <IntakeForm addFoodIntake={addFoodIntake} recipes={[recipeToAdd]} />
-      <form className="" onSubmit={handleSubmit}></form>
+      <div className="">
+        <IntakeForm addFoodIntake={addFoodIntake} recipes={[recipeToAdd]} />
+      </div>
       <div className="h-[700px] w-[430px] flex flex-col overflow-y-auto items-center bg-neutral-700 p-4 rounded-lg ml-auto">
         <h3 className="">My Saved Recipes</h3>
         <CardsList products={savedRecipes} />
