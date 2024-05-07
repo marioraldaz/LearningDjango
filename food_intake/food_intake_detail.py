@@ -8,12 +8,9 @@ from foods.ingredient import Ingredient
 from foods.recipe import Recipe
 
 class FoodIntakeDetail(models.Model):
-    food_intake = models.ForeignKey(FoodIntake, on_delete=models.CASCADE, related_name='details')
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    food_id = models.PositiveIntegerField()
-    food_item = GenericForeignKey('content_type', 'food_id')
+    food_intake = models.ForeignKey(FoodIntake, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     amount = models.IntegerField(default=1, validators=[MinValueValidator(0)])
-
 
 
     def get_nutrients_data(self):
@@ -48,4 +45,4 @@ class FoodIntakeDetail(models.Model):
         weight_per_serving_data = self.nutrition.get('weightPerServing', {})
         return weight_per_serving_data
     def __str__(self):
-        return f"{self.food_item} for {self.food_intake}"
+        return f"{self.recipe.title} for {self.food_intake.meal_type}"

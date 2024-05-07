@@ -13,7 +13,7 @@ from django.db import transaction
 
 """_summary_
 {
-    "profile": 1, 
+    "profile_id": 1, 
     "meal_type": "Breakfast",
     "date": "2024-04-30",
     "details": [
@@ -43,51 +43,45 @@ class FoodIntakeView(APIView):
         return Response(serializer.data)
     
     def post(self, request):
+        import json
+        from foods.models import Recipe
         # Deserialize the request data manually
         data = request.data
-
         # Extract the main attributes for FoodIntake creation
         profile_id = data.get('profile_id')
         meal_type = data.get('meal_type')
         dategiven = data.get('date') 
-        details_data = data.get('details', [])
         if not dategiven:
             dategiven = str(date.today())
         try:
             with transaction.atomic():  # Use transaction to ensure atomicity of database operations
                 # Create the FoodIntake object
-                food_intake = FoodIntake.objects.create(profile_id=profile_id, meal_type=meal_type, date=date)
-
+                food_intake = FoodIntake.objects.create(profile_id=profile_id, meal_type=meal_type,date=dategiven)
                 # Create FoodIntakeDetail instances and associate them with the FoodIntake
-                details_instances = []
-                for detail_data in details_data:
-                    content_type = detail_data.get('content_type')
+                
+                    # Extract and parse details array
+                details = []
+            
+
+                for key in request.POST.keys():
+                    if key.startswith('details['):
+                        detail_json = request.POST.get(key)
+                        detail = json.loads(detail_json)
+                        details.append(detail)
+                        details_instances = []
+                        
+                for detail_data in details:
                     food_id = detail_data.get('food_id')
                     amount = detail_data.get('amount')
-                    detail_instance = FoodIntakeDetail.objects.create(food_intake=food_intake, content_type=content_type, food_id=food_id, amount=amount)
+                    recipe = Recipe.objects.get(id=food_id)
+                    detail_instance = FoodIntakeDetail.objects.create(food_intake=food_intake, recipe=recipe, amount=amount)
                     details_instances.append(detail_instance)
 
-                # Build the response data manually
-                response_data = {
-                    'id': food_intake.id,
-                    'profile_id': food_intake.profile_id,
-                    'meal_type': food_intake.meal_type,
-                    'date': food_intake.date,
-                    'details': [
-                        {
-                            'id': detail.id,
-                            'content_type': detail.content_type,
-                            'food_id': detail.food_id,
-                            'amount': detail.amount
-                        }
-                        for detail in details_instances
-                    ]
-                }
-
                 # Return a successful response with the manually constructed response data
-                return Response(response_data, status=status.HTTP_201_CREATED)
+                return Response(status=status.HTTP_201_CREATED)
 
         except Exception as e:
+            print(e)
             # If any exception occurs during processing, handle it gracefully
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 

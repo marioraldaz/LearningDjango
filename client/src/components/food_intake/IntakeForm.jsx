@@ -14,18 +14,20 @@ export function IntakeForm({ recipes }) {
   const { addFoodIntake } = useContext(AuthContext);
   const handleSubmit = (e) => {
     //history.push("/FoodIntake");
+    e.preventDefault();
     let details = [];
 
     recipes.map((recipe) => {
       details.push({
-        content_type: recipe["extended_ingredients"] ? "Recipe" : "Ingredient",
+        content_type: "recipe",
         food_id: recipe["id"],
-        amount: e.amount,
+        amount: "1",
       });
     });
 
     e.preventDefault();
-    addFoodIntake(formData, details);
+    console.log(formData);
+    addFoodIntake(formData["meal_type"], details);
   };
 
   const handleInputChange = (e) => {
@@ -40,13 +42,13 @@ export function IntakeForm({ recipes }) {
           Log Your Meal
         </h3>
         <div className="grid grid-cols-2 gap-4">
-          <CardsList products={[recipes]} />
+          <CardsList products={recipes} />
           <div className="flex gap-4 items-center justify-center">
             <label htmlFor="meal_type">Type:</label>
             <select
               name="meal_type"
               className="text-black h-8"
-              value={formData.meal_type}
+              value={formData.mealType}
               onChange={handleInputChange}
             >
               <option value="Breakfast">Breakfast</option>

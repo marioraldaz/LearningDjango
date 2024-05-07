@@ -44,7 +44,7 @@ export function FoodIntake() {
         <h3 className="text-2xl mb-4">Recently Seen Recipes</h3>
         <CardsList products={persistRecipes} />
       </div>
-      <IntakeForm addFoodIntake={addFoodIntake} recipes={recipeToAdd} />
+      <IntakeForm addFoodIntake={addFoodIntake} recipes={[recipeToAdd]} />
       <form className="" onSubmit={handleSubmit}></form>
       <div className="h-[700px] w-[430px] flex flex-col overflow-y-auto items-center bg-neutral-700 p-4 rounded-lg ml-auto">
         <h3 className="">My Saved Recipes</h3>

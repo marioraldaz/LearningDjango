@@ -290,18 +290,19 @@ export const AuthProvider = ({ children }) => {
   //////////////////////////////////////////////////////////////////////////// FOOD INTAKE FUNCTIONS //////////////////////////////////////////////////////////////////////////
 
   const addFoodIntake = async (mealType, details) => {
-    let formData = {
-      profile_id: user.id,
-      meal_type: mealType,
-      date: "2024-05-07",
-      details: [],
-    };
+    // Create a new FormData object
+    const formData = new FormData();
 
-    details.map((detail) => {
-      formData.details.push(detail);
-    });
-
+    // Append simple fields to FormData
+    formData.append("profile_id", user.id);
+    formData.append("meal_type", mealType);
+    formData.append("date", "2024-05-07"); // Example date
     console.log(formData);
+
+    // Append details array to FormData
+    details.forEach((detail, index) => {
+      formData.append(`details[${index}]`, JSON.stringify(detail));
+    });
     const response = await axios.post(
       `http://localhost:8000/api/food-intake/`,
       formData,
