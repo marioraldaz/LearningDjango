@@ -50,7 +50,6 @@ class FoodIntakeView(APIView):
                 food_intake['details'] = detail_serializer.data
                 response_data.append(food_intake)
             
-            print(response_data)
             return Response(response_data)
         
         except FoodIntake.DoesNotExist:

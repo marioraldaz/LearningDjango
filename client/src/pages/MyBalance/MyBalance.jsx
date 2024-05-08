@@ -32,13 +32,13 @@ export function MyBalance() {
     return <h1>Loading---</h1>;
   }
   return (
-    <section className="mt-8">
-      <h1 className="w-full gradient-text text-center text-3xl mb-8">
+    <section className="w-full h-full">
+      <h1 className="w-full gradient-text text-center text-3xl mb-8 p-8">
         MyBalance
       </h1>
-      <div className="h-[700px] w-[430px] flex flex-col overflow-y-auto items-center bg-neutral-700 p-4 rounded-lg">
-        <h3 className="text-2xl mb-4">Today's Recipes</h3>
-        {/* Use Object.entries to iterate over todaysRecipes */}
+      <h3 className="text-2xl text-center w-full mb-4">Today's Recipes</h3>
+      {/* Use Object.entries to iterate over todaysRecipes */}
+      <div className="m-8 w-4/5 flex flex-row gap-8 overflow-y-auto items-center bg-neutral-700 p-4 rounded-lg">
         {Object.entries(todaysRecipes).map(([mealType, mealRecipes]) => (
           <div key={mealType} className="mb-4">
             {/* Display the meal type as a heading */}
