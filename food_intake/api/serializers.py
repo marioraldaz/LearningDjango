@@ -8,7 +8,7 @@ class FoodIntakeDetailSerializer(serializers.ModelSerializer):
 
 class FoodIntakeSerializer(serializers.ModelSerializer):
     intake_details = FoodIntakeDetailSerializer(many=True, read_only=True)
-
+    
     class Meta:
         model = FoodIntake
         fields = '__all__'

@@ -8,7 +8,7 @@ import { purgePersistor } from "../../redux/store.js";
 export function FoodIntake() {
   const [ingredients, setIngredients] = useState([]);
   const [recipeToAdd, setRecipeToAdd] = useState([]);
-
+  const [dayIntakes, setDayIntakes] = useState([]);
   const {
     addFoodIntake,
     user,
@@ -24,10 +24,10 @@ export function FoodIntake() {
   useEffect(() => {
     const getRecipeToAdd = async () => {
       setRecipeToAdd(await getRecipe(add, persistRecipes, dispatch));
+      setDayIntakes(await getDayIntakes());
     };
-    getRecipeToAdd();
-    const dayIntakes = getDayIntakes();
     console.log(dayIntakes);
+    getRecipeToAdd();
   }, [add]);
 
   if (!user) {

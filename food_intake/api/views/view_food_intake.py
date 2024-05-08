@@ -35,10 +35,13 @@ from datetime import date
 class FoodIntakeView(APIView):
     def get(self, request):
         user_profile_id = request.GET.get('user_profile_id')
+        
         if user_profile_id:
             food_intakes = FoodIntake.objects.filter(profile_id=user_profile_id)
         else:
-            food_intakes = FoodIntake.objects.all()
+            return Response({'error': str("NO PROFILE ID")}, status=status.HTTP_400_BAD_REQUEST)
+
+            
         serializer = FoodIntakeSerializer(food_intakes, many=True)
         return Response(serializer.data)
     

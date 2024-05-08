@@ -297,7 +297,6 @@ export const AuthProvider = ({ children }) => {
     formData.append("profile_id", user.id);
     formData.append("meal_type", mealType);
     formData.append("date", "2024-05-07"); // Example date
-    console.log(formData);
 
     // Append details array to FormData
     details.forEach((detail, index) => {
@@ -318,19 +317,27 @@ export const AuthProvider = ({ children }) => {
     return response.data;
   };
 
-  const getDayIntakes = async () => {
-    const response = await axios.post(
-      `http://localhost:8000/api/food-intake/${user.id}`,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "X-CSRFToken": csrftoken,
-        },
-        withCredentials: true,
-      }
-    );
-    console.log(response.data);
-    return response.data;
+  const getDayIntakes = async (profileID) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/food-intake/`,
+        {
+          params: {
+            user_profile_id: profileID,
+          },
+          headers: {
+            "Content-Type": "application/json", // Use 'application/json' for JSON data
+            "X-CSRFToken": csrftoken, // Replace with your CSRF token
+          },
+          withCredentials: true, // Send cookies with the request
+        }
+      );
+
+      return response.data; // Return the response data (serialized intakes)
+    } catch (error) {
+      console.error("Error fetching food intakes:", error);
+      throw error;
+    }
   };
 
   //////////////////////////////////////////////////////////////// useEffects //////////////////////////////////////////////////
@@ -346,6 +353,8 @@ export const AuthProvider = ({ children }) => {
       const profile = await getProfileByToken(profileToken, csrfGot);
       setUser(profile);
       if (profile) {
+        const x = await getDayIntakes(profile.id);
+        console.log(x);
         return await getSavedRecipes(profile.id, csrfGot, recipes, dispatch);
       }
     };
