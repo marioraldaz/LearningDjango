@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [recipesForDaily, setRecipesForDaily] = useState([]);
   const [ingredientsForDaily, setIngredientsForDaily] = useState([]);
-
+  const [dayIntakes, setDayIntakes] = useState([]);
   const navigate = useNavigate();
 
   ////////////////////////////////////////////////////////////////////////   PROFILE FUNCTIONS         ////////////////////////////////
@@ -345,7 +345,6 @@ export const AuthProvider = ({ children }) => {
   const recipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("triggered", savedRecipes);
     const fetchData = async () => {
       const csrfGot = Cookies.get("csrftoken");
       setCsrfToken(csrfGot);
@@ -353,13 +352,23 @@ export const AuthProvider = ({ children }) => {
       const profile = await getProfileByToken(profileToken, csrfGot);
       setUser(profile);
       if (profile) {
-        const x = await getDayIntakes(profile.id);
-        console.log(x);
+        const intakes = await getDayIntakes(profile.id);
+        intakes.map((intake) => {
+          dispatch(addRecipe(intake));
+        });
+        setDayIntakes(intakes);
         return await getSavedRecipes(profile.id, csrfGot, recipes, dispatch);
       }
     };
     fetchData();
   }, []);
+
+  /*useEffect(() =>{
+    const fetchData = async() =>{
+
+    }
+    fetchData();
+  }, [user])*/
 
   useEffect(() => {
     const csrfGot = Cookies.get("csrftoken");
@@ -391,7 +400,6 @@ export const AuthProvider = ({ children }) => {
     changePassword: changePassword,
     setSavedRecipes: setSavedRecipes,
     addFoodIntake: addFoodIntake,
-    getDayIntakes: getDayIntakes,
     getRecipe: getRecipe,
     ingredientsForDaily: ingredientsForDaily,
     recipesForDaily: recipesForDaily,
@@ -400,6 +408,7 @@ export const AuthProvider = ({ children }) => {
     currentRecipe: currentRecipe,
     setCurrentRecipe: setCurrentRecipe,
     register: register,
+    dayIntakes: dayIntakes,
   };
   useEffect(() => {}, [setCurrentRecipe, currentRecipe]);
   return (

@@ -62,7 +62,6 @@ export function RecipePage() {
   };
 
   const toggleIngredients = () => {
-    console.log(recipe);
     setShowIngredients(!showIngredients);
   };
   if (!recipe) {

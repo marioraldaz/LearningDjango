@@ -5,6 +5,7 @@ import recipesReducer from "./recipesSlice";
 import ingredientsReducer from "./ingredientsSlice";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import foodIntakeReducer from "./foodIntakeSlice";
 
 const customSerialize = (value) => {
   return JSON.stringify(value);
@@ -30,6 +31,7 @@ const store = configureStore({
     auth: authReducer,
     recipes: pesistedRecipes,
     ingredients: persistedIngredients,
+    foodIntakes: foodIntakeReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });
