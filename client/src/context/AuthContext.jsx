@@ -333,7 +333,7 @@ export const AuthProvider = ({ children }) => {
         }
       );
 
-      return response.data; // Return the response data (serialized intakes)
+      return await response.data; // Return the response data (serialized intakes)
     } catch (error) {
       console.error("Error fetching food intakes:", error);
       throw error;
@@ -352,23 +352,24 @@ export const AuthProvider = ({ children }) => {
       const profile = await getProfileByToken(profileToken, csrfGot);
       setUser(profile);
       if (profile) {
-        const intakes = await getDayIntakes(profile.id);
-        intakes.map((intake) => {
-          dispatch(addRecipe(intake));
-        });
-        setDayIntakes(intakes);
         return await getSavedRecipes(profile.id, csrfGot, recipes, dispatch);
       }
     };
     fetchData();
   }, []);
 
-  /*useEffect(() =>{
-    const fetchData = async() =>{
-
-    }
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user) {
+        const intakes = await getDayIntakes(user.id);
+        intakes.map((intake) => {
+          dispatch(addRecipe(intake));
+        });
+        setDayIntakes(intakes);
+      }
+    };
     fetchData();
-  }, [user])*/
+  }, [user]);
 
   useEffect(() => {
     const csrfGot = Cookies.get("csrftoken");

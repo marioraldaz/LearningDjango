@@ -36,15 +36,29 @@ class FoodIntakeView(APIView):
     def get(self, request):
         user_profile_id = request.GET.get('user_profile_id')
         
-        if user_profile_id:
-            food_intakes = FoodIntake.objects.filter(profile_id=user_profile_id)
-        else:
-            return Response({'error': str("NO PROFILE ID")}, status=status.HTTP_400_BAD_REQUEST)
-
+        if not user_profile_id:
+            return Response({'error': 'No profile ID provided'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            food_intakes = FoodIntake.objects.select_related('profile').filter(profile_id=user_profile_id)
+            serializer = FoodIntakeSerializer(food_intakes, many=True)
             
-        serializer = FoodIntakeSerializer(food_intakes, many=True)
-        return Response(serializer.data)
-    
+            response_data = []
+            for food_intake in serializer.data:
+                details = FoodIntakeDetail.objects.filter(food_intake_id=food_intake['id'])
+                detail_serializer = FoodIntakeDetailSerializer(details, many=True)
+                food_intake['details'] = detail_serializer.data
+                response_data.append(food_intake)
+            
+            print(response_data)
+            return Response(response_data)
+        
+        except FoodIntake.DoesNotExist:
+            return Response({'error': 'Food Intakes not found for the specified user profile ID'}, status=status.HTTP_404_NOT_FOUND)
+        
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
     def post(self, request):
         import json
         from foods.models import Recipe

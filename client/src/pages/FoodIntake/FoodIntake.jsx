@@ -5,17 +5,13 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { IntakeForm } from "../../components/food_intake/IntakeForm.jsx";
 import { purgePersistor } from "../../redux/store.js";
+
 export function FoodIntake() {
   const [ingredients, setIngredients] = useState([]);
   const [recipeToAdd, setRecipeToAdd] = useState([]);
-  const [dayIntakes, setDayIntakes] = useState([]);
-  const {
-    addFoodIntake,
-    user,
-    getRecipe,
-    savedRecipes,
-    getDayIntakes,
-  } = useContext(AuthContext);
+  const { addFoodIntake, user, getRecipe, savedRecipes } = useContext(
+    AuthContext
+  );
 
   const { add } = useParams();
   const persistRecipes = useSelector((state) => state.recipes.recipes);
@@ -24,9 +20,7 @@ export function FoodIntake() {
   useEffect(() => {
     const getRecipeToAdd = async () => {
       setRecipeToAdd(await getRecipe(add, persistRecipes, dispatch));
-      setDayIntakes(await getDayIntakes());
     };
-    console.log(dayIntakes);
     getRecipeToAdd();
   }, [add]);
 
