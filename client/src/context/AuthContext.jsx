@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }) => {
   async function register(user) {
     try {
       const { username, password, gender, date_of_birth, email } = user;
-      console.log(user);
       const formData = {
         username: username,
         password: password,
@@ -297,7 +296,7 @@ export const AuthProvider = ({ children }) => {
     formData.append("profile_id", user.id);
     formData.append("meal_type", mealType);
     formData.append("date", "2024-05-07"); // Example date
-
+    formData.append("amount", details.amount);
     // Append details array to FormData
     details.forEach((detail, index) => {
       formData.append(`details[${index}]`, JSON.stringify(detail));
@@ -313,7 +312,7 @@ export const AuthProvider = ({ children }) => {
         withCredentials: true,
       }
     );
-    console.log(response.data);
+    console.log(response);
     return response.data;
   };
 

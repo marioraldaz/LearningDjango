@@ -78,7 +78,6 @@ class FoodIntakeView(APIView):
                     # Extract and parse details array
                 details = []
             
-
                 for key in request.POST.keys():
                     if key.startswith('details['):
                         detail_json = request.POST.get(key)
