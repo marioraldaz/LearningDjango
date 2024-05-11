@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { CardsList } from "../../components/Lists/CardsList.jsx";
 import { useSelector, useDispatch } from "react-redux";
+import { RecipeBalance } from "./RecipeBalance.jsx";
 
 export function MyBalance() {
   const [userDayIntakes, setUserDayIntakes] = useState([]);
@@ -19,15 +20,16 @@ export function MyBalance() {
           return await getRecipe(intakeDetail.recipe, recipes, dispatch);
         });
         Promise.all(promises).then((resolvedRecipes) => {
-          current[intake.meal_type] = resolvedRecipes;
+          current[intake.meal_type]
+            ? current[intake.meal_type].push(resolvedRecipes[0])
+            : (current[intake.meal_type] = resolvedRecipes);
         });
       });
+      console.log(current);
       setTodaysRecipes(current);
     };
-    console.log(todaysRecipes);
     refreshIntakes();
-  }, [dayIntakes]);
-
+  }, [dayIntakes, getRecipe]);
   if (!todaysRecipes) {
     return <h1>Loading---</h1>;
   }
@@ -38,16 +40,15 @@ export function MyBalance() {
       </h1>
       <h3 className="text-2xl text-center w-full mb-4">Today's Recipes</h3>
       {/* Use Object.entries to iterate over todaysRecipes */}
-      <div className="m-8 w-4/5 flex flex-row gap-8 overflow-y-auto items-center bg-neutral-700 p-4 rounded-lg">
+      <div className="m-8 w-4/5 flex flex-col gap-8 overflow-y-auto items-center bg-neutral-700 p-4 rounded-lg">
         {Object.entries(todaysRecipes).map(([mealType, mealRecipes]) => (
-          <div key={mealType} className="mb-4">
-            {/* Display the meal type as a heading */}
+          <div key={mealType} className="mb-4 w-full flex flex-col">
             <h4 className="text-xl mb-2">{mealType}</h4>
-            {/* Render the list of recipes for the current meal type */}
-            <div>
-              {/* Assuming CardsList is a component that renders a list of recipes */}
-              <CardsList products={mealRecipes} />
-            </div>
+            {mealRecipes.map((meal, index) => (
+              <div className="flex" key={index}>
+                <RecipeBalance meal={meal} intake={dayIntakes[mealType]} />
+              </div>
+            ))}
           </div>
         ))}
       </div>
