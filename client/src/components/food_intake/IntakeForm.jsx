@@ -42,10 +42,10 @@ export function IntakeForm({ recipes }) {
         <h3 className="text-3xl gradient-text text-center mt-8 mb-4">
           Log Your Meal
         </h3>
-        <div className="grid grid-cols-2">
+        <div className="grid md:grid-cols-2 grid-cols-1 items-center justify-center">
           <CardsList products={recipes} />
           <section className="flex flex-col gap-4 ml-16 mt-12">
-            <div>
+            <div className="">
               <label htmlFor="meal_type">Log for:</label>
               <select
                 name="meal_type"
