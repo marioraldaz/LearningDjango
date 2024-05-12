@@ -147,3 +147,37 @@ def fetch_recipes_by_name(request, name):
         return JsonResponse(data['results'], safe=False)
     except requests.RequestException as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
+
+def modify_recipe(request):
+    try:
+        data = json.loads(request.body)
+        recipe_id = data.get('id')  # Get the recipe ID from the JSON payload
+        
+        # Retrieve the existing Recipe object based on the ID
+        recipe = Recipe.objects.get(pk=recipe_id)
+        
+        # Define the fields to update based on the JSON data
+        fields_to_update = {}
+        field_names = [field.name for field in Recipe._meta.fields]  # Get all field names of Recipe model
+        
+        for field in field_names:
+            if field in data:
+                fields_to_update[field] = data[field]
+        
+        # Update the recipe object with the new data using a single database query
+        recipe.__dict__.update(fields_to_update)
+        
+        # Save the updated recipe
+        recipe.save()
+        
+        return JsonResponse({'message': 'Recipe updated successfully'}, status=200)
+    
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON format in request body'}, status=400)
+    
+    except Recipe.DoesNotExist:
+        return JsonResponse({'error': 'Recipe not found'}, status=404)
+    
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

@@ -1,0 +1,34 @@
+import React, { useEffect, useState } from "react";
+import { CardsList } from "../Lists/CardsList.jsx";
+import { IntakeNutrition } from "./IntakeNutrition.jsx";
+import { UpdateNutritionForm } from "./UpdateNutritionForm.jsx";
+import { GrayButton } from "../Buttons/GrayButton.jsx";
+export function RecipeBalance({ meal, intake }) {
+  const [showUpdateNutrition, setShowUpdateNutrition] = useState(false);
+  const [hasNutrition, setHasNutrition] = useState(false);
+  useEffect(() => {
+    meal.nutrition.length ? setHasNutrition(true) : setHasNutrition(false);
+  }, []);
+
+  const toggleShowUpdateNutrition = () => {
+    setShowUpdateNutrition(!showUpdateNutrition);
+  };
+  return (
+    <div className="flex w-full border border-black mt-4 p-4 ">
+      <div className="w-min">
+        <CardsList products={[meal]} />
+      </div>
+      <div className="w-2/3 flex items-center justify-center">
+        {!hasNutrition && (
+          <div className="m-4 p-4 text-xl  h-1/3">
+            <GrayButton onClick={toggleShowUpdateNutrition}>
+              Recipe has no nutrition, click here to insert it!
+            </GrayButton>
+          </div>
+        )}
+        {hasNutrition && <IntakeNutrition meal={meal} intake={intake} />}
+        {showUpdateNutrition && <UpdateNutritionForm />}
+      </div>
+    </div>
+  );
+}
