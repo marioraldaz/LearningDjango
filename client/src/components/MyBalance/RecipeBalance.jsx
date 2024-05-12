@@ -14,11 +14,11 @@ export function RecipeBalance({ meal, intake }) {
     setShowUpdateNutrition(!showUpdateNutrition);
   };
   return (
-    <div className="flex w-full h-[400px] border border-black mt-4 p-4">
+    <div className="flex flex-col xl:flex-row w-full border border-black mt-4 p-4">
       <div className="w-min">
         <CardsList products={[meal]} />
       </div>
-      <div className="w-2/3 flex items-center justify-center">
+      <div className=" flex items-center justify-center">
         {!hasNutrition && !showUpdateNutrition && (
           <div className="m-4 p-4 text-xl  h-1/3">
             <GrayButton onClick={toggleShowUpdateNutrition}>

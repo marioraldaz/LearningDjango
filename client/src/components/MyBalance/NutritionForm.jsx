@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { nutritionParams } from "../../data/nutritionParams.json";
+import { GrayButton } from "../Buttons/GrayButton";
 export const NutritionForm = () => {
   const [selectedKey, setSelectedKey] = useState(null);
   const paramsInit = nutritionParams;
@@ -18,28 +19,30 @@ export const NutritionForm = () => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
   return (
-    <div className="p-4 flex gap-4 w-full">
-      <div className="w-full h-1/5 flex flex-col">
-        <div className="flex gap-4 text-lg">
+    <div className="p-4 gap-4 w-full h-[400px]">
+      <div className="w-full h-full flex flex-col">
+        <div className="flex flex-wrap gap-4 text-lg mb-2 w-full">
           {Object.keys(params).map((key) => (
-            <button key={key} onClick={() => handleChangeKey(key)}>
-              {key}
-            </button>
+            <div className="w-min h-min">
+              <GrayButton key={key} onClick={() => handleChangeKey(key)}>
+                {key}
+              </GrayButton>
+            </div>
           ))}
           {selectedKey && (
             <form
               onSubmit={handleSubmit}
-              className="w-full h-full flex flex-wrap"
+              className=" flex flex-wrap w-50 h-min"
             >
-              <button type="submit">Update Nutrition</button>
+              <GrayButton type="submit">Update Nutrition</GrayButton>
             </form>
           )}
         </div>
-        <div className="flex gap-4 flex-wrap h-[300px] w-fulloverflow-scroll">
+        <div className="flex gap-4 flex-wrap h-full w-fit overflow-y-scroll">
           {selectedKey &&
             params[selectedKey].map((paramObject, index) => (
               <div
-                className="flex flex-col gap-2 p-1 border border-black rounded-lg  bg-green-700"
+                className="flex flex-col p-2 gap-2 border border-black rounded-lg  bg-green-700"
                 key={index}
               >
                 <h4 className="w-full font-bold mb-2">{paramObject.name}</h4>
