@@ -51,6 +51,7 @@ export function RecipePage() {
       });
     };
     fetchRecipe();
+    console.log(recipe);
   }, [id, savedRecipes, setRecipeIngredients]);
 
   const toggleNutrition = () => {
@@ -94,6 +95,7 @@ export function RecipePage() {
           className="ml-auto w-[750px] bg-neutral-800 p-4 rounded-lg justify-center items-center"
           dangerouslySetInnerHTML={{ __html: recipe.summary }}
         />
+        recipe
       </div>
       <div className="w-full flex gap-8">
         {/*second row*/}
@@ -130,7 +132,7 @@ export function RecipePage() {
           )}
           <div className="w-[600px] flex h-[60px] items-center">
             <NavigationButton
-              link={"/FoodIntake/" + recipe.id}
+              link={"/FoodIntake/" + recipe.spoonacular_id}
               text={"Add To Daily"}
             />
           </div>
