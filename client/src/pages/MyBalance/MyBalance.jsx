@@ -39,7 +39,7 @@ export function MyBalance() {
       </h1>
       <h3 className="text-2xl text-center w-full mb-4">Today's Recipes</h3>
       {/* Use Object.entries to iterate over todaysRecipes */}
-      <div className="m-8 main-w flex flex-col gap-8 overflow-y-auto items-center bg-neutral-700 p-4 rounded-lg">
+      <div className="m-8 flex flex-col gap-8 overflow-y-auto items-center bg-neutral-700 p-4 rounded-lg">
         {Object.entries(todaysRecipes).map(([mealType, mealRecipes]) => (
           <div key={mealType} className="mb-4 w-full flex flex-col">
             <h4 className="text-xl mb-2">{mealType}</h4>
