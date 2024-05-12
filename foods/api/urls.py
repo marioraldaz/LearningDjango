@@ -11,5 +11,6 @@ urlpatterns = [
     path('fetch-filtered-recipes/', fetch_filtered_recipes, name='fetch_filtered_recipes'),
     path('get-recipe-info/<int:id>/',get_recipe_info, name='get_recipe_info'),
     path('fetch-recipes-by-name/<str:name>', fetch_recipes_by_name, name='fetch_recipes_by_name'),
+    path('update-nutrition/',update_nutrition_for_recipe, name='modify_recipe')
 ]
 

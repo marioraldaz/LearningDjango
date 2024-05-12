@@ -9,7 +9,7 @@ from django.views.decorators.http import require_POST
 import json
 from django.http import HttpResponseServerError
 from rest_framework import status
-
+from .nutrition_serializer import NutritionSerializer
 
 def save_recipe(request):
     try:
@@ -148,36 +148,52 @@ def fetch_recipes_by_name(request, name):
     except requests.RequestException as e:
         return JsonResponse({'error': str(e)}, status=500)
     
+    
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 
-def modify_recipe(request):
-    try:
-        data = json.loads(request.body)
-        recipe_id = data.get('id')  # Get the recipe ID from the JSON payload
+def update_nutrition_for_recipe(request):
+    if request.method == 'POST':
+        # Retrieve recipe ID and new nutrition data from POST request
+        recipe_id = request.POST.get('recipeID')
+        new_nutrition_data = request.POST.get('newNutrition')
         
-        # Retrieve the existing Recipe object based on the ID
-        recipe = Recipe.objects.get(pk=recipe_id)
+        if new_nutrition_data:
+            try:
+                # Parse the JSON string into a dictionary
+                new_nutrition_dict = json.loads(new_nutrition_data)
+                
+                # Retrieve the Recipe instance
+                recipe = get_object_or_404(Recipe, pk=recipe_id)
+                
+                # Retrieve the associated Nutrition instance for the Recipe
+                nutrition = recipe.nutrition
+                
+                if nutrition:
+                    # Update the Nutrition instance fields based on new nutrition data
+                    nutrition.nutrients = new_nutrition_dict.get('nutrients', [])
+                    nutrition.properties = new_nutrition_dict.get('properties', [])
+                    nutrition.flavonoids = new_nutrition_dict.get('flavonoids', [])
+                    nutrition.caloric_breakdown = new_nutrition_dict.get('caloricBreakdown', {})
+                    nutrition.weight_per_serving = new_nutrition_dict.get('weightPerServing', {})
+                    
+                    # Save the updated Nutrition instance
+                    nutrition.save()
+                    
+                    return JsonResponse({'success': True, 'message': 'Nutrition updated successfully'})
+                else:
+                    return JsonResponse({'error': 'Nutrition instance not found for this recipe'}, status=404)
+                
+            except json.JSONDecodeError as e:
+                # Handle JSON decoding error
+                return JsonResponse({'error': str(e)}, status=400)
+            
+            except Recipe.DoesNotExist:
+                # Handle Recipe not found error
+                return JsonResponse({'error': 'Recipe not found'}, status=404)
         
-        # Define the fields to update based on the JSON data
-        fields_to_update = {}
-        field_names = [field.name for field in Recipe._meta.fields]  # Get all field names of Recipe model
-        
-        for field in field_names:
-            if field in data:
-                fields_to_update[field] = data[field]
-        
-        # Update the recipe object with the new data using a single database query
-        recipe.__dict__.update(fields_to_update)
-        
-        # Save the updated recipe
-        recipe.save()
-        
-        return JsonResponse({'message': 'Recipe updated successfully'}, status=200)
+        else:
+            return JsonResponse({'error': 'No newNutrition data received'}, status=400)
     
-    except json.JSONDecodeError:
-        return JsonResponse({'error': 'Invalid JSON format in request body'}, status=400)
-    
-    except Recipe.DoesNotExist:
-        return JsonResponse({'error': 'Recipe not found'}, status=404)
-    
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)

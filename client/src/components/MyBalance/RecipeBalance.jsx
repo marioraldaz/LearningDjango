@@ -27,7 +27,7 @@ export function RecipeBalance({ meal, intake }) {
           </div>
         )}
         {hasNutrition && <IntakeNutrition meal={meal} intake={intake} />}
-        {showUpdateNutrition && <NutritionForm />}
+        {showUpdateNutrition && <NutritionForm id={meal.id} />}
       </div>
     </div>
   );

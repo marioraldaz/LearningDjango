@@ -1,20 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import { nutritionParams } from "../../data/nutritionParams.json";
 import { GrayButton } from "../Buttons/GrayButton";
-export const NutritionForm = () => {
+import { useSelector, useDispatch } from "react-redux";
+
+export const NutritionForm = (id) => {
   const [selectedKey, setSelectedKey] = useState(null);
   const paramsInit = nutritionParams;
   const [params, setParams] = useState(paramsInit);
+  const { updateNutrition } = useContext(AuthContext);
+  const persistRecipes = useSelector((state) => state.recipes.recipes);
+  const dispatch = useDispatch();
 
   const handleChangeKey = (key) => {
     setSelectedKey(key);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setSelectedNutrient(null);
-    setAmount("");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    updateNutrition(id.id, params);
   };
+
   function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }

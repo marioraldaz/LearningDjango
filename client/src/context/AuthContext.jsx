@@ -286,6 +286,25 @@ export const AuthProvider = ({ children }) => {
     );
   };
 
+  const updateNutrition = async (recipeID, newNutrition) => {
+    const formData = new FormData();
+    newNutrition = JSON.stringify(newNutrition);
+    formData.append("recipeID", recipeID);
+    formData.append("newNutrition", newNutrition);
+    const response = await axios.post(
+      `http://localhost:8000/api/update-nutrition/`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "X-CSRFToken": csrftoken,
+        },
+        withCredentials: true,
+      }
+    );
+    console.log(response);
+    return response.data;
+  };
   //////////////////////////////////////////////////////////////////////////// FOOD INTAKE FUNCTIONS //////////////////////////////////////////////////////////////////////////
 
   const addFoodIntake = async (mealType, details) => {
@@ -409,8 +428,8 @@ export const AuthProvider = ({ children }) => {
     setCurrentRecipe: setCurrentRecipe,
     register: register,
     dayIntakes: dayIntakes,
+    updateNutrition: updateNutrition,
   };
-  useEffect(() => {}, [setCurrentRecipe, currentRecipe]);
   return (
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
   );
