@@ -33,6 +33,7 @@ export function RecipePage() {
   useEffect(() => {
     const fetchRecipe = async () => {
       const searched = await getRecipe(id, recipes, dispatch);
+      console.log(searched);
       setRecipe(searched);
       savedRecipes.map((savedRecipe) => {
         if (String(savedRecipe.id) === id) {
@@ -51,7 +52,6 @@ export function RecipePage() {
       });
     };
     fetchRecipe();
-    console.log(recipe);
   }, [id, savedRecipes, setRecipeIngredients]);
 
   const toggleNutrition = () => {

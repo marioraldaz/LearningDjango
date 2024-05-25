@@ -5,19 +5,20 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { IntakeForm } from "../../components/food_intake/IntakeForm.jsx";
 import { purgePersistor } from "../../redux/store.js";
+import persistReducer from "redux-persist/es/persistReducer";
 
 export function FoodIntake() {
   const [ingredients, setIngredients] = useState([]);
   const [recipeToAdd, setRecipeToAdd] = useState([]);
-  const { addFoodIntake, user, getRecipe, savedRecipes } = useContext(
-    AuthContext
-  );
-
+  const { addFoodIntake, user, getRecipe, savedRecipes } =
+    useContext(AuthContext);
   const { add } = useParams();
   const persistRecipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    purgePersistor();
+    console.log("TRIGGERED", persistRecipes);
     const getRecipeToAdd = async () => {
       setRecipeToAdd(await getRecipe(add, persistRecipes, dispatch));
     };

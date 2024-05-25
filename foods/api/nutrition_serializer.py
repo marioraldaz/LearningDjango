@@ -7,4 +7,4 @@ class NutritionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Nutrition
-        fields = ('calories', 'carbs', 'fat', 'protein')
+        fields = '__all__'

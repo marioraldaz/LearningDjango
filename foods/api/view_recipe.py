@@ -28,13 +28,16 @@ def save_recipe(request):
 @api_view(['GET'])
 def get_recipe_info(request, id):
     recipe_id = id
-
     # Check if a recipe with the same spoonacular_id already exists
     existing_recipe = Recipe.objects.filter(spoonacular_id=recipe_id).first()
-
+    
     if existing_recipe:
         # If the recipe exists, serialize it and return it
         serialized_recipe = RecipeSerializer(existing_recipe).data
+        nutrition = NutritionSerializer(existing_recipe.nutrition).data
+        
+        serialized_recipe['nutrition'] = nutrition
+
         return Response(serialized_recipe, status=status.HTTP_200_OK)
 
     url = f'https://api.spoonacular.com/recipes/{recipe_id}/information?includeNutrition=true'
@@ -52,8 +55,6 @@ def get_recipe_info(request, id):
         ingredients_data = data.get('extendedIngredients', [])
         # Create Nutrition object
         nutrition = Nutrition.create_from_json(nutrition_data)
-        recipes = []
-
                 # Iterate over the list of ingredient objects
         for ingredient in ingredients_data:
             ingredient_id = ingredient.get('id')  # Extract the ID from the ingredient object
@@ -72,7 +73,7 @@ def get_recipe_info(request, id):
 
         # Create Recipe object
         recipe_data = {
-            'nutrition': nutrition,
+            'nutrition': data.get['nutrition'],
             'title': data.get('title'),
             'image': data.get('image'),
             'readyInMinutes': data.get('readyInMinutes'),
@@ -109,7 +110,6 @@ def get_recipe_info(request, id):
         }
 
         recipe = Recipe.objects.create(**recipe_data)
-
         # Serialize the recipe data
         serialized_recipe = RecipeSerializer(recipe).data
         return Response(serialized_recipe, status=status.HTTP_201_CREATED)

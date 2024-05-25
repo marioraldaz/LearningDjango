@@ -16,6 +16,7 @@ import { FoodIntake } from "./pages/FoodIntake/FoodIntake.jsx";
 import { RecipePage } from "./pages/Recipes/RecipePage.jsx";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./redux/store";
+
 function App() {
   return (
     <Provider store={store}>

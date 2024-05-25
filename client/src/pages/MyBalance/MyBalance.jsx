@@ -49,8 +49,7 @@ export function MyBalance() {
       <div className="m-8 flex flex-col gap-8 overflow-y-auto items-center bg-neutral-700 p-4 rounded-lg">
         {Object.entries(todaysRecipes).map(([index, intake]) => (
           <div key={index} className="mb-4 w-full flex flex-col">
-            <h4 className="text-xl mb-2">{intake["mealType"]}</h4>
-            {console.log(intake, intake["details"].recipe)}
+            <h4 className="text-xl mb-2">{intake["meal-type"]}</h4>
             <RecipeBalance
               meal={intake["details"][0]["recipe"]}
               intake={intake}

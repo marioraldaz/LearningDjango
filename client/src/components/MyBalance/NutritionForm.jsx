@@ -40,7 +40,12 @@ export const NutritionForm = (id) => {
               onSubmit={handleSubmit}
               className=" flex flex-wrap w-50 h-min"
             >
-              <GrayButton type="submit">Update Nutrition</GrayButton>
+              <button
+                type="submit"
+                className="bg-neutral-600 text-green-500 flex items-center justify center p-2 border rounded-md hover:scale-110 "
+              >
+                Update Nutrition
+              </button>
             </form>
           )}
         </div>
