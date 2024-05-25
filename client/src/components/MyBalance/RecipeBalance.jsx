@@ -9,7 +9,7 @@ export function RecipeBalance({ meal, intake }) {
   useEffect(() => {
     meal.nutrition.length ? setHasNutrition(true) : setHasNutrition(false);
   }, []);
-
+  console.log(meal);
   const toggleShowUpdateNutrition = () => {
     setShowUpdateNutrition(!showUpdateNutrition);
   };

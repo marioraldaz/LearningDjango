@@ -380,10 +380,6 @@ export const AuthProvider = ({ children }) => {
     const fetchData = async () => {
       if (user) {
         const intakes = await getDayIntakes(user.id);
-        intakes.map((intake) => {
-          dispatch(addRecipe(intake));
-        });
-        console.log(intakes);
         setDayIntakes(intakes);
       }
     };

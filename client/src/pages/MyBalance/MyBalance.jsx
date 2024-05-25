@@ -13,12 +13,21 @@ export function MyBalance() {
   const recipes = useSelector((state) => state.recipes.recipes);
 
   useEffect(() => {
-    const refreshIntakes = async () => {};
-    if (user) {
-      refreshIntakes();
-    }
-    console.log(dayIntakes);
-  }, [dayIntakes, getRecipe]);
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed, so add 1 and pad with leading zero if necessary
+    const day = String(today.getDate()).padStart(2, "0"); // Pad with leading zero if necessary
+
+    // Format the date as 'YYYY-MM-DD'
+    const formattedDate = `${year}-${month}-${day}`;
+    const intakes = dayIntakes.map((intake) => {
+      if (intake["date"] == formattedDate) {
+        return intake;
+      }
+    });
+    setTodaysRecipes(intakes);
+  }, [dayIntakes]);
+
   if (!user) {
     return (
       <div>
@@ -38,17 +47,15 @@ export function MyBalance() {
       <h3 className="text-2xl text-center w-full mb-4">Today's Recipes</h3>
       {/* Use Object.entries to iterate over todaysRecipes */}
       <div className="m-8 flex flex-col gap-8 overflow-y-auto items-center bg-neutral-700 p-4 rounded-lg">
-        {Object.entries(todaysRecipes).map(([mealType, mealRecipes]) => (
-          <div key={mealType} className="mb-4 w-full flex flex-col">
-            <h4 className="text-xl mb-2">{mealType}</h4>
-            {console.log(mealRecipes)}
-            {mealRecipes.map((meal, index) => (
-              <RecipeBalance
-                meal={meal}
-                intake={dayIntakes[mealType]}
-                key={index}
-              />
-            ))}
+        {Object.entries(todaysRecipes).map(([index, intake]) => (
+          <div key={index} className="mb-4 w-full flex flex-col">
+            <h4 className="text-xl mb-2">{intake["mealType"]}</h4>
+            {console.log(intake, intake["details"].recipe)}
+            <RecipeBalance
+              meal={intake["details"][0]["recipe"]}
+              intake={intake}
+              key={index}
+            />
           </div>
         ))}
       </div>
