@@ -17,8 +17,6 @@ export function FoodIntake() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    purgePersistor();
-    console.log("TRIGGERED", persistRecipes);
     const getRecipeToAdd = async () => {
       setRecipeToAdd(await getRecipe(add, persistRecipes, dispatch));
     };

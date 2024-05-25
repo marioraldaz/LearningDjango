@@ -10,6 +10,7 @@ export function RecipeNutrition({ recipe }) {
     setSelectedIngredient(ingredient);
   };
 
+  console.log(recipe);
   return (
     <div className="w-full h-full text-white bg-neutral-900 p-4 rounded-xl grid grid-auto-rows gap-8">
       <div className="w-min">
@@ -126,7 +127,7 @@ export function RecipeNutrition({ recipe }) {
             {selectedIngredient.name} nutrients:
           </h3>
           <ul className="h-[350px] overflow-y-scroll ">
-            {selectedIngredient.nutrients.map((nutrient) => (
+            {selectedIngredient.nutrients?.map((nutrient) => (
               <li key={nutrient.name} className=" border p-4">
                 {nutrient.name}: Amount: {nutrient.amount} {nutrient.unit}{" "}
                 Percentage Of Daily Needs: {nutrient.percentOfDailyNeeds}

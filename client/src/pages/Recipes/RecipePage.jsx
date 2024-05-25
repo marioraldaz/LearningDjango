@@ -95,7 +95,6 @@ export function RecipePage() {
           className="ml-auto w-[750px] bg-neutral-800 p-4 rounded-lg justify-center items-center"
           dangerouslySetInnerHTML={{ __html: recipe.summary }}
         />
-        recipe
       </div>
       <div className="w-full flex gap-8">
         {/*second row*/}
@@ -157,7 +156,7 @@ export function RecipePage() {
 
         <div className="border p-2 rounded-lg w-[200px]">
           <h2 className="mb-8">Compatible Diets </h2>
-          <ul className="flex ">
+          <ul className="flex overflow-auto">
             {recipe.diets.map((diet) => (
               <li
                 key={diet}

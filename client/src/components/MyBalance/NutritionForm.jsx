@@ -10,6 +10,7 @@ export const NutritionForm = (id) => {
   const [params, setParams] = useState(paramsInit);
   const { updateNutrition } = useContext(AuthContext);
   const persistRecipes = useSelector((state) => state.recipes.recipes);
+  console.log(persistRecipes);
   const dispatch = useDispatch();
 
   const handleChangeKey = (key) => {

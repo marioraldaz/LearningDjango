@@ -2,6 +2,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from food_intake.food_intake import FoodIntake
+from foods.api.nutrition_serializer import NutritionSerializer
+from foods.nutrition import Nutrition
 from ..serializers import FoodIntakeSerializer
 from food_intake.food_intake_detail import FoodIntakeDetail
 from ..serializers import FoodIntakeSerializer, FoodIntakeDetailSerializer
@@ -54,6 +56,12 @@ class FoodIntakeView(APIView):
                     recipe = Recipe.objects.filter(id = detail['recipe'])
                     recipe = serialize('json', recipe)
                     recipe =  json.loads(recipe)[0]['fields']
+                    nutrition = Nutrition.objects.filter(id = recipe['nutrition'])
+                    print(nutrition, recipe['nutrition'])
+                    nutrition = serialize('json', nutrition)
+                    nutrition = json.loads(nutrition)[0]['fields']
+                    print("NUTRITION", nutrition)
+                    recipe['nutrition'] = nutrition
                     detail['recipe'] = recipe
                     
                 response_data.append(food_intake)
