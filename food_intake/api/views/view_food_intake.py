@@ -9,7 +9,9 @@ from rest_framework.exceptions import NotFound
 from django.http import Http404
 from rest_framework.exceptions import ValidationError
 from django.db import transaction
-
+import json
+from foods.models import Recipe
+from django.core.serializers import serialize
 
 """_summary_
 {
@@ -48,6 +50,12 @@ class FoodIntakeView(APIView):
                 details = FoodIntakeDetail.objects.filter(food_intake_id=food_intake['id'])
                 detail_serializer = FoodIntakeDetailSerializer(details, many=True)
                 food_intake['details'] = detail_serializer.data
+                for detail in food_intake['details']:
+                    recipe = Recipe.objects.filter(id = detail['recipe'])
+                    recipe = serialize('json', recipe)
+                    recipe =  json.loads(recipe)[0]['fields']
+                    detail['recipe'] = recipe
+                    
                 response_data.append(food_intake)
             
             return Response(response_data)
@@ -59,8 +67,6 @@ class FoodIntakeView(APIView):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
     def post(self, request):
-        import json
-        from foods.models import Recipe
         # Deserialize the request data manually
         data = request.data
         # Extract the main attributes for FoodIntake creation
@@ -86,10 +92,9 @@ class FoodIntakeView(APIView):
                         details_instances = []
                         
                 for detail_data in details:
-                    print(detail_data)
                     food_id = detail_data.get('food_id')
                     amount = detail_data.get('amount')
-                    recipe = Recipe.objects.get(spoonacular_id=food_id)
+                    recipe = Recipe.objects.get(id=food_id)
                     detail_instance = FoodIntakeDetail.objects.create(food_intake=food_intake, recipe=recipe, amount=amount)
                     details_instances.append(detail_instance)
 

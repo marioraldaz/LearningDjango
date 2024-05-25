@@ -13,21 +13,7 @@ export function MyBalance() {
   const recipes = useSelector((state) => state.recipes.recipes);
 
   useEffect(() => {
-    const refreshIntakes = async () => {
-      setUserDayIntakes(dayIntakes);
-      let current = {};
-      await dayIntakes.map(async (intake) => {
-        const promises = await intake.details.map(async (intakeDetail) => {
-          return await getRecipe(intakeDetail.recipe, recipes, dispatch);
-        });
-        Promise.all(promises).then((resolvedRecipes) => {
-          current[intake.meal_type]
-            ? current[intake.meal_type].push(resolvedRecipes[0])
-            : (current[intake.meal_type] = resolvedRecipes);
-        });
-      });
-      setTodaysRecipes(current);
-    };
+    const refreshIntakes = async () => {};
     if (user) {
       refreshIntakes();
     }

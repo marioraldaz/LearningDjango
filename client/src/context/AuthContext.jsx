@@ -312,6 +312,7 @@ export const AuthProvider = ({ children }) => {
     const formData = new FormData();
 
     // Append simple fields to FormData
+    console.log(details);
     formData.append("profile_id", user.id);
     formData.append("meal_type", mealType);
     //formData.append("date", ""); // Example date
@@ -350,7 +351,6 @@ export const AuthProvider = ({ children }) => {
           withCredentials: true, // Send cookies with the request
         }
       );
-
       return await response.data; // Return the response data (serialized intakes)
     } catch (error) {
       console.error("Error fetching food intakes:", error);
@@ -383,6 +383,7 @@ export const AuthProvider = ({ children }) => {
         intakes.map((intake) => {
           dispatch(addRecipe(intake));
         });
+        console.log(intakes);
         setDayIntakes(intakes);
       }
     };
