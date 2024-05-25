@@ -314,7 +314,7 @@ export const AuthProvider = ({ children }) => {
     // Append simple fields to FormData
     formData.append("profile_id", user.id);
     formData.append("meal_type", mealType);
-    formData.append("date", "2024-05-07"); // Example date
+    //formData.append("date", ""); // Example date
     formData.append("amount", details.amount);
     // Append details array to FormData
     details.forEach((detail, index) => {

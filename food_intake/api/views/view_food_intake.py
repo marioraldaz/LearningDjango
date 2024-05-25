@@ -86,9 +86,10 @@ class FoodIntakeView(APIView):
                         details_instances = []
                         
                 for detail_data in details:
+                    print(detail_data)
                     food_id = detail_data.get('food_id')
                     amount = detail_data.get('amount')
-                    recipe = Recipe.objects.get(id=food_id)
+                    recipe = Recipe.objects.get(spoonacular_id=food_id)
                     detail_instance = FoodIntakeDetail.objects.create(food_intake=food_intake, recipe=recipe, amount=amount)
                     details_instances.append(detail_instance)
 

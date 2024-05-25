@@ -3,11 +3,12 @@ import { AuthContext } from "../../context/AuthContext";
 import { CardsList } from "../../components/Lists/CardsList.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import { RecipeBalance } from "../../components/MyBalance/RecipeBalance.jsx";
+import { NavigationButton } from "../../components/Buttons/NavigationButton.jsx";
 
 export function MyBalance() {
   const [userDayIntakes, setUserDayIntakes] = useState([]);
   const [todaysRecipes, setTodaysRecipes] = useState([]);
-  const { dayIntakes, getRecipe } = useContext(AuthContext);
+  const { dayIntakes, getRecipe, user } = useContext(AuthContext);
   const dispatch = useDispatch();
   const recipes = useSelector((state) => state.recipes.recipes);
 
@@ -27,9 +28,20 @@ export function MyBalance() {
       });
       setTodaysRecipes(current);
     };
-    refreshIntakes();
+    if (user) {
+      refreshIntakes();
+    }
+    console.log(dayIntakes);
   }, [dayIntakes, getRecipe]);
-  if (!todaysRecipes) {
+  if (!user) {
+    return (
+      <div>
+        <h1>Log In To Access this page !</h1>
+        <NavigationButton link="/login" text="Go to login" />
+      </div>
+    );
+  }
+  if (!todaysRecipes && user) {
     return <h1>Loading---</h1>;
   }
   return (
@@ -43,6 +55,7 @@ export function MyBalance() {
         {Object.entries(todaysRecipes).map(([mealType, mealRecipes]) => (
           <div key={mealType} className="mb-4 w-full flex flex-col">
             <h4 className="text-xl mb-2">{mealType}</h4>
+            {console.log(mealRecipes)}
             {mealRecipes.map((meal, index) => (
               <RecipeBalance
                 meal={meal}

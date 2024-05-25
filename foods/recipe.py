@@ -7,6 +7,7 @@ from django.db import transaction
 import requests
 
 class Recipe(models.Model):
+    id = models.IntegerField(primary_key=True)
     nutrition = models.OneToOneField(Nutrition, on_delete=models.CASCADE, related_name='recipe_nutrition')
     ingredients = models.ManyToManyField(Ingredient, related_name='recipes')
     title = models.CharField(max_length=100)

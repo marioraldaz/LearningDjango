@@ -44,7 +44,7 @@ export function IntakeForm({ recipes }) {
         </h3>
         <div className="grid md:grid-cols-2 grid-cols-1 items-center justify-center">
           <CardsList products={recipes} />
-          <section className="flex flex-col gap-4 ml-16 mt-12">
+          <section className="flex flex-col gap-4 ml-16 mt-12 border border-white p-2">
             <div className="">
               <label htmlFor="meal_type">Log for:</label>
               <select
@@ -71,6 +71,9 @@ export function IntakeForm({ recipes }) {
                 onChange={handleAmountChange}
                 className="ml-2 w-12 border border-gray-300 rounded px-2 text-black"
               />
+            </div>
+            <div>
+              <span>{recipes[0].nutrition}</span>
             </div>
           </section>
         </div>
