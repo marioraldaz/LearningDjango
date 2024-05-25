@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { GrayButton } from "../Buttons/GrayButton";
 
-export function RecipeNutrition({ nutrition }) {
+export function RecipeNutrition({ recipe }) {
+  const nutrition = recipe.nutrition;
   const [flavonoids, setFlavonoids] = useState(false);
   const [selectedIngredient, setSelectedIngredient] = useState(null);
   const [showNutrients, setShowNutrients] = useState(false);
@@ -13,15 +14,13 @@ export function RecipeNutrition({ nutrition }) {
     <div className="w-full h-full text-white bg-neutral-900 p-4 rounded-xl grid grid-auto-rows gap-8">
       <div className="w-min">
         <ul className="w-[300px]">
-          <li>Carbs Percentage: {nutrition.caloricBreakdown.percentCarbs} </li>
-          <li>Fat Percentage: {nutrition.caloricBreakdown.percentFat}</li>
-          <li>
-            Protein Percentage: {nutrition.caloricBreakdown.percentProtein}
-          </li>
+          <li>Carbs Percentage: {nutrition.percentCarbs} </li>
+          <li>Fat Percentage: {nutrition.percentFat}</li>
+          <li>Protein Percentage: {nutrition.percentProtein}</li>
         </ul>
         <h3>
-          Weight Per Serving: {nutrition.weightPerServing.amount}{" "}
-          {nutrition.weightPerServing.unit}
+          Weight Per Serving: {nutrition.weight_per_serving[0].amount}{" "}
+          {nutrition.weight_per_serving[0].unit}
         </h3>
       </div>
 
@@ -68,6 +67,7 @@ export function RecipeNutrition({ nutrition }) {
                   key={elem.name}
                   className="flex flex-row gap-4 w-full border p-4  odd:bg-rgb-rgb(0, 0, 0) even:bg-yellow-500 even:text-black"
                 >
+                  {console.log(elem)}
                   <li className="w-1/2">Name: {elem.name}</li>
                   <li>
                     Amount: {elem.amount} {elem.unit}
@@ -103,7 +103,8 @@ export function RecipeNutrition({ nutrition }) {
       </div>
       <div className="flex flex-wrap gap-4 border p-4 rounded-xl  h-[300px] overflow-y-scroll">
         <h3 className="text-2xl">Ingredients</h3>
-        {nutrition.ingredients.map((ingredient) => (
+        {console.log(nutrition)}
+        {recipe.extendedIngredients.map((ingredient) => (
           <ul key={ingredient.name} className="w-full flex gap-2 border-b">
             <li>Name: {ingredient.name}</li>
             <li>

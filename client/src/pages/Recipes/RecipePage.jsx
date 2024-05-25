@@ -178,8 +178,10 @@ export function RecipePage() {
             <CardsList products={recipeIngredients} />
           </div>
         )}
-        {showNutrition && typeof nutrition === "object" && (
-          <RecipeNutrition nutrition={recipe.nutrition} />
+        {showNutrition && typeof recipe.nutrition === "object" && (
+          <>
+            <RecipeNutrition recipe={recipe} />
+          </>
         )}
         {showNutrition && typeof nutrition !== "object" && (
           <h3 className="text-red-600">Recipe has no nutrition logged :C</h3>
