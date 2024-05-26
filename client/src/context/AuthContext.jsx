@@ -27,7 +27,6 @@ export const AuthProvider = ({ children }) => {
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [recipesForDaily, setRecipesForDaily] = useState([]);
   const [ingredientsForDaily, setIngredientsForDaily] = useState([]);
-  const [dayIntakes, setDayIntakes] = useState([]);
   const navigate = useNavigate();
 
   ////////////////////////////////////////////////////////////////////////   PROFILE FUNCTIONS         ////////////////////////////////
@@ -335,25 +334,28 @@ export const AuthProvider = ({ children }) => {
     return response.data;
   };
 
-  const getDayIntakes = async (profileID) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/api/food-intake/`,
-        {
-          params: {
-            user_profile_id: profileID,
-          },
-          headers: {
-            "Content-Type": "application/json", // Use 'application/json' for JSON data
-            "X-CSRFToken": csrftoken, // Replace with your CSRF token
-          },
-          withCredentials: true, // Send cookies with the request
-        }
-      );
-      return await response.data; // Return the response data (serialized intakes)
-    } catch (error) {
-      console.error("Error fetching food intakes:", error);
-      throw error;
+  const getUserIntakes = async () => {
+    if (user?.id) {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/food-intake/`,
+          {
+            params: {
+              user_profile_id: user.id,
+            },
+            headers: {
+              "Content-Type": "application/json", // Use 'application/json' for JSON data
+              "X-CSRFToken": csrftoken, // Replace with your CSRF token
+            },
+            withCredentials: true, // Send cookies with the request
+          }
+        );
+        console.log(response.data);
+        return await response.data; // Return the response data (serialized intakes)
+      } catch (error) {
+        console.error("Error fetching food intakes:", error);
+        throw error;
+      }
     }
   };
 
@@ -374,16 +376,6 @@ export const AuthProvider = ({ children }) => {
     };
     fetchData();
   }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (user) {
-        const intakes = await getDayIntakes(user.id);
-        setDayIntakes(intakes);
-      }
-    };
-    fetchData();
-  }, [user]);
 
   useEffect(() => {
     const csrfGot = Cookies.get("csrftoken");
@@ -423,7 +415,7 @@ export const AuthProvider = ({ children }) => {
     currentRecipe: currentRecipe,
     setCurrentRecipe: setCurrentRecipe,
     register: register,
-    dayIntakes: dayIntakes,
+    getUserIntakes: getUserIntakes,
     updateNutrition: updateNutrition,
   };
   return (

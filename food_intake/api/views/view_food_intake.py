@@ -57,10 +57,8 @@ class FoodIntakeView(APIView):
                     recipe = serialize('json', recipe)
                     recipe =  json.loads(recipe)[0]['fields']
                     nutrition = Nutrition.objects.filter(id = recipe['nutrition'])
-                    print(nutrition, recipe['nutrition'])
                     nutrition = serialize('json', nutrition)
                     nutrition = json.loads(nutrition)[0]['fields']
-                    print("NUTRITION", nutrition)
                     recipe['nutrition'] = nutrition
                     detail['recipe'] = recipe
                     

@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { CardsList } from "../Lists/CardsList.jsx";
-import { IntakeNutrition } from "./IntakeNutrition.jsx";
+import { RecipeNutrition } from "../Recipes/RecipeNutrition.jsx";
 import { NutritionForm } from "./NutritionForm.jsx";
 import { GrayButton } from "../Buttons/GrayButton.jsx";
 export function RecipeBalance({ meal, intake }) {
   const [showUpdateNutrition, setShowUpdateNutrition] = useState(false);
   const [hasNutrition, setHasNutrition] = useState(false);
   useEffect(() => {
-    meal.nutrition.length ? setHasNutrition(true) : setHasNutrition(false);
+    console.log(meal.nutrition);
+    typeof meal.nutrition === "object"
+      ? setHasNutrition(true)
+      : setHasNutrition(false);
+    console.log(hasNutrition);
   }, []);
-  console.log(meal);
+
   const toggleShowUpdateNutrition = () => {
     setShowUpdateNutrition(!showUpdateNutrition);
   };
@@ -26,7 +30,7 @@ export function RecipeBalance({ meal, intake }) {
             </GrayButton>
           </div>
         )}
-        {hasNutrition && <IntakeNutrition meal={meal} intake={intake} />}
+        {hasNutrition && <RecipeNutrition recipe={meal} />}
         {showUpdateNutrition && <NutritionForm id={meal.id} />}
       </div>
     </div>
