@@ -20,7 +20,6 @@ export function IntakeForm({ recipes: recipe }) {
   if (recipe.nutrition.weight_per_serving.length == 1) {
     recipe.nutrition.weight_per_serving =
       recipe.nutrition.weight_per_serving[0];
-    console.log(recipe.nutrition.weight_per_serving);
   }
   const { addFoodIntake } = useContext(AuthContext);
   console.log(recipe);

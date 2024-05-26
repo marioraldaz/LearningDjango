@@ -18,5 +18,9 @@ class FoodIntake(models.Model):
     )
     date = models.DateField(validators=[validate_is_date_before_today])
 
+    @classmethod
+    def get_food_intakes_for_user_and_date(cls, user, date):
+        return cls.objects.filter(profile=user, date=date)
+
     class Meta:
-        db_table = 'foodintake_foodintake'
+        db_table = 'foodintake_foodintake'          

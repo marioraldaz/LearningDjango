@@ -1,7 +1,7 @@
 from django.db import models
 
 class Nutrition(models.Model):
-      # Fields for nutrients
+    # Fields for nutrients
     nutrients =  models.JSONField(null=True, blank=True)
     
     # Fields for properties
@@ -29,7 +29,7 @@ class Nutrition(models.Model):
         caloric_breakdown = nutrition_data.get('caloricBreakdown', {})
         percent_protein = caloric_breakdown.get('percentProtein',0.0)
         percent_fat = caloric_breakdown.get('percentFat',0.0)
-        percent_carbs = caloric_breakdown.get('percentCarbs', 0.0)  # Default to 0.0 if not provided
+        percent_carbs = caloric_breakdown.get('percentCarbs', 0.0) 
         weight_per_serving = nutrition_data.get('weightPerServing', {})
 
         # Create and return a new Nutrition object

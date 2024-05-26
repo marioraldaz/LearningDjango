@@ -2,8 +2,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from food_intake.food_intake import FoodIntake
+from food_intake.user_daily import UserDaily
 from foods.api.nutrition_serializer import NutritionSerializer
 from foods.nutrition import Nutrition
+from profiles.user_profile import UserProfile
 from ..serializers import FoodIntakeSerializer
 from food_intake.food_intake_detail import FoodIntakeDetail
 from ..serializers import FoodIntakeSerializer, FoodIntakeDetailSerializer
@@ -103,7 +105,10 @@ class FoodIntakeView(APIView):
                     recipe = Recipe.objects.get(id=food_id)
                     detail_instance = FoodIntakeDetail.objects.create(food_intake=food_intake, recipe=recipe, amount=amount)
                     details_instances.append(detail_instance)
-
+                    
+                profile = UserProfile.objects.get(id = profile_id)
+                daily = UserDaily.objects.update_or_create(profile = profile, date = str(date.today()))
+                
                 # Return a successful response with the manually constructed response data
                 return Response(status=status.HTTP_201_CREATED)
 
