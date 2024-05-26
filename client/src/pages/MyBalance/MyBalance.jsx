@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { CardsList } from "../../components/Lists/CardsList.jsx";
 import { useSelector, useDispatch } from "react-redux";
-import { RecipeBalance } from "../../components/MyBalance/RecipeBalance.jsx";
 import { NavigationButton } from "../../components/Buttons/NavigationButton.jsx";
-
+import { Scrollable } from "../../components/MyBalance/Scrollable.jsx";
 export function MyBalance() {
   const [loading, setLoading] = useState(true);
   const [userIntakes, setUserIntakes] = useState([]);
@@ -51,18 +49,7 @@ export function MyBalance() {
       </h1>
       <h3 className="text-2xl text-center w-full mb-4">Today's Recipes</h3>
       {/* Use Object.entries to iterate over todaysRecipes */}
-      <div className="m-8 flex flex-col gap-8 overflow-y-auto items-center bg-neutral-700 p-4 rounded-lg">
-        {Object.entries(todaysRecipes).map(([index, intake]) => (
-          <div key={index} className="mb-4 w-full flex flex-col">
-            <h4 className="text-xl mb-2">{intake["meal_type"]}</h4>
-            <RecipeBalance
-              meal={intake["details"][0]["recipe"]}
-              intake={intake}
-              key={index}
-            />
-          </div>
-        ))}
-      </div>
+      <Scrollable recipes={todaysRecipes} />
     </section>
   );
 }
