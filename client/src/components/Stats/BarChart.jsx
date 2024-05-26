@@ -21,31 +21,22 @@ export function BarChartCustom({ data, displayType }) {
   return (
     <div className="bg-white">
       {chartData?.map((dayData, index) => (
-        <div key={index}>
-          <h2>
-            {displayType === "weekly"
-              ? `Week ${index + 1}`
-              : `Day ${index + 1}`}
-          </h2>
-          <p>{JSON.stringify(dayData)}</p> {/* Render your data here */}
-          {/* You can also pass this data to the BarChart component if needed */}
-          <BarChart
-            xAxis={[
-              {
-                scaleType: "band",
-                data: ["Calories", "Fat", "Carbohydrates", "Protein"],
-              },
-            ]}
-            series={[
-              {
-                data: Object.values(dayData.fields.total_nutrients),
-                name: displayType === "weekly" ? "Weekly" : "Daily",
-              },
-            ]}
-            width={500}
-            height={300}
-          />
-        </div>
+        <BarChart
+          xAxis={[
+            {
+              scaleType: "band",
+              data: ["Calories", "Fat", "Carbohydrates", "Protein"],
+            },
+          ]}
+          series={[
+            {
+              data: Object.values(dayData.fields.total_nutrients),
+              name: displayType === "weekly" ? "Weekly" : "Daily",
+            },
+          ]}
+          width={500}
+          height={300}
+        />
       ))}
     </div>
   );
