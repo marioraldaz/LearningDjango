@@ -4,7 +4,7 @@ import { GrayButton } from "../Buttons/GrayButton.jsx";
 import { CardsList } from "../Lists/CardsList.jsx";
 import { AuthContext } from "../../context/AuthContext";
 
-export function IntakeForm({ recipes }) {
+export function IntakeForm({ recipes: recipe }) {
   const [formData, setFormData] = useState({
     meal_type: "Breakfast",
     intake_date: null,
@@ -12,16 +12,27 @@ export function IntakeForm({ recipes }) {
     amount: 1, // Initial amount set to 1
   });
 
+  recipe = recipe[0];
+  console.log(
+    typeof recipe.nutrition.weight_per_serving,
+    recipe.nutrition.weight_per_serving.length
+  );
+  if (recipe.nutrition.weight_per_serving.length == 1) {
+    recipe.nutrition.weight_per_serving =
+      recipe.nutrition.weight_per_serving[0];
+    console.log(recipe.nutrition.weight_per_serving);
+  }
   const { addFoodIntake } = useContext(AuthContext);
-
+  console.log(recipe);
   const handleSubmit = (e) => {
-    const details = recipes.map((recipe) => ({
+    e.preventDefault();
+    const details = {
       content_type: "recipe",
       food_id: recipe.id,
       amount: formData.amount.toString(), // Convert amount to string
-    }));
+    };
 
-    addFoodIntake(formData.meal_type, details);
+    addFoodIntake(formData.meal_type, [details]);
   };
 
   const handleInputChange = (e) => {
@@ -32,7 +43,7 @@ export function IntakeForm({ recipes }) {
   function calculateGrams(weight, percent) {
     weight = parseInt(weight);
     const decimal = percent / 100;
-    const grams = decimal * weight;
+    const grams = decimal * weight * formData.amount;
     return grams.toFixed(2);
   }
   const handleAmountChange = (e) => {
@@ -40,7 +51,7 @@ export function IntakeForm({ recipes }) {
     setFormData({ ...formData, amount: parseInt(value) }); // Parse amount to integer
   };
 
-  if (!recipes[0] || !formData) {
+  if (!recipe || !formData) {
     return <h1>loading</h1>;
   }
 
@@ -51,7 +62,7 @@ export function IntakeForm({ recipes }) {
           Log Your Meal
         </h3>
         <div className="flex flex-col items-center justify-center">
-          <CardsList products={recipes} />
+          <CardsList products={[recipe]} />
           <section className="flex flex-col gap-4 border border-white p-2 w-full">
             <div className="">
               <label htmlFor="meal_type">Log for:</label>
@@ -69,34 +80,10 @@ export function IntakeForm({ recipes }) {
             </div>
             <span className="">
               Serving:{"   "}
-              {recipes[0].nutrition.weight_per_serving[0].amount
-                ? recipes[0].nutrition.weight_per_serving[0].amount +
-                  recipes[0].nutrition.weight_per_serving[0].unit
+              {recipe.nutrition.weight_per_serving.amount
+                ? recipe.nutrition.weight_per_serving.amount +
+                  recipe.nutrition.weight_per_serving.unit
                 : "Not specified"}
-            </span>
-            <span className="text-white">
-              Total carbohydrates:{"   "}
-              {calculateGrams(
-                recipes[0].nutrition.weight_per_serving[0].amount,
-                recipes[0].nutrition.percent_carbs
-              )}
-              g
-            </span>
-            <span className="text-white">
-              Total Fat:{"   "}
-              {calculateGrams(
-                recipes[0].nutrition.weight_per_serving[0].amount,
-                recipes[0].nutrition.percent_fat
-              )}
-              g
-            </span>
-            <span className="text-white">
-              Total Protein:{"   "}
-              {calculateGrams(
-                recipes[0].nutrition.weight_per_serving[0].amount,
-                recipes[0].nutrition.percent_protein
-              )}
-              g
             </span>
             <div className="flex">
               <label htmlFor="amount">Number of servings:</label>
@@ -106,8 +93,37 @@ export function IntakeForm({ recipes }) {
                 value={formData.amount}
                 onChange={handleAmountChange}
                 className="ml-2 w-12 border border-gray-300 rounded px-2 text-black"
+                min="1"
               />
             </div>
+            <span className="text-white">
+              Total weight:{"   "}
+              {formData.amount * recipe.nutrition.weight_per_serving?.amount}g
+            </span>
+            <span className="text-white">
+              Total carbohydrates:{"   "}
+              {calculateGrams(
+                recipe.nutrition.weight_per_serving.amount,
+                recipe.nutrition.percent_carbs
+              )}
+              g
+            </span>
+            <span className="text-white">
+              Total Fat:{"   "}
+              {calculateGrams(
+                recipe.nutrition.weight_per_serving.amount,
+                recipe.nutrition.percent_fat
+              )}
+              g
+            </span>
+            <span className="text-white">
+              Total Protein:{"   "}
+              {calculateGrams(
+                recipe.nutrition.weight_per_serving.amount,
+                recipe.nutrition.percent_protein
+              )}
+              g
+            </span>
           </section>
         </div>
 

@@ -10,18 +10,18 @@ export function RecipeNutrition({ recipe }) {
     setSelectedIngredient(ingredient);
   };
 
-  console.log(recipe);
+  console.log(nutrition);
   return (
     <div className="w-full h-full text-white bg-neutral-900 p-4 rounded-xl grid grid-auto-rows gap-8">
       <div className="w-min">
         <ul className="w-[300px]">
-          <li>Carbs Percentage: {nutrition.percentCarbs} </li>
-          <li>Fat Percentage: {nutrition.percentFat}</li>
-          <li>Protein Percentage: {nutrition.percentProtein}</li>
+          <li>Carbs Percentage: {nutrition.precent_carbs} </li>
+          <li>Fat Percentage: {nutrition.percent_fat}</li>
+          <li>Protein Percentage: {nutrition.percent_protein}</li>
         </ul>
         <h3>
-          Weight Per Serving: {nutrition.weight_per_serving[0].amount}{" "}
-          {nutrition.weight_per_serving[0].unit}
+          Weight Per Serving: {nutrition.weight_per_serving?.amount}{" "}
+          {nutrition.weight_per_serving?.unit}
         </h3>
       </div>
 
