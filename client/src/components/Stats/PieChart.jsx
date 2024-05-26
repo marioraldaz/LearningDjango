@@ -1,6 +1,14 @@
 import React from "react";
+import {
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  Legend,
+} from "recharts";
 
-export function PieChart() {
+export function PieChart({ data }) {
   return (
     <PieChart width={730} height={250}>
       <Pie

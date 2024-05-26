@@ -22,7 +22,6 @@ export const Scrollable = ({ recipes }) => {
   };
 
   const handleMouseMove = (e) => {
-    console.log("MOVING");
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - containerRef.current.offsetLeft;
@@ -37,11 +36,14 @@ export const Scrollable = ({ recipes }) => {
       onMouseLeave={handleMouseLeave}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
-      className="m-8 flex gap-8 overflow-x-auto w-full items-center bg-neutral-700 p-4 rounded-lg cursor-grab active:cursor-grabbing"
+      className="flex gap-8 overflow-x-auto w-full items-center bg-neutral-700 m-4 p-4 rounded-lg cursor-grab active:cursor-grabbing"
       style={{ cursor: "grab" }}
     >
       {Object.entries(recipes).map(([index, intake]) => (
-        <div key={index} className="mb-4 min-w-[1300px] flex-1  flex flex-col">
+        <div
+          key={index}
+          className="mb-4 min-w-[1600px] flex-1 h-[1000px] flex flex-col"
+        >
           <h4 className="text-xl mb-2">{intake["meal_type"]}</h4>
           <RecipeBalance
             meal={intake["details"][0]["recipe"]}

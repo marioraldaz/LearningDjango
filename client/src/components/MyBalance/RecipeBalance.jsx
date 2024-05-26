@@ -7,18 +7,16 @@ export function RecipeBalance({ meal, intake }) {
   const [showUpdateNutrition, setShowUpdateNutrition] = useState(false);
   const [hasNutrition, setHasNutrition] = useState(false);
   useEffect(() => {
-    console.log(meal.nutrition);
     typeof meal.nutrition === "object"
       ? setHasNutrition(true)
       : setHasNutrition(false);
-    console.log(hasNutrition);
   }, []);
 
   const toggleShowUpdateNutrition = () => {
     setShowUpdateNutrition(!showUpdateNutrition);
   };
   return (
-    <div className="flex flex-col xl:flex-row w-full border border-black mt-4 p-4">
+    <div className="flex flex-col xl:flex-row w-full border h-full border-black mt-4 p-4 overflow-auto ">
       <div className="w-min">
         <CardsList products={[meal]} />
       </div>

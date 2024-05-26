@@ -3,6 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { useSelector, useDispatch } from "react-redux";
 import { NavigationButton } from "../../components/Buttons/NavigationButton.jsx";
 import { Scrollable } from "../../components/MyBalance/Scrollable.jsx";
+import { Stats } from "../../components/Stats/Stats.jsx";
 export function MyBalance() {
   const [loading, setLoading] = useState(true);
   const [userIntakes, setUserIntakes] = useState([]);
@@ -50,6 +51,10 @@ export function MyBalance() {
       <h3 className="text-2xl text-center w-full mb-4">Today's Recipes</h3>
       {/* Use Object.entries to iterate over todaysRecipes */}
       <Scrollable recipes={todaysRecipes} />
+      <h1 className="w-full gradient-text text-center text-4xl mb-8 p-8">
+        Stats
+      </h1>
+      <Stats profile={user} />
     </section>
   );
 }

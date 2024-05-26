@@ -102,11 +102,3 @@ class UserDaily(models.Model):
             'total_caloric_breakdown': self.total_caloric_breakdown,
             'total_weight_per_serving': self.total_weight_per_serving
         }
-
-        
-    @classmethod
-    def get_last_days(cls, profile_id, num_days):
-        """Return UserDaily objects for the last 'num_days' days for a given UserProfile ID."""
-        from_date = models.DateField.auto_now() - timedelta(days=num_days)
-        user_dailies = cls.objects.filter(profile_id=profile_id, date__gte=from_date)
-        return user_dailies

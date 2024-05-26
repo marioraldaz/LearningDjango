@@ -10,9 +10,8 @@ export function RecipeNutrition({ recipe }) {
     setSelectedIngredient(ingredient);
   };
 
-  console.log(nutrition);
   return (
-    <div className="w-full h-full text-white bg-neutral-900 p-4 rounded-xl grid grid-auto-rows gap-8">
+    <div className="w-full h-full text-white bg-neutral-900 p-4 rounded-xl grid grid-auto-rows gap-8 overflow-auto">
       <div className="w-min">
         <ul className="w-[300px]">
           <li>Carbs Percentage: {nutrition.percent_carbs} </li>
@@ -106,7 +105,6 @@ export function RecipeNutrition({ recipe }) {
       </div>
       <div className="flex flex-wrap gap-4 border p-4 rounded-xl  h-[300px] overflow-y-scroll">
         <h3 className="text-2xl">Ingredients</h3>
-        {console.log(nutrition)}
         {recipe.extendedIngredients.map((ingredient) => (
           <ul key={ingredient.name} className="w-full flex gap-2 border-b">
             <li>Name: {ingredient.name}</li>

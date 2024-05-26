@@ -1,6 +1,14 @@
 import React from "react";
+import {
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  Legend,
+} from "recharts";
 
-export function AreaChart() {
+export function AreaChart({ data }) {
   return (
     <AreaChart
       width={730}
@@ -39,4 +47,3 @@ export function AreaChart() {
     </AreaChart>
   );
 }
-

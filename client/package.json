@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/styled": "^11.11.5",
     "@heroicons/react": "^2.1.1",
     "@material-tailwind/react": "^2.1.9",
+    "@mui/styled-engine": "^5.15.14",
     "@reduxjs/toolkit": "^2.2.1",
     "axios": "^1.6.7",
     "bower": "^1.8.14",
