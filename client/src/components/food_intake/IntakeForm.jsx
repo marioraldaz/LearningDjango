@@ -12,7 +12,12 @@ export function IntakeForm({ recipes: recipe }) {
     amount: 1, // Initial amount set to 1
   });
 
+  if (!recipe || !formData) {
+    return <h1>loading</h1>;
+  }
+
   recipe = recipe[0];
+  console.log(recipe);
   console.log(
     typeof recipe.nutrition.weight_per_serving,
     recipe.nutrition.weight_per_serving.length
@@ -49,10 +54,6 @@ export function IntakeForm({ recipes: recipe }) {
     const { value } = e.target;
     setFormData({ ...formData, amount: parseInt(value) }); // Parse amount to integer
   };
-
-  if (!recipe || !formData) {
-    return <h1>loading</h1>;
-  }
 
   return (
     <>

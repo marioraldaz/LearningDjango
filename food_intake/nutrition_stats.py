@@ -124,7 +124,6 @@ class NutritionStats(models.Model):
             'vitamin_k': f'{time_period}_vitamin_k',
             'omega_3': f'{time_period}_omega_3',
             'omega_6': f'{time_period}_omega_6',
-            # Add other nutrient fields mapping as needed...
         }
 
         for nutrient, model_field in nutrient_fields.items():

@@ -7,6 +7,10 @@ export const Scrollable = ({ recipes }) => {
   let startX;
   let scrollLeft;
 
+  if (!recipes) {
+    return <h1> No recipes</h1>;
+  }
+
   const handleMouseDown = (e) => {
     isDragging = true;
     startX = e.pageX - containerRef.current.offsetLeft;

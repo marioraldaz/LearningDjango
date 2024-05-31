@@ -22,6 +22,7 @@ export function Header() {
     { id: 2, route: "/Ingredients", text: "Ingredients" },
     { id: 3, route: "/Recipes", text: "Recipes" },
     { id: 4, route: "/MyBalance", text: "MyBalance" },
+    { id: 5, route: "/NutriExpert", text: "NutriExpert" },
   ];
   return (
     <nav className="max-w-full relative z-[1] h-24 flex flex-nowrap border-green-600 border-b-2 xl:pr-[40px] items-center">

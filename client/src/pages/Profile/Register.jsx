@@ -25,6 +25,7 @@ export function Register() {
       });
       setError(errorMessage);
     }
+    window.location.href = "/";
   };
   return (
     <div className="flex items-center justify-center mt-[40px]">

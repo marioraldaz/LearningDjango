@@ -21,7 +21,7 @@ export function MyBalance() {
       const fetchedIntakes = await getUserIntakes();
       // Format the date as 'YYYY-MM-DD'
       const formattedDate = `${year}-${month}-${day}`;
-      const filtered = fetchedIntakes.filter(
+      const filtered = fetchedIntakes?.filter(
         (intake) => intake.date === formattedDate
       );
 
@@ -34,8 +34,8 @@ export function MyBalance() {
 
   if (loading) {
     return (
-      <div>
-        <h1>Log In To Access this page !</h1>
+      <div className="w-full mt-24 flex flex-col gap-8 justify-center items-center">
+        <h1 className="text-2xl">Log In To Access this page !</h1>
         <NavigationButton link="/login" text="Go to login" />
       </div>
     );
