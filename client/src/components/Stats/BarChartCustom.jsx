@@ -1,30 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { BarChart } from "@mui/x-charts";
 
-export function BarChartCustom({ data }) {
+export function BarChartCustom({ values, dates }) {
   // Extracting data based on the display type
-
+  console.log(values, dates);
   return (
     <div className="bg-white flex flex-col w-full mt-4">
-      {data?.map((value, index) => (
-        <div key={index}>
-          <BarChart
-            xAxis={[
-              {
-                scaleType: "band",
-                data: ["Calories", "Fat", "Carbohydrates", "Protein"],
-              },
-            ]}
-            series={[
-              {
-                data: [4, 3, 5],
-              },
-            ]}
-            width={500}
-            height={300}
-          />
-        </div>
-      ))}
+      <BarChart
+        xAxis={[
+          {
+            scaleType: "band",
+            data: dates.map((date) => {
+              return date;
+            }),
+          },
+        ]}
+        series={[
+          {
+            data: Object.values(values).map((value) => {
+              console.log(value);
+              return value;
+            }),
+          },
+        ]}
+        width={500}
+        height={300}
+      />
     </div>
   );
 }

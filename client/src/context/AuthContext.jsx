@@ -350,7 +350,6 @@ export const AuthProvider = ({ children }) => {
             withCredentials: true, // Send cookies with the request
           }
         );
-        console.log(response.data);
         return await response.data; // Return the response data (serialized intakes)
       } catch (error) {
         console.error("Error fetching food intakes:", error);
