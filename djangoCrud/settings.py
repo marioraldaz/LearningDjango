@@ -58,7 +58,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'pytest',
     'pytest_django',
-    'foods'
+    'foods',
+    'nutriexpert'
 ]
 
 

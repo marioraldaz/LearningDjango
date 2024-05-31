@@ -1,5 +1,5 @@
 from ..models import Message
-from ..Service.Chat import Chat
+from ..Service.chatbot import Chat
 from rest_framework.views import APIView
 from django.http import JsonResponse
 
@@ -9,6 +9,7 @@ class MessageView(APIView):
 
     def post(self, request):
         data = request.data
+        user_id = data.get("user_id")
         user_input = data.get("user_input")
         previous = data.get("previous")
         if(user_input == ''):
@@ -16,9 +17,9 @@ class MessageView(APIView):
         
         try:
             # Instantiate DatabaseChat
-            chat = DatabaseChat()
+            chat = Chat()
             # Generate response
-            response = chat.run(user_input, previous)
+            response = chat.new_message(user_id, previous, user_input)
 
             # Save user input and response as a Message object
             message = Message.objects.create( input_text=user_input, response_text=response)

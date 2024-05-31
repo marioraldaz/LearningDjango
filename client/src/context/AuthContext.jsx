@@ -304,6 +304,29 @@ export const AuthProvider = ({ children }) => {
     console.log(response);
     return response.data;
   };
+
+  const nutriExpert = async (input, previous) => {
+    try {
+      const response = await axios({
+        method: "POST",
+        url: `http://localhost:8000/api/process-message/`,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "X-CSRFToken": csrftoken,
+        },
+        data: {
+          user_input: input,
+          previous: previous,
+          user_id: user.id,
+        },
+      });
+      return response.data.message;
+    } catch (error) {
+      console.error("Error sending user input:", error);
+      throw error;
+    }
+  };
+
   //////////////////////////////////////////////////////////////////////////// FOOD INTAKE FUNCTIONS //////////////////////////////////////////////////////////////////////////
 
   const addFoodIntake = async (mealType, details) => {
@@ -416,6 +439,7 @@ export const AuthProvider = ({ children }) => {
     register: register,
     getUserIntakes: getUserIntakes,
     updateNutrition: updateNutrition,
+    nutriExpert: nutriExpert,
   };
   return (
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>

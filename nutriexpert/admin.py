@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Chatbot
+from .models import NutriExpert
 
-@admin.register(Chatbot)
+@admin.register(NutriExpert)
 class ChatbotAdmin(admin.ModelAdmin):
     list_display = ('name', 'user', 'created_at')
 

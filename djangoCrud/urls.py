@@ -25,7 +25,8 @@ urlpatterns = [
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('api/', include('profiles.api.urls')),
     path('api/', include('food_intake.api.urls')),
-    path('api/', include('foods.api.urls'))
+    path('api/', include('foods.api.urls')),
+    path('api/', include('nutriexpert.api.urls'))
 ]
 
 from django.conf import settings

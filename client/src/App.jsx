@@ -16,7 +16,7 @@ import { FoodIntake } from "./pages/FoodIntake/FoodIntake.jsx";
 import { RecipePage } from "./pages/Recipes/RecipePage.jsx";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./redux/store";
-
+import { NutriExpert } from "./pages/NutriExpert/NutriExpert.jsx";
 function App() {
   return (
     <Provider store={store}>
@@ -38,6 +38,7 @@ function App() {
                   <Route path="/RequireAuth" element={<RequireAuth />} />
                   <Route path="/Recipe/:id" element={<RecipePage />} />
                   <Route path="/FoodIntake/:add" element={<FoodIntake />} />
+                  <Route path="/NutriExpert" element={<NutriExpert />} />
                 </Routes>
               </div>
               <Footer />

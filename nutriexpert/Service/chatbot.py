@@ -37,8 +37,9 @@ from langchain_core.runnables import ( # type: ignore
     ConfigurableField,
     RunnablePassthrough,
 )
+from langgraph.pregel.io import AddableUpdatesDict # type: ignore
 from django.conf import settings
-
+import json
 # Now you can use BASE_DIR from settings
 from langchain_core.utils.function_calling import convert_to_openai_function # type: ignore
 from langchain_core.output_parsers import StrOutputParser # type: ignore
@@ -52,7 +53,7 @@ os.environ["LANGCHAIN_PROJECT"] = "invoice charbot"
 llm = ChatOpenAI(model="gpt-4o")
 
 class Chat:
-    def new_message(user_id, previous_messages, new_messages):
+    def new_message(self, user_id, previous_messages, new_messages):
         def create_agent(llm: ChatOpenAI, tools: list, system_prompt: str):
             # Each worker node will be given a name and some tools.
             prompt = ChatPromptTemplate.from_messages(
@@ -135,7 +136,7 @@ class Chat:
         embeddings = OpenAIEmbeddings()
 
 
-        db = FAISS.load_local("nutrition_vector_database", embeddings,allow_dangerous_deserialization=True) #Load db
+        db = FAISS.load_local("nutriexpert/Service/nutrition_vector_database", embeddings,allow_dangerous_deserialization=True) #Load db
 
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         SQL_lite_uri = f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}"
@@ -164,7 +165,7 @@ class Chat:
                 # Close the connection
                 connection.close()
                 
-        db = FAISS.load_local("database_info_vector_database", embeddings,allow_dangerous_deserialization=True) #Load db
+        db = FAISS.load_local("nutriexpert/Service/database_info_vector_database", embeddings,allow_dangerous_deserialization=True) #Load db
 
                 
         retriever = db.as_retriever()
@@ -212,8 +213,23 @@ class Chat:
 
         # Compile the graph
         graph = workflow.compile()
+        agent_messages =[]
+        class CustomEncoder(json.JSONEncoder):
+            def default(self, obj):
+                if isinstance(obj, AddableUpdatesDict):
+                    return obj.dict()
+                elif isinstance(obj, HumanMessage):
+                    # Serialize HumanMessage object to a dictionary
+                    return {
+                        "content": obj.content,
+                        "name": obj.name
+                        # Add other attributes as needed
+                    }
+                # Handle other types or fallback to default serialization
+                return super().default(obj)
 
         config = {"recursion_limit": 20}
+        agent_messages = []
         for s in graph.stream(
             {
                 "messages": [
@@ -223,7 +239,7 @@ class Chat:
         ):
             if "__end__" not in s:
                 print(s)
-                agent_messages = s
+                agent_messages.append(json.dumps(s, cls=CustomEncoder))
                 print("----")
         return agent_messages
 
