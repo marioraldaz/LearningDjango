@@ -3,6 +3,7 @@ import { NavigationButton } from "../Buttons/NavigationButton.jsx";
 import { GrayButton } from "../Buttons/GrayButton.jsx";
 import { CardsList } from "../Lists/CardsList.jsx";
 import { AuthContext } from "../../context/AuthContext";
+import { FoodIntakeSaved } from "../../sweetalert/foodIntakeSaved.js";
 
 export function IntakeForm({ recipes: recipe }) {
   const [formData, setFormData] = useState({
@@ -11,23 +12,19 @@ export function IntakeForm({ recipes: recipe }) {
     profile_id: null,
     amount: 1, // Initial amount set to 1
   });
+  const [showPopUp, setShowPopUp] = useState(false);
+  const { addFoodIntake } = useContext(AuthContext);
 
-  if (!recipe || !formData) {
+  if (!recipe || !recipe[0] || !formData) {
     return <h1>loading</h1>;
   }
 
   recipe = recipe[0];
-  console.log(recipe);
-  console.log(
-    typeof recipe.nutrition.weight_per_serving,
-    recipe.nutrition.weight_per_serving.length
-  );
+
   if (recipe.nutrition.weight_per_serving.length == 1) {
     recipe.nutrition.weight_per_serving =
       recipe.nutrition.weight_per_serving[0];
   }
-  const { addFoodIntake } = useContext(AuthContext);
-  console.log(recipe);
   const handleSubmit = (e) => {
     e.preventDefault();
     const details = {
@@ -37,6 +34,7 @@ export function IntakeForm({ recipes: recipe }) {
     };
 
     addFoodIntake(formData.meal_type, [details]);
+    setShowPopUp(true);
   };
 
   const handleInputChange = (e) => {
@@ -57,6 +55,7 @@ export function IntakeForm({ recipes: recipe }) {
 
   return (
     <>
+      {showPopUp && FoodIntakeSaved()}
       <form className="flex flex-col gap-4 mb-8" onSubmit={handleSubmit}>
         <h3 className="text-3xl gradient-text text-center mb-4">
           Log Your Meal
