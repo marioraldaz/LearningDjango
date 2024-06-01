@@ -21,7 +21,7 @@ export function IntakeForm({ recipes: recipe }) {
 
   recipe = recipe[0];
 
-  if (recipe.nutrition.weight_per_serving.length == 1) {
+  if (recipe.nutrition?.weight_per_serving.length == 1) {
     recipe.nutrition.weight_per_serving =
       recipe.nutrition.weight_per_serving[0];
   }
@@ -79,7 +79,7 @@ export function IntakeForm({ recipes: recipe }) {
             </div>
             <span className="">
               Serving:{"   "}
-              {recipe.nutrition.weight_per_serving.amount
+              {recipe.nutrition?.weight_per_serving.amount
                 ? recipe.nutrition.weight_per_serving.amount +
                   recipe.nutrition.weight_per_serving.unit
                 : "Not specified"}
@@ -97,29 +97,29 @@ export function IntakeForm({ recipes: recipe }) {
             </div>
             <span className="text-white">
               Total weight:{"   "}
-              {formData.amount * recipe.nutrition.weight_per_serving?.amount}g
+              {formData.amount * recipe.nutrition?.weight_per_serving?.amount}g
             </span>
             <span className="text-white">
               Total carbohydrates:{"   "}
               {calculateGrams(
-                recipe.nutrition.weight_per_serving.amount,
-                recipe.nutrition.percent_carbs
+                recipe.nutrition?.weight_per_serving.amount,
+                recipe.nutrition?.percent_carbs
               )}
               g
             </span>
             <span className="text-white">
               Total Fat:{"   "}
               {calculateGrams(
-                recipe.nutrition.weight_per_serving.amount,
-                recipe.nutrition.percent_fat
+                recipe.nutrition?.weight_per_serving.amount,
+                recipe.nutrition?.percent_fat
               )}
               g
             </span>
             <span className="text-white">
               Total Protein:{"   "}
               {calculateGrams(
-                recipe.nutrition.weight_per_serving.amount,
-                recipe.nutrition.percent_protein
+                recipe.nutrition?.weight_per_serving.amount,
+                recipe.nutrition?.percent_protein
               )}
               g
             </span>

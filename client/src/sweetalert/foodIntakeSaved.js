@@ -11,9 +11,6 @@ export function FoodIntakeSaved() {
     confirmButtonText: "Add another intake",
     cancelButtonText: `<a href="/">${"Go to home page"}</a>`,
 
-    preConfirm: () => {
-      window.location.href = "/";
-    },
     preDeny: () => {},
   });
 }

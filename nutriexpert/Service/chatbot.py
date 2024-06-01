@@ -80,8 +80,8 @@ class Chat:
             "You are a supervisor tasked with managing a conversation between the"
             " following workers:  {members}. Given the following user request,"
             " respond with the worker to act next. Each worker will perform a"
-            " task and respond with their results and status. Always call first the database_manager and then the nutrition_expert. You can only call each agent 2 times."
-            " When you finish call the final answer agent and that needs to be the last response"
+            " task and respond with their results and status. Always call first the database_manager and then the nutrition_expert, all the conversation is about user nutrition and consumption. You can only call each agent 2 times."
+            " When you finish call the final answer agent and that needs to be the last response. If the user question is not about nutrition or doesnt make sense to answer respond please give a valid question"
         )
         # Our team supervisor is an LLM node. It just picks the next agent to process
         # and decides when the work is completed
@@ -140,7 +140,7 @@ class Chat:
         db = FAISS.load_local("nutriexpert/Service/nutrition_vector_database", embeddings,allow_dangerous_deserialization=True) #Load db
 
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        SQL_lite_uri = f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}"
+        SQL_lite_uri = f"sqlite:///db.sqlite3"
 
         SQL_db = SQLDatabase.from_uri(SQL_lite_uri)
 
@@ -157,6 +157,8 @@ class Chat:
                 result = connection.execute(text(sql_query))
                 formatted = ""
                 # Process the result if needed
+                
+                
                 for row in result:
                     formatted += str(row)
                 return formatted
@@ -181,7 +183,7 @@ class Chat:
 
 
 
-        nutrition_expert = create_agent(llm, [retrieve_nutrition_info ],"You are a nutrition expert. You need to provide advice for the user. You need to find what fits the user better. Only answer the user question." )
+        nutrition_expert = create_agent(llm, [retrieve_nutrition_info ],"You are a nutrition expert. You need to analyze the user consumption and get to conclusions based on the user question." )
         nutrition_expert_node = functools.partial(agent_node, agent=nutrition_expert, name="nutrition_expert")
 
         database_manager = create_agent(llm, [execute_sql_query, database_retriever_tool],"You are a database manager, you need to get information from the database by executing the right SQL query. The information needs to be related to the UserProfile with this id: "+"1")
@@ -189,7 +191,7 @@ class Chat:
 
         workflow = StateGraph(AgentState)
         
-        final_answer_agent = create_agent(llm, [retrieve_nutrition_info], "Answer the question, you need to be the last agent")
+        final_answer_agent = create_agent(llm, [retrieve_nutrition_info], "You need to answer the user question with the information provided. Answer to the final question based on the information retrieved from the database. Always answer the question with conclusions about the user consumption, short answers a maximum of 30 words.")
         final_answer_agent_node = functools.partial(agent_node, agent=final_answer_agent, name="final_answer_agent")
 
 

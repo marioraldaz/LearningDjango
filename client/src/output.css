@@ -936,6 +936,22 @@ video {
   height: 100vh;
 }
 
+.h-\[500px\] {
+  height: 500px;
+}
+
+.h-\[550px\] {
+  height: 550px;
+}
+
+.h-\[580px\] {
+  height: 580px;
+}
+
+.max-h-\[580px\] {
+  max-height: 580px;
+}
+
 .min-h-\[80vh\] {
   min-height: 80vh;
 }
@@ -1302,6 +1318,11 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.bg-red-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 202 202 / var(--tw-bg-opacity));
 }
 
 .p-2 {

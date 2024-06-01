@@ -37,6 +37,10 @@ export function NutriExpert() {
 
   return (
     <div className="gray-bg h-screen m-10 rounded-lg">
+      <h1 className="text-center gradient-text text-4xl mb-8">
+        {" "}
+        Your own nutritional expert
+      </h1>
       <div className="mx-auto pt-8 w-1/2 h-16 gap-4 flex items-center justify-center">
         <input
           type="text"
@@ -52,7 +56,7 @@ export function NutriExpert() {
           Send
         </button>
       </div>
-      <div className=" w-1/2 m-6 mx-auto flex bg-white justify-center flex-col text-black">
+      <div className=" w-1/2 m-6 mx-auto flex bg-white justify-center flex-col text-black max-h-[580px] overflow-auto">
         {messages.map((message, index) => (
           <div key={index} className="text-black py-2 px-2 text-left flex">
             <span
