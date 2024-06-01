@@ -75,12 +75,13 @@ class Chat:
             result = agent.invoke(state)
             return {"messages": [HumanMessage(content=result["output"], name=name)]}
 
-        members = ["database_manager", "nutrition_expert"]
+        members = ["database_manager", "nutrition_expert", "final_answer_agent"]
         system_prompt = (
             "You are a supervisor tasked with managing a conversation between the"
             " following workers:  {members}. Given the following user request,"
             " respond with the worker to act next. Each worker will perform a"
-            " task and respond with their results and status. Always call first the database_manager and then the nutrition_expert. You can only call each agent 2 times." 
+            " task and respond with their results and status. Always call first the database_manager and then the nutrition_expert. You can only call each agent 2 times."
+            " When you finish call the final answer agent and that needs to be the last response"
         )
         # Our team supervisor is an LLM node. It just picks the next agent to process
         # and decides when the work is completed
@@ -187,10 +188,15 @@ class Chat:
         database_manager_node = functools.partial(agent_node, agent=database_manager, name="database_manager")
 
         workflow = StateGraph(AgentState)
+        
+        final_answer_agent = create_agent(llm, [retrieve_nutrition_info], "Answer the question, you need to be the last agent")
+        final_answer_agent_node = functools.partial(agent_node, agent=final_answer_agent, name="final_answer_agent")
+
 
         # Add nodes for fuel anomaly expert and fuel database expert
         workflow.add_node("nutrition_expert", nutrition_expert_node)
         workflow.add_node("database_manager", database_manager_node)
+        workflow.add_node("final_answer_agent", final_answer_agent_node)
 
         # Add supervisor node and conditional edges
         workflow.add_node("supervisor", supervisor_chain)
@@ -237,11 +243,15 @@ class Chat:
                 ]
             }, config=config
         ):
-            if "__end__" not in s:
+            if "FINISH" not in s:
                 print(s)
-                agent_messages.append(json.dumps(s, cls=CustomEncoder))
+                agent_messages.append(s) 
                 print("----")
-        return agent_messages
+        
+        agent_messages = agent_messages[-2]
+        content = agent_messages['final_answer_agent']['messages'][0].content
+        print(content)
+        return content
 
         """
         I need a recipe that is low in carbs and high in protein

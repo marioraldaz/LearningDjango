@@ -64,7 +64,8 @@ export function NutriExpert() {
             >
               {message.fromUser ? "You:" : "Chatbot:"}
             </span>
-            {message.text}
+
+            {String(message.text)}
           </div>
         ))}
       </div>
