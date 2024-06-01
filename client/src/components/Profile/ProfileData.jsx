@@ -6,7 +6,12 @@ import {
   calculateAge,
 } from "../../api/fitCalcu.api";
 import { ChangePassword } from "./ChangePassword";
-export function ProfileData({ profile, uploadProfilePicture, changePassword }) {
+export function ProfileData({
+  profile,
+  uploadProfilePicture,
+  changePassword,
+  logout,
+}) {
   const [file, setFile] = useState(null);
   const [showChangeProfileForm, setShowChangeProfileForm] = useState(false);
   const [changePasswordForm, setChangePasswordForm] = useState(false);
@@ -31,7 +36,12 @@ export function ProfileData({ profile, uploadProfilePicture, changePassword }) {
   return (
     <div className="grid grid-cols-2 w-full p-4 rounded-xl border bg-neutral-900">
       <div className="col-span-1 flex flex-col gap-4">
-        <h3 className="text-2xl">{profile.username}</h3>
+        <div className="flex ">
+          <h3 className="text-2xl ">{profile.username}</h3>
+          <GrayButton className="w-32 ml-auto mr-2" onClick={logout}>
+            Log out
+          </GrayButton>
+        </div>
         <h3 className="text-xl">
           Lifestyle: {getActivityLevelByNumber(profile.activityLevel)}
         </h3>
@@ -52,7 +62,7 @@ export function ProfileData({ profile, uploadProfilePicture, changePassword }) {
         />
       </div>
       <div className="col-span-1">
-        <div className="h-16 m-2">
+        <div className="h-16 m-2 mr-0">
           <GrayButton onClick={() => setChangePasswordForm(true)}>
             Change Password
           </GrayButton>

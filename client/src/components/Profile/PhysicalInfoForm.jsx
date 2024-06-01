@@ -16,23 +16,24 @@ export const PhysicalInfoForm = ({ profile }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-wrap bg-neutral-900 w-full rounded-lg space-y-4 "
+      className="2xl:grid 2xl:grid-cols-2 flex flex-col gap-4 bg-neutral-900 w-full rounded-lg mt-12 p-8 h-[350px] text-xl"
     >
-      <div className="w-full flex gap-2">
+      <div className="w-full h-min flex gap-2">
         <label>Age:</label>
         <input
           type="number"
-          className="text-black w-min"
+          className="text-black text-center w-min"
           placeholder="Age"
           value={age}
           onChange={(e) => setAge(e.target.value)}
           required
         />
       </div>
-      <div className="w-full flex gap-2">
+      <div className="w-full flex gap-2 h-min">
         <label>Height:</label>
         <input
           type="number"
+          className="text-black text-center w-min"
           value={height}
           onChange={(e) => setHeight(e.target.value)}
           required
@@ -46,10 +47,11 @@ export const PhysicalInfoForm = ({ profile }) => {
           <option value="feet">feet</option>
         </select>
       </div>
-      <div className="w-full flex gap-2">
+      <div className="w-full flex gap-2 h-min ">
         <label>Weight:</label>
         <input
           type="number"
+          className="text-black w-min text-center"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
           required
@@ -63,7 +65,7 @@ export const PhysicalInfoForm = ({ profile }) => {
           <option value="lb">lb</option>
         </select>
       </div>
-      <div className="w-full flex gap-2">
+      <div className="w-full flex gap-2 h-min ">
         <label>Physical Activity Level:</label>
         <select
           value={activityLevel}
@@ -79,7 +81,7 @@ export const PhysicalInfoForm = ({ profile }) => {
           <option value="super_active">Super Active</option>
         </select>
       </div>
-      <div className="w-full flex gap-2 mt-4">
+      <div className="w-3/4 mx-auto flex col-span-2 h-20 mt-auto">
         <GrayButton onClick="submit">Submit</GrayButton>
       </div>
     </form>

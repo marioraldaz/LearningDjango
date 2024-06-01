@@ -20,11 +20,13 @@ export function ProfileOptions({ profile }) {
         <span className="text-center  gradient-text bg-white">
           Complete Your Profile For A More Detailed Control
         </span>
-        <div className="w-[300px] self-center mt-8">
-          <GrayButton onClick={toggleOpenPhysicalForm}>
-            Complete Or Change My Profile
-          </GrayButton>
-        </div>
+        {!openPhysicalForm && (
+          <div className="w-[400px] self-center mt-8">
+            <GrayButton onClick={toggleOpenPhysicalForm}>
+              Complete Or Change My Profile
+            </GrayButton>
+          </div>
+        )}
         {openPhysicalForm && <PhysicalInfoForm profile={profile} />}
       </div>
 

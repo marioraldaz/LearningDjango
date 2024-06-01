@@ -11,7 +11,7 @@ export function SavedRecipes({ savedRecipes }) {
           <h1 className="text-2xl gradient-text w-full text-center mb-8">
             Saved Recipes
           </h1>
-          <div className="flex flex-row h-[400px] overflow-x-scroll overflow-y-hidden">
+          <div className="flex flex-row h-[400px] overflow-x-auto overflow-y-hidden">
             <CardsList products={savedRecipes} />
           </div>
         </div>

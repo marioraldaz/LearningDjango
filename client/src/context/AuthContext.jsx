@@ -89,7 +89,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   let logoutUser = () => {
-    console.log("logged out");
     Cookies.set("profileJWT", null);
     Cookies.set("profileRefreshToken", null);
     setAuthTokens(null);
