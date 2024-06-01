@@ -3,7 +3,7 @@ import { BarChart } from "@mui/x-charts";
 
 export function BarChartCustom({ values, dates }) {
   // Extracting data based on the display type
-  console.log(values, dates);
+  console.log(values);
   return (
     <div className="bg-white flex flex-col w-full mt-4">
       <BarChart

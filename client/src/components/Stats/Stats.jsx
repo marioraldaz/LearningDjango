@@ -28,11 +28,7 @@ export function Stats({ profile }) {
       now.getMonth(),
       now.getDate() - now.getDay() - 7
     );
-    const lastWeekEnd = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate() - now.getDay()
-    );
+    const lastWeekEnd = new Date();
 
     return data.filter((item) => {
       const itemDate = new Date(item.date);
@@ -78,20 +74,19 @@ export function Stats({ profile }) {
         }
       }) || [];
 
-    let dates = [];
-    let amounts = [];
-    newParams.map((intake) => {
+    let dates = {};
+    let amounts = {};
+    newParams.forEach((intake) => {
       const date = intake.date.date;
-      console.log(date);
-      amounts[date]
-        ? (amounts[date] += intake.amount)
-        : (amounts[date] = intake.amount);
-
-      dates[date] || dates.push(date);
+      amounts[date] = (amounts[date] || 0) + intake.amount;
+      dates[date] = true;
     });
 
+    // Extract unique dates from the object keys
+    let uniqueDates = Object.keys(dates);
+
     setParams(amounts);
-    setDates(dates);
+    setDates(uniqueDates);
   }, [selected, range, userDailies]);
 
   useEffect(() => {
