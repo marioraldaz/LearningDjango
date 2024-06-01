@@ -20,9 +20,9 @@ export function RecipeNutrition({ recipe }) {
         </ul>
         <h3>
           Weight Per Serving:{" "}
-          {nutrition.weight_per_serving[0]?.amount ||
-            nutrition.weight_per_serving?.amount}{" "}
-          {nutrition.weight_per_serving?.unit}
+          {nutrition?.weight_per_serving[0]?.amount ||
+            nutrition?.weight_per_serving?.amount}{" "}
+          {nutrition?.weight_per_serving?.unit}
         </h3>
       </div>
 

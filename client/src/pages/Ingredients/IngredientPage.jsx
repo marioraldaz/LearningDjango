@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { useSelector, useDispatch } from "react-redux";
+import { RecipeNutrition } from "../../components/Recipes/RecipeNutrition";
 export function IngredientPage() {
   const { id } = useParams();
   const [ingredient, setIngredient] = useState(null);
@@ -49,13 +50,16 @@ export function IngredientPage() {
 
         <h3 className="text-2xl capitalize mt-[80px]">
           Price (For {ingredient.amount} {ingredient.name}):{"  "}
-          {ingredient.estimatedCost?.value * amount}{" "}
+          {ingredient.estimatedCost
+            ? ingredient.estimatedCost?.value * amount
+            : "Not specfied"}
           {ingredient.estimatedCost?.unit}
         </h3>
         <h3 className="text-2xl capitalize mt-[80px]">
           Nutrients (For {amount} {ingredient.name}):
         </h3>
-        <ul className="overflow-y-scroll h-[300px] mt-[40px] w-full flex flex-col">
+        {ingredient.nutrition !== "object" && "Not specified"}
+        <ul className="overflow-auto h-[300px] mt-[40px] w-full flex flex-col">
           {ingredient.nutrition?.nutrients?.map((nutrient) => (
             <ul
               key={nutrient.name}
@@ -72,7 +76,10 @@ export function IngredientPage() {
 
               <li>
                 Percentage Of Daily Needs:{" "}
-                {(nutrient.percentOfDailyNeeds * amount).toFixed(2)} {"%"}
+                {nutrient.percentOfDailyNeeds
+                  ? String((nutrient.percentOfDailyNeeds * amount).toFixed(2)) +
+                    "%"
+                  : "Not specified"}
               </li>
             </ul>
           ))}

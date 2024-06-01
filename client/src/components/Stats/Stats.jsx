@@ -26,7 +26,7 @@ export function Stats({ profile }) {
     const lastWeekStart = new Date(
       now.getFullYear(),
       now.getMonth(),
-      now.getDate() - now.getDay() - 7
+      now.getDate() - now.getDay() - 1
     );
     const lastWeekEnd = new Date();
 
@@ -106,7 +106,7 @@ export function Stats({ profile }) {
 
   return (
     <>
-      <div className="w-24 flex mx-auto mb-4">
+      <div className="w-full flex mx-auto mb-4">
         <GrayButton
           onClick={() => setRange(range === "Weekly" ? "Monthly" : "Weekly")}
         >
@@ -120,6 +120,7 @@ export function Stats({ profile }) {
           </GrayButton>
         ))}
       </div>
+
       <BarChartCustom values={params} dates={dates} />
     </>
   );

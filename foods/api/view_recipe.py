@@ -72,8 +72,9 @@ def get_recipe_info(request, id):
                 print("No ID found for the ingredient")
 
         # Create Recipe object
+        print(data)
         recipe_data = {
-            'nutrition': data.get['nutrition'],
+            'nutrition': nutrition,
             'title': data.get('title'),
             'image': data.get('image'),
             'readyInMinutes': data.get('readyInMinutes'),
@@ -116,10 +117,10 @@ def get_recipe_info(request, id):
 
     except requests.RequestException as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+@api_view(['GET'])
 def fetch_filtered_recipes(request):
     filters = request.GET.dict()
-    url = f'https://api.spoonacular.com/complexSearch'
+    url = 'https://api.spoonacular.com/recipes/complexSearch'
     params = {
         'apiKey': settings.API_KEY,
         **filters  # Pass the filters as URL parameters
@@ -127,11 +128,13 @@ def fetch_filtered_recipes(request):
 
     try:
         response = requests.get(url, params=params)
-        response.raise_for_status()  # Raise exception for any error status codes
+        response.raise_for_status()  # Raise an error for bad status codes
         data = response.json()
-        return Response(data)
+        return Response(data["results"])
     except requests.RequestException as e:
-        return Response({'error': str(e)}, status=500)
+        status_code = response.status_code if response else 500
+        return Response({'error': str(e)}, status=status_code)
+
 
 import json
 import requests

@@ -22,7 +22,7 @@ export function BarChartCustom({ values, dates }) {
             }),
           },
         ]}
-        width={500}
+        width={1200}
         height={300}
       />
     </div>

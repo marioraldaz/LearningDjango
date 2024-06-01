@@ -70,7 +70,42 @@ def test_invalid_date_validation(user_profile):
 @pytest.mark.parametrize("meal_type, intake_date", [
     ("Lunch", date.today() - timedelta(days=3)),  # Date 3 days ago
     ("Snack", date.today() - timedelta(days=5)),  # Date 5 days ago
-    ("Dinner", date.today() - timedelta(days=7))  # Date 7 days ago
+    ("Dinner", date.today() - timedelta(days=7)),  # Date 7 days ago
+       ("Lunch", date.today() - timedelta(days=3)),  # Date 3 days ago
+    ("Snack", date.today() - timedelta(days=5)),  # Date 5 days ago
+    ("Dinner", date.today() - timedelta(days=7)),  # Date 7 days ago
+       ("Lunch", date.today() - timedelta(days=3)),  # Date 3 days ago
+    ("Snack", date.today() - timedelta(days=5)),  # Date 5 days ago
+    ("Dinner", date.today() - timedelta(days=7)),  # Date 7 days ago
+       ("Lunch", date.today() - timedelta(days=3)),  # Date 3 days ago
+    ("Snack", date.today() - timedelta(days=5)),  # Date 5 days ago
+    ("Dinner", date.today() - timedelta(days=7)),  # Date 7 days ago   ("Lunch", date.today() - timedelta(days=3)),  # Date 3 days ago
+    ("Snack", date.today() - timedelta(days=5)),  # Date 5 days ago
+    ("Dinner", date.today() - timedelta(days=7)),  # Date 7 days ago
+       ("Lunch", date.today() - timedelta(days=3)),  # Date 3 days ago
+    ("Snack", date.today() - timedelta(days=5)),  # Date 5 days ago
+    ("Dinner", date.today() - timedelta(days=7)),  # Date 7 days ago
+       ("Lunch", date.today() - timedelta(days=3)),  # Date 3 days ago
+    ("Snack", date.today() - timedelta(days=5)),  # Date 5 days ago
+    ("Dinner", date.today() - timedelta(days=7)),  # Date 7 days ago
+       ("Lunch", date.today() - timedelta(days=3)),  # Date 3 days ago
+    ("Snack", date.today() - timedelta(days=5)),  # Date 5 days ago
+    ("Dinner", date.today() - timedelta(days=7)),  # Date 7 days ago
+       ("Lunch", date.today() - timedelta(days=3)),  # Date 3 days ago
+    ("Snack", date.today() - timedelta(days=5)),  # Date 5 days ago
+    ("Dinner", date.today() - timedelta(days=7)),  # Date 7 days ago
+       ("Lunch", date.today() - timedelta(days=3)),  # Date 3 days ago
+    ("Snack", date.today() - timedelta(days=5)),  # Date 5 days ago
+    ("Dinner", date.today() - timedelta(days=7)),  # Date 7 days ago
+       ("Lunch", date.today() - timedelta(days=3)),  # Date 3 days ago
+    ("Snack", date.today() - timedelta(days=5)),  # Date 5 days ago
+    ("Dinner", date.today() - timedelta(days=7)),  # Date 7 days ago
+       ("Lunch", date.today() - timedelta(days=3)),  # Date 3 days ago
+    ("Snack", date.today() - timedelta(days=5)),  # Date 5 days ago
+    ("Dinner", date.today() - timedelta(days=7)),  # Date 7 days ago
+       ("Lunch", date.today() - timedelta(days=3)),  # Date 3 days ago
+    ("Snack", date.today() - timedelta(days=5)),  # Date 5 days ago
+    ("Dinner", date.today() - timedelta(days=7)),  # Date 7 days ago
 ])
 def test_food_intake_creation_with_past_dates(food_intake_factory, meal_type, intake_date):
     # Test that a FoodIntake instance is created with a past date
