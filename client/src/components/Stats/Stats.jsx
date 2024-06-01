@@ -36,21 +36,20 @@ export function Stats({ profile }) {
     });
   }
 
-  function filterLastMonth(data) {
+  function filterLast30Days(data) {
     const now = new Date();
-    const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000); // Calculate 30 days ago from now
     return data.filter((item) => {
       const itemDate = new Date(item.date);
-      return itemDate >= lastMonth && itemDate < thisMonth;
+      return itemDate >= thirtyDaysAgo && itemDate <= now; // Include items from 30 days ago up to now
     });
   }
   useEffect(() => {
+    console.log(range);
     const newData =
       range === "Weekly"
         ? filterLastWeek(userDailies)
-        : filterLastMonth(userDailies);
-
+        : filterLast30Days(userDailies);
     const newParams =
       newData?.map((intake) => {
         switch (selected) {
@@ -99,6 +98,7 @@ export function Stats({ profile }) {
         console.error("Error fetching nutrition stats:", error);
       }
       const intakes = await getUserIntakes();
+      intakes.sort((a, b) => new Date(a.date) - new Date(b.date));
       setUserDailies(intakes);
     };
     fetchData();
