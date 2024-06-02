@@ -40,7 +40,7 @@ export function ProfileData({
       <div className="col-span-1 flex flex-col gap-4">
         <div className="flex ">
           <h3 className="text-2xl ">{profile.username}</h3>
-          <GrayButton className="w-32 ml-auto mr-2" onClick={logout}>
+          <GrayButton className="w-24 ml-auto mr-2" onClick={logout}>
             Log out
           </GrayButton>
         </div>

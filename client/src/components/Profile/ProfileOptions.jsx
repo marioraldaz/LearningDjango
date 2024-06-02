@@ -15,9 +15,9 @@ export function ProfileOptions({ profile }) {
   }
 
   return (
-    <div className="flex flex-col gap-4 w-full">
-      <div className="flex flex-col gap-2 border p-2 rounded-lg bg-neutral-900">
-        <span className="text-center  gradient-text bg-white">
+    <div className="flex flex-col gap-4 w-full h-full">
+      <div className="flex flex-col gap-2 border p-2 rounded-lg bg-neutral-900 h-1/2">
+        <span className="text-center  gradient-text bg-white mt-8">
           Complete Your Profile For A More Detailed Control
         </span>
         {!openPhysicalForm && (
@@ -30,7 +30,7 @@ export function ProfileOptions({ profile }) {
         {openPhysicalForm && <PhysicalInfoForm profile={profile} />}
       </div>
 
-      <div className="flex flex-col gap-2 border p-2 rounded-lg  bg-neutral-900">
+      <div className="flex flex-col gap-2 border p-2 rounded-lg h-1/2 bg-neutral-900">
         <h1 className="text-center  gradient-text bg-white">
           Add Today`s Meal
         </h1>

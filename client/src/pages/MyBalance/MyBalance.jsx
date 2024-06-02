@@ -34,16 +34,16 @@ export function MyBalance() {
     fetchData();
   }, [user?.id]);
 
-  if (loading) {
+  if (!todaysRecipes && user) {
+    return <Loading />;
+  }
+  if (!user || !user.id) {
     return (
       <div className="w-full mt-24 flex flex-col gap-8 justify-center items-center">
         <h1 className="text-2xl">Log In To Access this page !</h1>
         <NavigationButton link="/login" text="Go to login" />
       </div>
     );
-  }
-  if (!todaysRecipes && user) {
-    return <Loading />;
   }
   return (
     <section className="w-full h-full">

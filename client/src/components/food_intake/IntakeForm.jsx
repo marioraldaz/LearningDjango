@@ -14,12 +14,12 @@ export function IntakeForm({ recipes: recipe }) {
   });
   const [showPopUp, setShowPopUp] = useState(false);
   const { addFoodIntake } = useContext(AuthContext);
-
   if (!recipe || !recipe[0] || !formData) {
     return <Loading />;
   }
 
   recipe = recipe[0];
+  console.log(recipe);
 
   if (recipe.nutrition?.weight_per_serving.length == 1) {
     recipe.nutrition.weight_per_serving =
@@ -122,6 +122,14 @@ export function IntakeForm({ recipes: recipe }) {
                 recipe.nutrition?.percent_protein
               )}
               g
+            </span>
+            <span className="text-white">
+              Total Calories:{"   "}
+              {calculateGrams(
+                recipe.nutrition?.weight_per_serving.amount,
+                recipe.nutrition?.nutrients[0]?.amount
+              )}{" "}
+              Kcal
             </span>
           </section>
         </div>

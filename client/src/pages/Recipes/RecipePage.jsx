@@ -82,12 +82,13 @@ export function RecipePage() {
           className="w-[700px] h-[400px] rounded-lg border"
         />
         <div className="flex flex-col gap-4 w-[200px]">
-          <h2>Likes: {recipe.aggregateLikes}</h2>
-          <div className="">
+          <h2>Likes: {recipe.aggregateLikes || "No likes"}</h2>
+          <div className="text-white">
             Cooking Minutes:{" "}
             {recipe.cookingMinutes == -1
               ? "Not Specified"
               : recipe.cookingMinutes}
+            {recipe.cookingMinutes || "Not specified"}
           </div>
           <div>Gluten Free: {recipe.glutenFree ? "Yes" : "No"}</div>
           <div>Dairy Free: {recipe.dairyFree ? "Yes" : "No"}</div>

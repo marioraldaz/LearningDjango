@@ -23,16 +23,12 @@ export function Stats({ profile }) {
 
   function filterLastWeek(data) {
     const now = new Date();
-    const lastWeekStart = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate() - now.getDay() - 1
-    );
-    const lastWeekEnd = new Date();
+    const sevenDaysAgo = new Date(now);
+    sevenDaysAgo.setDate(now.getDate() - 7);
 
     return data.filter((item) => {
       const itemDate = new Date(item.date);
-      return itemDate >= lastWeekStart && itemDate < lastWeekEnd;
+      return itemDate >= sevenDaysAgo && itemDate <= now;
     });
   }
 
