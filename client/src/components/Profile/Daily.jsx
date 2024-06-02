@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { Loading } from "../variety/loading";
 export const Daily = ({ profileId }) => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,7 +23,7 @@ export const Daily = ({ profileId }) => {
   }, [profileId]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!stats) {

@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import AuthContext from "../../context/AuthContext";
 import { NavigationButton } from "../../components/Buttons/NavigationButton";
 import { CardsList } from "../../components/Lists/CardsList";
+import { Loading } from "../../components/variety/loading";
 export function RecipePage() {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
@@ -66,7 +67,7 @@ export function RecipePage() {
     setShowIngredients(!showIngredients);
   };
   if (!recipe) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <div className="flex flex-wrap flex-grow p-8 rounded-xl gap-8 min-h-[80vh]">

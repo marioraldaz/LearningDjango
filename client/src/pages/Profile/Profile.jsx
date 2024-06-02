@@ -5,7 +5,7 @@ import { ProfileOptions } from "../../components/Profile/ProfileOptions";
 import { ProfileData } from "../../components/Profile/ProfileData";
 import { SavedRecipes } from "../../components/Profile/SavedRecipes";
 import { Stats } from "../../components/Stats/Stats";
-
+import { Loading } from "../../components/variety/loading";
 export function Profile() {
   const [profile, setProfile] = useState(null);
   const {
@@ -21,7 +21,7 @@ export function Profile() {
   }, [user, profile]);
 
   if (!profile || !savedRecipes) {
-    return <h1>Loading....</h1>;
+    return <Loading />;
   }
 
   return (

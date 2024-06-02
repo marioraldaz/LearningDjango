@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { PhysicalInfoForm } from "./PhysicalInfoForm";
 import { GrayButton } from "../Buttons/GrayButton";
 import { NavigationButton } from "../Buttons/NavigationButton";
-
+import { Loading } from "../variety/loading";
 export function ProfileOptions({ profile }) {
   const [openPhysicalForm, setOpenPhysicalForm] = useState(false);
 
@@ -11,7 +11,7 @@ export function ProfileOptions({ profile }) {
   };
 
   if (!profile) {
-    return <h1>Loading....</h1>;
+    return <Loading />;
   }
 
   return (

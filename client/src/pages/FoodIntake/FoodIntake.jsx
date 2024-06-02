@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { IntakeForm } from "../../components/food_intake/IntakeForm.jsx";
 import { purgePersistor } from "../../redux/store.js";
 import persistReducer from "redux-persist/es/persistReducer";
-
+import { Loading } from "../../components/variety/loading.jsx";
 export function FoodIntake() {
   const [ingredients, setIngredients] = useState([]);
   const [recipeToAdd, setRecipeToAdd] = useState([]);
@@ -24,7 +24,7 @@ export function FoodIntake() {
   }, [add]);
 
   if (!user) {
-    return <h1>Loading...</h1>;
+    return <Loading />;
   }
 
   return (

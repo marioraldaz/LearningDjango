@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { NavigationButton } from "../../components/Buttons/NavigationButton.jsx";
 import { Scrollable } from "../../components/MyBalance/Scrollable.jsx";
 import { Stats } from "../../components/Stats/Stats.jsx";
+import { Loading } from "../../components/variety/loading.jsx";
+
 export function MyBalance() {
   const [loading, setLoading] = useState(true);
   const [userIntakes, setUserIntakes] = useState([]);
@@ -41,7 +43,7 @@ export function MyBalance() {
     );
   }
   if (!todaysRecipes && user) {
-    return <h1>Loading---</h1>;
+    return <Loading />;
   }
   return (
     <section className="w-full h-full">

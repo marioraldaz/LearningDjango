@@ -1,8 +1,9 @@
 import React from "react";
 import { CardsList } from "../Lists/CardsList";
+import { Loading } from "../variety/loading";
 export function SavedRecipes({ savedRecipes }) {
   if (!savedRecipes) {
-    return <h1>Loading...</h1>;
+    return <Loading />;
   }
   return (
     <>

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { useSelector, useDispatch } from "react-redux";
 import { RecipeNutrition } from "../../components/Recipes/RecipeNutrition";
+import { Loading } from "../../components/variety/loading";
 export function IngredientPage() {
   const { id } = useParams();
   const [ingredient, setIngredient] = useState(null);
@@ -24,7 +25,7 @@ export function IngredientPage() {
   };
 
   if (!ingredient) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <div className="flex flex-wrap p-8 items-center justify-center xl:items-start xl:justify-start">

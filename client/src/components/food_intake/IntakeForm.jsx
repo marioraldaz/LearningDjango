@@ -4,7 +4,7 @@ import { GrayButton } from "../Buttons/GrayButton.jsx";
 import { CardsList } from "../Lists/CardsList.jsx";
 import { AuthContext } from "../../context/AuthContext";
 import { FoodIntakeSaved } from "../../sweetalert/foodIntakeSaved.js";
-
+import { Loading } from "../variety/loading.jsx";
 export function IntakeForm({ recipes: recipe }) {
   const [formData, setFormData] = useState({
     meal_type: "Breakfast",
@@ -16,7 +16,7 @@ export function IntakeForm({ recipes: recipe }) {
   const { addFoodIntake } = useContext(AuthContext);
 
   if (!recipe || !recipe[0] || !formData) {
-    return <h1>loading</h1>;
+    return <Loading />;
   }
 
   recipe = recipe[0];

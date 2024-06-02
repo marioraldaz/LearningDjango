@@ -6,6 +6,8 @@ import {
   calculateAge,
 } from "../../api/fitCalcu.api";
 import { ChangePassword } from "./ChangePassword";
+import { Loading } from "../variety/loading";
+
 export function ProfileData({
   profile,
   uploadProfilePicture,
@@ -17,7 +19,7 @@ export function ProfileData({
   const [changePasswordForm, setChangePasswordForm] = useState(false);
 
   if (!profile) {
-    return <h1>Loading....</h1>;
+    return <Loading />;
   }
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);

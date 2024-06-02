@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { Robot } from "../../components/variety/Robot";
 
 export function NutriExpert() {
   const { user, nutriExpert } = useContext(AuthContext);
   const [profile, setProfile] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const handleSendMessage = async () => {
+    setLoading(true);
     if (inputValue.trim() !== "") {
       setInputValue("");
       const prev = messages;
@@ -25,6 +27,7 @@ export function NutriExpert() {
       } catch (error) {
         console.error("An error occurred:", error);
       }
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -41,6 +44,9 @@ export function NutriExpert() {
         {" "}
         Your own nutritional expert
       </h1>
+      <div className="absolute">
+        <Robot loading={loading} />
+      </div>
       <div className="mx-auto pt-8 w-1/2 h-16 gap-4 flex items-center justify-center">
         <input
           type="text"
