@@ -80,7 +80,7 @@ class Chat:
             "You are a supervisor tasked with managing a conversation between the"
             " following workers:  {members}. Given the following user request,"
             " respond with the worker to act next. Each worker will perform a"
-            " task and respond with their results and status. Always call first the database_manager and then the nutrition_expert, all the conversation is about user nutrition and consumption. You can only call each agent 2 times."
+            " task and respond with their results and status. Always call first the database_manager and then the nutrition_expert, make sure they answer directly to the user question. You can only call each agent 2 times."
             " When you finish call the final answer agent and that needs to be the last response. If the user question is not about nutrition or doesnt make sense to answer respond please give a valid question"
         )
         # Our team supervisor is an LLM node. It just picks the next agent to process
@@ -183,7 +183,7 @@ class Chat:
 
 
 
-        nutrition_expert = create_agent(llm, [retrieve_nutrition_info ],"You are a nutrition expert. You need to analyze the user consumption and get to conclusions based on the user question." )
+        nutrition_expert = create_agent(llm, [retrieve_nutrition_info ],"You are a nutrition expert. Make sure to retrieve information specfic to the user question." )
         nutrition_expert_node = functools.partial(agent_node, agent=nutrition_expert, name="nutrition_expert")
 
         database_manager = create_agent(llm, [execute_sql_query, database_retriever_tool],"You are a database manager, you need to get information from the database by executing the right SQL query. The information needs to be related to the UserProfile with this id: "+"1")
@@ -191,7 +191,7 @@ class Chat:
 
         workflow = StateGraph(AgentState)
         
-        final_answer_agent = create_agent(llm, [retrieve_nutrition_info], "You need to answer the user question with the information provided. Answer to the final question based on the information retrieved from the database. Always answer the question with conclusions about the user consumption, short answers a maximum of 30 words.")
+        final_answer_agent = create_agent(llm, [retrieve_nutrition_info], "You need to answer the user question with the information provided. Make sure to answer with information spefic to the user question. Short answers a maximum of 30 words.")
         final_answer_agent_node = functools.partial(agent_node, agent=final_answer_agent, name="final_answer_agent")
 
 
@@ -241,7 +241,7 @@ class Chat:
         for s in graph.stream(
             {
                 "messages": [
-                    HumanMessage(content="Am I lacking any vitamin?")
+                    HumanMessage(content=str(new_messages))
                 ]
             }, config=config
         ):
